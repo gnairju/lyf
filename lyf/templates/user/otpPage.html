@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>OTP Verification</title>
+</head>
+<body>
+
+<div class="container-xl mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">OTP Verification</h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="otp" class="form-label">Enter OTP:</label>
+                            <input type="number" class="form-control" id="otp" name="otp"  placeholder="******">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verify OTP</button>
+                    </form><br>
+                    <form action="{% url 'user:resendOtp' %}" method="get">
+                        <button type="submit" class="btn btn-danger">Resend OTP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8/Nv3pIVuPphJtYWB9Lk3m6Hg3eELx5WqlRmSCAEe3sBThb6hqRI3OkJlNIH6" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha384-XihSBy5XsVGkBcFFh4G8kCiT6nBFWyRpgGBPHLmVqBRL5iK3wFjAfiJBI5hUJwSw" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+/* your CSS file or style tag in HTML */
+*{
+    font-family: 'poppins',sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background: #ffffff; 
+}
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 5px 5% ;
+    position: sticky;
+    top: 2px;
+    z-index: 100;
+
+
+}
+
+.btn{
+    color: black;
+    background-color: #cee9f1;
+}
+
+.logo{
+    width: 160px;
+    margin-right: 40px;
+}
+.nav-left, .nav-right{
+    display: flex;
+    align-items: center;
+     
+}
+.nav-left ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 20px;
+    color: black;
+
+}
+
+.nav-right ul li{
+    list-style: none;
+    display: inline-block;
+    padding: 20px;
+    color: black;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card {
+    width: calc(33.33% - 10px); /* Adjust as needed to fit three cards in a row with margins */
+    margin-bottom: 20px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width calculation */
+}
+
+.card:nth-child(3n) {
+    margin-right: 0; /* Remove the right margin for every third card */
+}
+

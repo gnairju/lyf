@@ -1,0 +1,22 @@
+{% extends "homePage.html" %}
+{% block content %}
+    <div class='products view' style="margin-left: 150px; margin-right: 150px; margin-top: 50px; border: 1.5px solid black; padding: 20px; border-radius: 10px;">
+        <div style="float: left; width: 60%;">
+            <h2>{{ product.title }}</h2>
+            <p>Description: {{ product.description }}</p>
+            <h1>Price: {{ product.price }}/day</h1>
+            <p>Provided by: {{ product.user.first_name }}</p>
+            <!-- Add more details as needed -->
+        </div>
+        <div style="float: right; width: 40%;">
+            <img class="card-img-top" style="width: 80%; max-width: 200px; height: auto; object-fit: cover;" 
+                src="{{ product.image.url|default:'static("image/placeholder_image.jpg")' }}" alt="Product Image">
+        </div>
+        <div style="clear: both;"></div>
+        <div style="margin-top: 20px;">
+            {% for image in product.multipleimage_set.all %}
+                <img class="additional-image" src="{{ image.image.url }}" alt="Product Image">
+            {% endfor %}
+        </div>  
+    </div>
+{% endblock %}

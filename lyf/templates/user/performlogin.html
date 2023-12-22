@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: white ;
+        }
+
+        .container {
+            display: flex;
+            width: 50%;
+            height: 80%;
+            margin: auto;
+            border: 1px solid #fff;
+            background-color: #CEE9F1; /* Set a background color for the container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        }
+
+        .img_container,
+        .form_container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img_container {
+            border-right: 1px solid #ddd;
+        }
+
+        .img_container h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .img_container p {
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .form_container {
+            border-left: 1px solid #ddd;
+        }
+
+        .text_container {
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="img_container">
+            <h3>Login</h3>
+            <p>Rent <br>
+                Anytime <br>
+                Anywhere <br>
+            </p>
+        </div>
+        <form method="POST" class="form_container">
+            {% csrf_token %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="text_container">
+                <label for="email">Email</label><br>
+                <input type="email" class="form-control" name="email" placeholder="example@email.com">
+                <br>
+                <label for="password">Password</label><br>
+                <input type="password" class="form-control" name="password" placeholder="********">
+                <br>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <br>
+                <a href="{% url 'user:user_registration' %}">New to lyf? Create an account</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery (optional) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

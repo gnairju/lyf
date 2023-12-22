@@ -1,0 +1,45 @@
+{% extends "homePage.html" %}
+
+{% block content %}
+<div class="container mt-4 border p-4">
+    <h1 class="text-2xl">My Products</h1>
+    <a href="{% url 'provider:providerAddProducts' %}" class="btn btn-primary mt-2">Add Products</a>
+    <h2 class="mt-4 mb-2 text-xl">My Products</h2>
+
+    {% if request.user.products.all %}
+        <div class="row">
+            {% for product in request.user.products.all %}
+                <div class="col-md-3 mb-4">
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h5>{{ product.title }}</h5>
+                            <p>{{ product.description }}</p>
+                            <p>Price: ${{ product.price }}</p>
+                            
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-thumbnail float-right" style="max-width: 100px; max-height: 100px;">
+                            {% else %}
+                                <p>No image available</p>
+                            {% endif %}
+                            <br><br>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'provider:providerDeleteProducts' product.id %}" class="btn btn-danger mb-2">Delete</a>
+                                <a href="{% url 'provider:providerUpdateProducts' product.id%}" class="btn btn-primary mb-2">Update</a>
+                            </div>
+                            <!-- Add more details as needed -->
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                    </div><div class="row">
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-4">
+            You don't have any products yet...
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

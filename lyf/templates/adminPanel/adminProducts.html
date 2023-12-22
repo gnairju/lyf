@@ -1,0 +1,70 @@
+{% extends 'adminPanel/adminPanel.html' %}
+{% block content %}
+
+<div id="sidebarMenu" class="sidebar bg-white">
+    <div class="position-sticky">
+        <div class="list-group list-group-flush">
+            <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
+            </a>
+            <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple active">
+                <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-lock fa-fw me-3"></i><span>Order Details</span>
+            </a>
+            <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+            </a>
+            <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
+            </a>
+            <a href="{% url 'adminPanel:renterList' %}" class="list-group-item list-group-item-action py-2 ripple ">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="content" class="container" style="margin-top: 15px;">
+    <!-- Your content goes here -->
+</div>
+
+<div class="container mt-4" style="margin-left: 270px;">
+    <h1 class="text-2xl">Product List</h1>
+
+    {% if products %}
+        {% for product in products %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text">Provider: {{ product.user }}</p>
+                            <p class="card-text">Price per day: {{ product.price }}</p>
+                            <form method="post" action="{% url 'adminPanel:activeDeactiveProducts' product.id %}" class="d-inline">
+                                {% csrf_token %}
+                                {% if product.is_active %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Deactivate</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-success btn-sm">Activate</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <!-- Display Image -->
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-fluid" style="max-height: 100px;">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info mt-4">
+            No products found.
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
