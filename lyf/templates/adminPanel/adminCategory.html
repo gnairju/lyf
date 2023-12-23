@@ -27,8 +27,6 @@
 
 <div class="container" style="margin-left: 250px; margin-top: 120px;">
     <form class="form-inline ">
-        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" name="q" >
-        <button class="btn btn-primary" type="submit">Search</button>
         <a href="{% url 'adminPanel:adminAddCategory' %}" class="btn btn-success">Add Category</a>
     </form>
     {% csrf_token %}

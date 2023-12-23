@@ -6,6 +6,7 @@ from user.views import performlogin
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 from django.http import HttpResponseBadRequest
+from adminPanel.models import multipleImage
 
 @login_required(login_url='user:performlogin')
 def providerPanel(request):
@@ -20,10 +21,13 @@ def providerAddProduct(request):
         description = request.POST.get('description')
         price = request.POST.get('price')
         category_Name = request.POST.get('category')
-        quantity=request.POST.get('quantity')
-        
-        # Handle image upload
-        image = request.FILES.get('image') if 'image' in request.FILES else None
+        quantity = request.POST.get('quantity')
+
+        # Handle main image upload
+        main_image = request.FILES.get('image') if 'image' in request.FILES else None
+
+        # Handle multiple images upload
+        additional_images = request.FILES.getlist('images')
 
         # Assuming you have a Categories model with an id field
         category = Categories.objects.get(Name=category_Name)
@@ -35,19 +39,26 @@ def providerAddProduct(request):
             title=title,
             description=description,
             price=price,
-            image=image,
+            image=main_image,
             quantity=quantity
         )
+
+        # Create MultipleImage instances for additional images
+        for img in additional_images:
+            multipleImage.objects.create(product=product, image=img)
+
         user = request.user
-        if user.is_staff==False:
-            user.is_staff=True
+        if user.is_staff == False:
+            user.is_staff = True
             user.save()
+        
         return redirect('provider:providerPanel')  # Redirect to the provider panel after adding a product
 
     # Fetch categories from the database
     categories = Categories.objects.all()
-    
+
     return render(request, 'provider/providerAddProducts.html', {'categories': categories})
+
 
 
 def providerDeleteProducts(request,id):

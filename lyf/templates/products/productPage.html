@@ -1,22 +1,64 @@
 {% extends "homePage.html" %}
 {% block content %}
+    <style>
+        .additional-images-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px; /* Adjust the gap between additional images */
+            margin-top: 20px;
+        }
+
+        .additional-image {
+            width: 100px; /* Adjust the width of additional images */
+            height: auto;
+            border: 2px solid #ddd; /* Border color */
+            border-radius: 8px; /* Border radius for a rounded look */
+            cursor: pointer;
+        }
+
+        .additional-image:hover {
+            border-color: #555; /* Change border color on hover */
+        }
+    </style>
+
     <div class='products view' style="margin-left: 150px; margin-right: 150px; margin-top: 50px; border: 1.5px solid black; padding: 20px; border-radius: 10px;">
         <div style="float: left; width: 60%;">
             <h2>{{ product.title }}</h2>
             <p>Description: {{ product.description }}</p>
             <h1>Price: {{ product.price }}/day</h1>
             <p>Provided by: {{ product.user.first_name }}</p>
-            <!-- Add more details as needed -->
         </div>
         <div style="float: right; width: 40%;">
-            <img class="card-img-top" style="width: 80%; max-width: 200px; height: auto; object-fit: cover;" 
-                src="{{ product.image.url|default:'static("image/placeholder_image.jpg")' }}" alt="Product Image">
+            <!-- Main Product Image with Zoom.js -->
+            <img id="main-image" class="main-image zoom" style="width: 100%; max-width: 400px; height: auto; object-fit: cover;" 
+                src="{{ product.image.url }}" alt="Main Product Image">
         </div>
         <div style="clear: both;"></div>
-        <div style="margin-top: 20px;">
-            {% for image in product.multipleimage_set.all %}
-                <img class="additional-image" src="{{ image.image.url }}" alt="Product Image">
-            {% endfor %}
+        <div class="additional-images-container">
+            {% if product.multipleimage_set.all %}
+                {% for image in product.multipleimage_set.all %}
+                    <!-- Additional Image with Zoom.js -->
+                    <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
+                {% endfor %}
+            {% else %}
+                <p>No additional images available.</p>
+            {% endif %}
         </div>  
     </div>
+
+    <script>
+        
+        function swapImages(clickedImage) {
+            // Swap the src attributes between the main image and the clicked additional image
+            var mainImage = document.getElementById('main-image');
+            var tempSrc = mainImage.src;
+            mainImage.src = clickedImage.src;
+            clickedImage.src = tempSrc;
+        }
+    </script>
+    <!-- Zoom.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zoom/2.3.2/zoom.min.js"></script>
+
 {% endblock %}
