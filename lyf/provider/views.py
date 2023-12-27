@@ -7,6 +7,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product
 from django.http import HttpResponseBadRequest
 from adminPanel.models import multipleImage
+from django.core.mail import send_mail
+from user.models import CustomUser
+from django import http
+
 
 @login_required(login_url='user:performlogin')
 def providerPanel(request):
@@ -52,6 +56,14 @@ def providerAddProduct(request):
             user.is_staff = True
             user.save()
         
+        # Send email to admin
+        subject = 'New Products added'
+        message = f'New product added by {user.first_name}. Please login to activate http://127.0.0.1:8000/performlogin '
+        from_email = 'o23211671@gmail.com'  
+        email = 'lyfrentals04@gmail.com'
+        send_mail(subject, message, from_email, [email]) 
+
+        
         return redirect('provider:providerPanel')  # Redirect to the provider panel after adding a product
 
     # Fetch categories from the database
@@ -87,7 +99,7 @@ def providerUpdateProducts(request, id):
             product.image = image
 
         product.save()
-
+        
         return redirect('provider:providerPanel')  # Redirect to the provider panel or any other desired page
 
     return render(request, 'provider/providerUpdateProducts.html', {'product': product})

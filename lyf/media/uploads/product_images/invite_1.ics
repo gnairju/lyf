@@ -1,0 +1,206 @@
+BEGIN:VCALENDAR
+PRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN
+VERSION:2.0
+METHOD:REQUEST
+X-MS-OLK-FORCEINSPECTOROPEN:TRUE
+BEGIN:VTIMEZONE
+TZID:India Standard Time
+BEGIN:STANDARD
+DTSTART:16010101T000000
+TZOFFSETFROM:+0530
+TZOFFSETTO:+0530
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+ATTENDEE;CN=gnairju@gmail.com;RSVP=TRUE:mailto:gnairju@gmail.com
+ATTENDEE;CN="Baiju Ambadan";RSVP=TRUE:mailto:baiju@ambadan.com
+ATTENDEE;CN="Arun Suresh, Brahmanet IT Solutions";RSVP=TRUE:mailto:arun.s@b
+	rahmanet.com
+ATTENDEE;CN=vipin.babu@brahmanet.com;RSVP=TRUE:mailto:vipin.babu@brahmanet.
+	com
+CLASS:PUBLIC
+CREATED:20231026T053654Z
+DESCRIPTION:Dear Ganga\,\n\n \n\nFurther to our discussion\, we would like 
+	to invite you for a Google Meet interview for the position of Programmer T
+	rainee.\n\n \n\nDuring the interview\, you will have the chance to learn m
+	ore about the role and to develop a deeper understanding of our company’
+	s objectives.\n\n \n\n \n\nGoogle Meet Interview will be held at 12.30 pm\
+	, Friday (27/Oct/2023).\n\n \n\nLink : https://meet.google.com/fzq-otyj-ry
+	k\n\n \n\n \n\nKindly\, acknowledge receipt of this email.\n\n \n\n \n\n \
+	n\nThanks & Regards\,\n\n \n\n\n\nRASITHA P.B MBA\n\nHR and Projects Manag
+	er\n\n	\n\n\n	https://www.brahmanet.com <https://brahmanet.com/> \n\nMobil
+	e : +91 999 5755222 <tel:+919995755222> \n\nOffice  : +91 484 2983998 <tel
+	:+914842983998> \n\n	\n rasitha.pb@brahmanet.com <mailto:rasitha.pb@brahma
+	net.com> \n\n linkedin.com/in/rasitha-25pb <https://www.linkedin.com/in/ra
+	sitha-25pb> \n\n	27/1001\, Plot No. 193\, Mavelipuram\n\n	Kakkanad\,Kochi-
+	682030\,Kerala\,INDIA.\n\n				\niOS Apps | Android Apps | Web Based Apps |
+	 Business Apps | E-Commerce Portals | ERP Solutions | Custom - Software | 
+	Websites & Portals | SEO & Digital Marketing | IT Project Outsourcing | Se
+	rver Admin | IT Consulting\n\nDisclaimer : The information in this message
+	 is confidential and may be legally privileged. It is intended solely for 
+	the addressee. Access to this message by another person is not permitted. 
+	If you are not the intended recipient\, any disclosure\, copying\, distrib
+	ution or any action taken or omitted to be taken in reliance on it\, is pr
+	ohibited and may be unlawful. If you have received this e-mail by mistake\
+	, please e-mail the sender by replying to this message\, and deleting the 
+	original and any printout thereof.\n\n	\n\n \n\n
+DTEND;TZID="India Standard Time":20231027T130000
+DTSTAMP:20231026T053654Z
+DTSTART;TZID="India Standard Time":20231027T123000
+LAST-MODIFIED:20231026T053654Z
+ORGANIZER;CN="Rasitha P. B. , Manager - HR and Projects, Brahmanet IT Solut
+	ions Pvt. Ltd. ":mailto:hr@brahmanet.com
+PRIORITY:5
+SEQUENCE:0
+SUMMARY;LANGUAGE=en-us:Invitation For Interview - Programmer Trainee at Bra
+	hmanet IT Solutions Pvt. Ltd.
+TRANSP:OPAQUE
+UID:040000008200E00074C5B7101A82E00800000000F0F96C87FC07DA01000000000000000
+	01000000087A0183DD9940D4EA06D426B95EE6F46
+X-ALT-DESC;FMTTYPE=text/html:<html xmlns:v="urn:schemas-microsoft-com:vml" 
+	xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-mic
+	rosoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/
+	12/omml" xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv=Co
+	ntent-Type content="text/html\; charset=us-ascii"><meta name=Generator con
+	tent="Microsoft Word 15 (filtered medium)"><!--[if !mso]><style>v\\:* {beh
+	avior:url(#default#VML)\;}\no\\:* {behavior:url(#default#VML)\;}\nw\\:* {b
+	ehavior:url(#default#VML)\;}\n.shape {behavior:url(#default#VML)\;}\n</sty
+	le><![endif]--><style><!--\n/* Font Definitions */\n@font-face\n	{font-fam
+	ily:"Cambria Math"\;\n	panose-1:2 4 5 3 5 4 6 3 2 4\;}\n@font-face\n	{font
+	-family:Calibri\;\n	panose-1:2 15 5 2 2 2 4 3 2 4\;}\n@font-face\n	{font-f
+	amily:Verdana\;\n	panose-1:2 11 6 4 3 5 4 4 2 4\;}\n/* Style Definitions *
+	/\np.MsoNormal\, li.MsoNormal\, div.MsoNormal\n	{margin:0in\;\n	font-size:
+	11.0pt\;\n	font-family:"Calibri"\,sans-serif\;}\na:link\, span.MsoHyperlin
+	k\n	{mso-style-priority:99\;\n	color:#0563C1\;\n	text-decoration:underline
+	\;}\nspan.EmailStyle18\n	{mso-style-type:personal-compose\;\n	font-family:
+	"Calibri"\,sans-serif\;\n	color:windowtext\;}\n.MsoChpDefault\n	{mso-style
+	-type:export-only\;\n	font-size:10.0pt\;}\n@page WordSection1\n	{size:8.5i
+	n 11.0in\;\n	margin:1.0in 1.0in 1.0in 1.0in\;}\ndiv.WordSection1\n	{page:W
+	ordSection1\;}\n--></style><!--[if gte mso 9]><xml>\n<o:shapedefaults v:ex
+	t="edit" spidmax="1026" />\n</xml><![endif]--><!--[if gte mso 9]><xml>\n<o
+	:shapelayout v:ext="edit">\n<o:idmap v:ext="edit" data="1" />\n</o:shapela
+	yout></xml><![endif]--></head><body lang=EN-US link="#0563C1" vlink="#954F
+	72" style='word-wrap:break-word'><div class=WordSection1><p class=MsoNorma
+	l>Dear Ganga\,<o:p></o:p></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p><p c
+	lass=MsoNormal>Further to our discussion\, we would like to invite you for
+	 a Google Meet interview for the position of Programmer Trainee.<o:p></o:p
+	></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p><p class=MsoNormal>During th
+	e interview\, you will have the chance to learn more about the role and to
+	 develop a deeper understanding of our company&#8217\;s objectives.<o:p></
+	o:p></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p><p class=MsoNormal><o:p>&
+	nbsp\;</o:p></p><p class=MsoNormal><span style='background:yellow\;mso-hig
+	hlight:yellow'>Google Meet Interview will be held at 12.30 pm\, Friday (27
+	/Oct/2023).</span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p>
+	<p class=MsoNormal><span style='background:yellow\;mso-highlight:yellow'>L
+	ink : <a href="https://meet.google.com/fzq-otyj-ryk">https://meet.google.c
+	om/fzq-otyj-ryk</a></span><o:p></o:p></p><p class=MsoNormal><o:p>&nbsp\;</
+	o:p></p><p class=MsoNormal><o:p>&nbsp\;</o:p></p><p class=MsoNormal><span 
+	style='font-size:12.0pt\;background:yellow\;mso-highlight:yellow'>Kindly\,
+	 acknowledge receipt of this email.</span><span style='font-size:12.0pt'><
+	o:p></o:p></span></p><p class=MsoNormal><span style='font-size:12.0pt'><o:
+	p>&nbsp\;</o:p></span></p><p class=MsoNormal><span style='font-size:12.0pt
+	'><o:p>&nbsp\;</o:p></span></p><p class=MsoNormal><span style='font-size:1
+	2.0pt'><o:p>&nbsp\;</o:p></span></p><p class=MsoNormal><span style='font-s
+	ize:12.0pt'>Thanks &amp\; Regards\,<o:p></o:p></span></p><p class=MsoNorma
+	l><span style='font-size:12.0pt'><o:p>&nbsp\;</o:p></span></p><table class
+	=MsoNormalTable border=0 cellpadding=0><tr><td style='padding:.75pt .75pt 
+	.75pt .75pt'><table class=MsoNormalTable border=0 cellspacing=0 cellpaddin
+	g=0 align=left width=650 style='width:487.5pt\;border-collapse:collapse'><
+	tr style='height:7.5pt'><td width=128 rowspan=3 style='width:96.0pt\;paddi
+	ng:0in 0in 0in 0in\;height:7.5pt'><p class=MsoNormal><span style='font-fam
+	ily:"Verdana"\,sans-serif'><img border=0 width=125 height=149 style='width
+	:1.302in\;height:1.552in' id="Picture_x0020_1" src="cid:image001.png@01DA0
+	7FC.813C32D0"></span><span style='font-family:"Verdana"\,sans-serif'><o:p>
+	</o:p></span></p></td><td style='padding:0in 0in 0in 0in\;height:7.5pt'><t
+	able class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=235 s
+	tyle='width:176.25pt'><tr><td style='padding:6.75pt 0in 3.75pt 0in'><p cla
+	ss=MsoNormal style='mso-line-height-alt:7.0pt'><span style='font-size:11.5
+	pt\;color:black'>RASITHA P.B</span>&nbsp\;<span style='font-size:7.0pt'>MB
+	A</span><o:p></o:p></p></td></tr><tr><td style='padding:0in 0in 0in 0in'><
+	p class=MsoNormal style='margin-bottom:12.0pt\;mso-line-height-alt:7.0pt'>
+	<span style='font-size:9.0pt\;color:black'>HR and Projects Manager</span><
+	o:p></o:p></p></td></tr></table></td><td rowspan=2 style='padding:0in 0in 
+	0in 0in\;height:7.5pt'><table class=MsoNormalTable border=0 cellpadding=0>
+	<tr><td style='padding:.75pt .75pt .75pt .75pt'></td></tr><tr><td colspan=
+	2 style='padding:.75pt .75pt .75pt .75pt'><p class=MsoNormal><img border=0
+	 width=237 height=70 style='width:2.4687in\;height:.7291in' id="Picture_x0
+	020_2" src="cid:image002.jpg@01DA07FC.813C32D0"><o:p></o:p></p></td></tr><
+	tr><td width=55 style='width:41.25pt\;padding:.75pt .75pt .75pt .75pt'></t
+	d><td style='padding:.75pt .75pt .75pt .75pt'><p class=MsoNormal><a href="
+	https://brahmanet.com/"><span style='color:#2C64B1'>https://www.brahmanet.
+	com</span></a><o:p></o:p></p></td></tr></table></td></tr><tr style='height
+	:7.5pt'><td style='padding:0in 0in 0in 0in\;height:7.5pt'><table class=Mso
+	NormalTable border=0 cellspacing=0 cellpadding=0 style='border-collapse:co
+	llapse'><tr><td style='padding:0in 0in 0in 0in'><p class=MsoNormal style='
+	line-height:12.0pt'><a href="tel:+919995755222"><span style='font-size:10.
+	0pt\;color:#090808'>Mobile : +91 999 5755222</span></a><o:p></o:p></p></td
+	></tr><tr><td style='padding:0in 0in 0in 0in'><p class=MsoNormal style='li
+	ne-height:12.0pt'><a href="tel:+914842983998"><span style='font-size:10.0p
+	t\;color:#090808'>Office &nbsp\;: +91 484 2983998</span></a><o:p></o:p></p
+	></td></tr><tr><td style='padding:0in 0in 0in 0in'></td></tr></table></td>
+	</tr><tr style='height:7.5pt'><td style='padding:7.5pt 0in 0in 0in\;height
+	:7.5pt'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 w
+	idth=235 style='width:176.25pt\;border-collapse:collapse'><tr><td style='p
+	adding:0in 0in 0in 0in'><p class=MsoNormal style='line-height:12.0pt'><a h
+	ref="mailto:rasitha.pb@brahmanet.com"><span style='color:blue\;text-decora
+	tion:none'><img border=0 width=15 height=10 style='width:.1562in\;height:.
+	1041in' id="Picture_x0020_3" src="cid:image003.png@01DA07FC.813C32D0"></sp
+	an><span style='font-size:10.0pt\;color:#2C64B1'>&nbsp\;rasitha.pb@brahman
+	et.com</span></a><o:p></o:p></p></td></tr><tr><td style='padding:0in 0in 0
+	in 0in'><p class=MsoNormal style='line-height:12.0pt'><a href="https://www
+	.linkedin.com/in/rasitha-25pb"><span style='color:blue\;text-decoration:no
+	ne'><img border=0 width=13 height=13 style='width:.1354in\;height:.1354in'
+	 id="Picture_x0020_4" src="cid:image004.png@01DA07FC.813C32D0"></span><spa
+	n style='font-size:9.5pt\;color:#2C64B1'>&nbsp\;linkedin.com/in/rasitha-25
+	pb</span></a><o:p></o:p></p></td></tr></table></td><td colspan=2 style='pa
+	dding:7.5pt 0in 0in 0in\;height:7.5pt'><table class=MsoNormalTable border=
+	0 cellspacing=0 cellpadding=0 width=270 style='width:202.5pt\;border-colla
+	pse:collapse'><tr><td width=55 style='width:41.25pt\;padding:0in 0in 0in 0
+	in'></td><td style='padding:0in 0in 0in 0in'><p class=MsoNormal style='lin
+	e-height:12.0pt'><span style='font-size:9.0pt\;color:black'>27/1001\, Plot
+	 No. 193\, Mavelipuram</span><o:p></o:p></p></td></tr><tr><td width=55 sty
+	le='width:41.25pt\;padding:0in 0in 0in 0in'></td><td style='padding:0in 0i
+	n 0in 0in'><p class=MsoNormal style='line-height:12.0pt'><span style='font
+	-size:9.0pt\;color:black'>Kakkanad\,Kochi-682030\,Kerala\,INDIA.</span><o:
+	p></o:p></p></td></tr></table></td></tr><tr style='height:7.5pt'><td style
+	='padding:0in 0in 0in 0in\;height:7.5pt'></td><td style='padding:0in 0in 0
+	in 0in\;height:7.5pt'></td><td style='padding:0in 0in 0in 0in\;height:7.5p
+	t'></td><td style='padding:0in 0in 0in 0in\;height:7.5pt'></td></tr><tr st
+	yle='height:7.5pt'><td colspan=4 style='border-top:solid windowtext 1.0pt\
+	;border-left:none\;border-bottom:solid windowtext 1.0pt\;border-right:none
+	\;padding:7.5pt 7.5pt 7.5pt 7.5pt\;height:7.5pt'><p class=MsoNormal align=
+	center style='margin-top:3.75pt\;text-align:center'><span style='font-size
+	:8.0pt\;font-family:"Verdana"\,sans-serif\;color:black'>iOS Apps | Android
+	 Apps | Web Based Apps | Business Apps | E-Commerce Portals | ERP Solution
+	s | Custom - Software | Websites &amp\; Portals | SEO &amp\; Digital Marke
+	ting | IT Project Outsourcing | Server Admin | IT Consulting</span><span s
+	tyle='font-family:"Verdana"\,sans-serif'><o:p></o:p></span></p></td></tr><
+	tr style='height:7.5pt'><td colspan=4 style='padding:7.5pt 0in 0in 0in\;he
+	ight:7.5pt'><p class=MsoNormal style='text-align:justify'><b><span style='
+	font-size:7.0pt\;font-family:"Verdana"\,sans-serif\;color:black'>Disclaime
+	r :&nbsp\;</span></b><span style='font-size:7.0pt\;font-family:"Verdana"\,
+	sans-serif\;color:black'>The information in this message is confidential a
+	nd may be legally privileged. It is intended solely for the addressee. Acc
+	ess to this message by another person is not permitted. If you are not the
+	 intended recipient\, any disclosure\, copying\, distribution or any actio
+	n taken or omitted to be taken in reliance on it\, is prohibited and may b
+	e unlawful. If you have received this e-mail by mistake\, please e-mail th
+	e sender by replying to this message\, and deleting the original and any p
+	rintout thereof.</span><span style='font-family:"Verdana"\,sans-serif'><o:
+	p></o:p></span></p></td></tr></table></td><td width=650 style='width:487.5
+	pt\;padding:.75pt .75pt .75pt .75pt'></td></tr></table><p class=MsoNormal>
+	<o:p>&nbsp\;</o:p></p></div></body></html>
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MS-OLK-AUTOSTARTCHECK:FALSE
+X-MS-OLK-CONFTYPE:0
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+

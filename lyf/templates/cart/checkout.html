@@ -1,0 +1,48 @@
+{% extends "homePage.html" %}
+{% block content %}
+
+    {% if user_cart %}
+    <div style="margin-top: 20px; margin-left: 100px; margin-right: 100px; border: 2px solid rgb(206, 201, 201); padding: 20px 20px 20px 20px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Days</th>
+                    <th>Price Details</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in user_cart %}
+                    <tr>
+                        <td>{{ item.product }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.product.price }}</td>
+                        <td>{{ item.days_needed}}</td>
+                        <td>₹{{item.product.price}} x {{ item.quantity}} x {{item.days_needed}} days</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>Total:</td>
+                    <td>₹ {{ total_price}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- <a href="{% url 'cart:checkout' %}" class="btn btn-primary" style="margin-left: 900px;">Checkout</a> -->
+    {% else %}
+        <p>Your shopping cart is empty.</p>
+    {% endif %}
+
+    </div>
+    
+    <div class="payment">
+        
+    </div>
+
+        
+{% endblock %}

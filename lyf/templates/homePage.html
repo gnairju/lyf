@@ -21,7 +21,7 @@
         </div>
         <div class="nav-right">
             <ul>
-                <li><a href="#"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
+                <li><a href="{% url 'cart:cartPage' %}"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
                 <li>
                     {% if user.is_authenticated %}
                         <a href="{% url 'user:perform_logout' %}">
@@ -54,7 +54,7 @@
                             <p class="card-text">{{ product.description }}</p>
 
                             <!-- Add to Cart Button -->
-                            <form method="post">
+                            <form method="post" action="{% url 'cart:addToCart' product.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
                                 <button type="submit" class="btn ">Add to Cart</button>

@@ -26,7 +26,8 @@ urlpatterns = [
     path('',include('products.urls',namespace='products')),
     path('',include('user.urls',namespace='user')),
     path('',include('adminPanel.urls',namespace='adminPanel')),
-    path('',include('provider.urls',namespace='provider'))
+    path('',include('provider.urls',namespace='provider')),
+    path('',include('cart.urls',namespace='cart'))
 ]
 
 if settings.DEBUG:
