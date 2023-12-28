@@ -56,13 +56,6 @@ def providerAddProduct(request):
             user.is_staff = True
             user.save()
         
-        # Send email to admin
-        subject = 'New Products added'
-        message = f'New product added by {user.first_name}. Please login to activate http://127.0.0.1:8000/performlogin '
-        from_email = 'o23211671@gmail.com'  
-        email = 'lyfrentals04@gmail.com'
-        send_mail(subject, message, from_email, [email]) 
-
         
         return redirect('provider:providerPanel')  # Redirect to the provider panel after adding a product
 

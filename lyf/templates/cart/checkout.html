@@ -2,69 +2,45 @@
 {% load static %}
 {% block content %}
     
-    {% if user_cart %}
-    <div style="margin-top: 20px; margin-left: 100px; margin-right: 100px; border: 2px solid rgb(206, 201, 201); padding: 20px 20px 20px 20px;">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Days</th>
-                    <th>Price Details</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in user_cart %}
-                    <tr>
-                        <td>{{ item.product }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>₹{{ item.product.price }}</td>
-                        <td>{{ item.days_needed}}</td>
-                        <td>₹ {{item.product.price}} x {{ item.quantity}} x {{item.days_needed}} days</td>
-                    </tr>
+    <div style="margin-top: 20px; margin-left: 100px; margin-right: 100px; padding: 20px 20px 20px 20px;">
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    {{ message }}
                 {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3"></td>
-                    <td>Total:</td>
-                    <td>₹ {{ total_price}}</td>
-                </tr>
-            </tfoot>
-        </table>
-        <!-- <a href="{% url 'cart:checkout' %}" class="btn btn-primary" style="margin-left: 900px;">Checkout</a> -->
-    {% else %}
-        <p>Your shopping cart is empty.</p>
-    {% endif %}
-
-    </div><br><br>
+            </div>
+        {% endif %}
     <div class="container mr-75">
         <div><h2>Shipping Address</h2></div>
-        <table>
-            <tr>
+        
+        <form action="" method="post">
+            {% if address%}
+            <div class="d-flex">
                 {% for ad in address|slice:"-2:" %}
-                    <td>
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ad.addressType}}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ad.firstname}}</h6>
-                                <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-                                <!-- <a href="{% url 'updateUserAddress' ad.id}">Update</a> -->
-                                <a href="{% url 'cart:deleteUserAddress' ad.id %}" class="btn btn-danger">Delete</a>
-                            </div>
-                        </div>  
-                    </td>
+                    <div class="card  ml-3 mr-3 mb-2" style="width: 18rem;">
+                        <div class="card-body">
+                            <label class="d-flex justify-content-end mb-2">
+                                <input type="radio" name="selected_address" value="{{ ad.id }}">
+                            </label>
+                            <h5 class="card-title">{{ad.addressType}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ad.firstname}}</h6>
+                            <a href="{% url 'cart:deleteUserAddress' ad.id %}" class="btn btn-block">Delete</a>
+                        </div>
+                    </div>
                 {% endfor %}
-                <td>
-                    <form class="form-inline">
+            {% endif %}
+                <div class="mr-2 mb-2">
+                    <div class="mr-2 mb-2">
                         <a href="{% url 'cart:addAddress' %}"><img src="{% static 'image/add.png' %}" alt="" width="100" height="100"></a>
-                    </form>
-                </td>
-            </tr>
-        </table>
+                    </div>                    
+                </div>
+            </div>
+            {% if address %}
+                <div class="d-flex justify-content-end" style="margin-right: 70px;">
+                    <button type="submit" class="btn btn-secondary">Confirm Rental</button>
+                </div>
+            {% endif%}
+        </form>        
     </div>
-    
     
 {% endblock %}

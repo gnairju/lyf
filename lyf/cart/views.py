@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from user.models import CustomUser,userAddress
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import never_cache
+from django.shortcuts import get_object_or_404, redirect
+
 
 def addToCart(request, id):
     if request.method == 'POST':
@@ -47,15 +49,9 @@ def removeItemCart(request,id):
 def cartPage(request):
     user = CustomUser.objects.get(id=request.user.id)  # Assuming user.id is the primary key
     cart_items = cart.objects.filter(user=user)
-    print(cart_items)
-    return render(request, 'cart/cart.html', {'cart_items': cart_items})
-
-
-@never_cache
-def checkout(request):
-    user_cart = cart.objects.filter(user=request.user)
     total_price = 0
-    for cart_item in user_cart:
+
+    for cart_item in cart_items:
         quantity = float(request.POST.get(f'quantity_{cart_item.id}', 0))
         days_required = float(request.POST.get(f'days_required_{cart_item.id}', 0))
         price = quantity * days_required * cart_item.product.price
@@ -68,11 +64,16 @@ def checkout(request):
     context={
             'price':price,
             'total_price':total_price,
-            'user_cart':user_cart,
+            'cart_items':cart_items,
             'address':address
     }
-    return render(request,'cart\checkout.html',context)
+    return render(request, 'cart/cart.html', context)
 
+
+
+def checkout(request):
+    address=userAddress.objects.filter(user=request.user)
+    return render(request,'cart\checkout.html',{'address':address})
 
 
 @never_cache
@@ -104,8 +105,15 @@ def addAddress(request):
     return render(request,'cart/addAddress.html')
 
 
+
+
 @never_cache
-def deleteUserAddress(request,id):
-    add = userAddress.objects.get(id=id)
+def deleteUserAddress(request, id):
+    # Use get_object_or_404 to retrieve the object or return a 404 response
+    add = get_object_or_404(userAddress, id=id)
+
+    # Delete the object
     add.delete()
+
+    # Redirect to the checkout page
     return redirect('cart:checkout')

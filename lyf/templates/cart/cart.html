@@ -1,6 +1,7 @@
 {% extends 'homePage.html' %}
 {% block content %}
   <h4 class="card-title mb-4 " style="margin-left: 110px;">Your Shopping Cart</h4>
+  {% if cart_items %}
   <form action="{% url 'cart:checkout' %}" method="post">
     {% csrf_token %}
     <ul class="list-group" style="margin-right: 70px; margin-left: 70px;">
@@ -22,10 +23,12 @@
           </div>
         </li><br>
       {% endfor %}
+      <h2 class="d-flex justify-content-end" style="margin-right: 186px;">Total Rental Price ₹{{ total_price }}</h2>
     </ul>
     <div class="d-flex justify-content-end" style="margin-right: 70px;">
-        <button type="submit" class="btn btn-primary btn-block" >Continue</button>
+        <a href="{%url 'cart:checkout' %}"><button type="submit" class="btn btn-primary btn-block" >Proceed</button></a>
     </div>
     
   </form>
+  {% endif %}
 {% endblock %}
