@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import cart
 from adminPanel.models import Product
 from django.contrib.auth.decorators import login_required
-from user.models import CustomUser
+from user.models import CustomUser,userAddress
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.cache import never_cache
 
 def addToCart(request, id):
     if request.method == 'POST':
@@ -49,30 +51,61 @@ def cartPage(request):
     return render(request, 'cart/cart.html', {'cart_items': cart_items})
 
 
+@never_cache
 def checkout(request):
-    if request.method == 'POST':
-        # Retrieve the user's cart
-        user_cart = cart.objects.filter(user=request.user)
+    user_cart = cart.objects.filter(user=request.user)
+    total_price = 0
+    for cart_item in user_cart:
+        quantity = float(request.POST.get(f'quantity_{cart_item.id}', 0))
+        days_required = float(request.POST.get(f'days_required_{cart_item.id}', 0))
+        price = quantity * days_required * cart_item.product.price
+        total_price += price
+    
 
-        # Process the form data and calculate the total price
-        total_price = 0
-        for cart_item in user_cart:
-            quantity = float(request.POST.get(f'quantity_{cart_item.id}', 0))
-            days_required = float(request.POST.get(f'days_required_{cart_item.id}', 0))
-            price = quantity * days_required * cart_item.product.price
-            total_price += price
-        print(price)
-        print(total_price)
-        # You can do something with the total_price, e.g., save it in the session
-        request.session['total_price'] = total_price
-        # Redirect to the next page
-        context={
+    request.session['total_price'] = total_price
+
+    address=userAddress.objects.filter(user=request.user)
+    context={
             'price':price,
             'total_price':total_price,
-            'user_cart':user_cart
-        }
-        return render(request,'cart\checkout.html',context)
+            'user_cart':user_cart,
+            'address':address
+    }
+    return render(request,'cart\checkout.html',context)
 
-    # Render the checkout page if it's a GET request
-    cart_items = cart.objects.filter(user=request.user)
-    return render(request, 'cart\cart.html', {'cart_items':cart_items})
+
+
+@never_cache
+def addAddress(request):
+    if request.method=='POST':
+        addressType = request.POST.get('addressType')
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        address = request.POST.get('address')
+        street = request.POST.get('street')
+        phone = request.POST.get('phone')
+        pincode = request.POST.get('pincode')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+
+        userAddress.objects.create(
+            addressType=addressType,
+            firstname=firstname,
+            lastname=lastname,
+            address=address,
+            street=street,
+            phone=phone,
+            pincode=pincode,
+            city=city,
+            state=state,
+            user=request.user  # Assuming you have a user associated with the address
+        )
+        return redirect('cart:checkout')
+    return render(request,'cart/addAddress.html')
+
+
+@never_cache
+def deleteUserAddress(request,id):
+    add = userAddress.objects.get(id=id)
+    add.delete()
+    return redirect('cart:checkout')

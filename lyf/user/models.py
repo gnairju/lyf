@@ -60,3 +60,14 @@ CustomUser._meta.get_field('groups').remote_field.related_name = 'customuser_gro
 CustomUser._meta.get_field('user_permissions').remote_field.related_name = 'customuser_permissions'
 
 
+class userAddress(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    addressType = models.CharField(max_length=10)
+    firstname = models.CharField(max_length=30)
+    lastname = models.CharField(max_length=30)
+    address = models.CharField(max_length=50,null=False)
+    street = models.CharField(max_length=50,null=False)
+    phone = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
+    state= models.CharField(max_length=50,null=False)
+    pincode = models.CharField(max_length=10,null=False)
