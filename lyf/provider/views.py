@@ -10,6 +10,9 @@ from adminPanel.models import multipleImage
 from django.core.mail import send_mail
 from user.models import CustomUser
 from django import http
+from order.models import order
+from adminPanel.models import Product
+from user.models import CustomUser
 
 
 @login_required(login_url='user:performlogin')
@@ -96,3 +99,19 @@ def providerUpdateProducts(request, id):
         return redirect('provider:providerPanel')  # Redirect to the provider panel or any other desired page
 
     return render(request, 'provider/providerUpdateProducts.html', {'product': product})
+
+
+
+def providerApproval(request):
+    ord = order.objects.filter(product__user=request.user)
+    #total_price = ord.product.price * ord.quantity * ord.days_needed
+    for i in ord:
+        pprice=i.product.price
+        q = i.quantity
+        d = i.days_needed
+        total_price = pprice*d*q
+    context={
+        'total_price':total_price,
+        'ord':ord
+    }
+    return render(request, 'provider/providerApproval.html', context)

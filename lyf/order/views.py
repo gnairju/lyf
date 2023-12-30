@@ -1,20 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import order  # Assuming your Order model is in the same directory as this views file
 from cart.models import cart  # Import the Cart model
+from user.models import userAddress
 
-def confirmRental(request, id):
+def confirmRental(request):
     print('entered')
     if request.method == 'POST':
         address = request.POST.get('selected_address')
-        cart_instance = cart.objects.get(id=id)
+        add = userAddress.objects.get(id=address)
+        print(add)
+        user=request.user
+        cart_instance = cart.objects.filter(user=user)
+        print(cart_instance)
 
-        ord=order.objects.create(
-            user=request.user,
-            address=address,
-            cart=cart_instance,
-        )
+        for i in cart_instance:
+            ord=order.objects.create(
+                user=request.user,
+                address=add,
+                product = i.product,
+                quantity=i.quantity,
+                days_needed = i.days_needed,
+            )
+        cart_instance.delete()
         print('Success')
-
+        
     # Add the logic for rendering a confirmation page or redirecting to another view
 
-    return render(request, 'test.html')
+        return redirect('home:homePage')

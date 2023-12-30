@@ -19,3 +19,5 @@ def send_new_product_email(sender, instance, created, **kwargs):
         email = 'lyfrentals04@gmail.com'
 
         send_mail(subject, message, from_email, [email])
+
+        

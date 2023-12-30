@@ -1,7 +1,79 @@
 {% extends "homePage.html" %}
 
 {% block content %}
-<div class="container mt-4 border p-4">
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #sidebarMenu {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #fff;
+        border-right: 1px solid #000000;
+        padding-top: 56px;
+        margin-top: 50px;
+    }
+
+    .list-group-item {
+        border: none;
+        cursor: pointer;
+    }
+
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .active {
+        background-color: #9cc4f0;
+        color: #fff;
+    }
+
+    #content {
+        margin-left: 250px; /* Adjust this value to control the space on the left */
+        padding-top: 56px;
+    }
+
+    .container {
+        margin: 4em; /* Add margin to the container for space */
+    }
+
+    #sidebarMenu {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #fff;
+        border-right: 1px solid #000000;
+        border-top: 4px solid #7dbcff;
+        box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+        padding-top: 56px;
+        margin-top: 50px;
+    }
+</style>
+
+<div id="sidebarMenu" class="sidebar bg-white">
+    <div class="position-sticky">
+        <div class="list-group list-group-flush">
+            <a href="{% url 'provider:providerPanel' %}" class="list-group-item list-group-item-action py-2 ripple active">
+                <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+            </a>
+            <a href="{% url 'provider:providerApproval' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-lock fa-fw me-3"></i><span>Rental Confirmation</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-4" style="margin-left: 270px; max-width: 1050px;">
     <h1 class="text-2xl">My Products</h1>
     <a href="{% url 'provider:providerAddProducts' %}" class="btn btn-primary mt-2">Add Products</a>
     <h2 class="mt-4 mb-2 text-xl">My Products</h2>
@@ -14,7 +86,7 @@
                         <div class="list-group-item">
                             <h5>{{ product.title }}</h5>
                             <p>{{ product.description }}</p>
-                            <p>Price: ${{ product.price }}</p>
+                            <p>Price: ₹{{ product.price }}</p>
                             
                             {% if product.image %}
                                 <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-thumbnail float-right" style="max-width: 100px; max-height: 100px;">

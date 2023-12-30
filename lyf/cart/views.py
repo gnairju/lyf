@@ -12,6 +12,8 @@ def addToCart(request, id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             product = get_object_or_404(Product, id=id)
+            # quantity = request.POST.get('quantity')
+            # days_needed = request.POST.get('days_needed')
 
             # Fetch all cart items for the user
             cart_items = cart.objects.filter(user=request.user)
@@ -20,23 +22,37 @@ def addToCart(request, id):
             cart_item, created = cart.objects.update_or_create(
                 user=request.user,
                 product=product,
-                defaults={'quantity': 1}  # Set the default quantity if the item is newly created
+                defaults={'quantity': 1, 'days_needed': 3}
             )
 
             # Update the quantity if the item already exists in the cart
             if not created:
                 cart_item.quantity += 1
+                cart_item.days_needed = 3
                 cart_item.save()
-
+            
             # Fetch all cart items for the user after the update
             cart_items = cart.objects.filter(user=request.user)
-
-
             return render(request, 'cart/cart.html', {'cart_items': cart_items})
         else:
             return redirect('user:performlogin')
         
 
+
+def updateCart(request):
+    if request.method == 'POST':
+        for cart_item in cart.objects.filter(user=request.user):
+            quantity_key = f'quantity_{cart_item.id}'
+            days_needed_key = f'days_needed_{cart_item.id}'
+            
+            quantity = request.POST.get(quantity_key)
+            days_needed = request.POST.get(days_needed_key)
+
+            cart_item.quantity = quantity
+            cart_item.days_needed = days_needed
+            cart_item.save()
+
+    return redirect('cart:cartPage')
 
 
 def removeItemCart(request,id):
@@ -54,15 +70,13 @@ def cartPage(request):
     for cart_item in cart_items:
         quantity = float(request.POST.get(f'quantity_{cart_item.id}', 0))
         days_required = float(request.POST.get(f'days_required_{cart_item.id}', 0))
-        price = quantity * days_required * cart_item.product.price
-        total_price += price
+        total_price += quantity * days_required * cart_item.product.price
     
 
     request.session['total_price'] = total_price
 
     address=userAddress.objects.filter(user=request.user)
     context={
-            'price':price,
             'total_price':total_price,
             'cart_items':cart_items,
             'address':address
@@ -73,7 +87,7 @@ def cartPage(request):
 
 def checkout(request):
     address=userAddress.objects.filter(user=request.user)
-    return render(request,'cart\checkout.html',{'address':address})
+    return render(request,'cart/checkout.html',{'address':address})
 
 
 @never_cache
@@ -111,9 +125,5 @@ def addAddress(request):
 def deleteUserAddress(request, id):
     # Use get_object_or_404 to retrieve the object or return a 404 response
     add = get_object_or_404(userAddress, id=id)
-
-    # Delete the object
     add.delete()
-
-    # Redirect to the checkout page
     return redirect('cart:checkout')

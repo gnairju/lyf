@@ -9,9 +9,16 @@
     <title>lyf Rentals</title>
 </head>
 <body>
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
     <nav>
         <div class="nav-left">
-            <a href="#"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo"></a>
+            <a href="{% url 'home:homePage' %}"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo"></a>
             <ul>
                 <li><a href="{% url 'home:homePage' %}">Home</a></li>
                 <li><a href="">Products</a></li>
