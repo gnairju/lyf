@@ -13,6 +13,7 @@ from django import http
 from order.models import order
 from adminPanel.models import Product
 from user.models import CustomUser
+from django.urls import reverse
 
 
 @login_required(login_url='user:performlogin')
@@ -115,3 +116,10 @@ def providerApproval(request):
         'ord':ord
     }
     return render(request, 'provider/providerApproval.html', context)
+
+
+def activateOrder(request,id):
+    ord = order.objects.get(id=id)
+    ord.is_active = True
+    ord.save()
+    return redirect(reverse('provider:providerApproval'))

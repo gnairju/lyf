@@ -7,5 +7,6 @@ urlpatterns = [
     path('providerAddProducts',views.providerAddProduct,name='providerAddProducts'),
     path('providerUpdateProducts/<int:id>',views.providerUpdateProducts,name='providerUpdateProducts'),
     path('providerDeleteProducts/<int:id>',views.providerDeleteProducts,name='providerDeleteProducts'),
-    path('providerApproval',views.providerApproval,name='providerApproval'),  
+    path('providerApproval',views.providerApproval,name='providerApproval'),
+    path('activateOrder/<int:id>',views.activateOrder,name='activateOrder'),  
 ]

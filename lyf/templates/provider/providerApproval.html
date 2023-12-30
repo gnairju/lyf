@@ -84,7 +84,17 @@
                     <p class="mb-1">Quantity: {{ i.quantity }}</p> 
                     <p class="mb-1">Days required: {{i.days_needed}}</p>
                 </div>
-                <span class="badge badge-primary badge-pill" style="color: #000000;">Total price: ₹{{ total_price }}</span>
+                <div class="col d-flex flex-column align-items-end">
+                    <span class="mb-2" style="color: #000000;">Total price: ₹{{ total_price }}</span>
+                    <div class="footer">
+                        {% if i.is_active %}
+                        <a href="" class="btn btn-block">Confirmed</a>
+                        {% else %}
+                        <a href="{% url 'provider:activateOrder' i.id%}" class="btn btn-block">Confirm Rental</a>
+                        {% endif %}
+                    </div>
+                </div><br><br>
+                
             </div>
             {% endfor %}
         </li>
