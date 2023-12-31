@@ -6,7 +6,8 @@ from user.models import CustomUser,userAddress
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404, redirect
-
+from django.urls import reverse
+from django.contrib import messages
 
 def addToCart(request, id):
     if request.method == 'POST':
@@ -38,21 +39,26 @@ def addToCart(request, id):
             return redirect('user:performlogin')
         
 
-
 def updateCart(request):
     if request.method == 'POST':
         for cart_item in cart.objects.filter(user=request.user):
             quantity_key = f'quantity_{cart_item.id}'
             days_needed_key = f'days_needed_{cart_item.id}'
             
-            quantity = request.POST.get(quantity_key)
-            days_needed = request.POST.get(days_needed_key)
+            quantity = int(request.POST.get(quantity_key))
+            days_needed = int(request.POST.get(days_needed_key))
 
             cart_item.quantity = quantity
             cart_item.days_needed = days_needed
-            cart_item.save()
+
+            if cart_item.quantity > cart_item.product.quantity:
+                messages.error(request, 'Product not available')
+                return redirect(reverse('cart:cartPage'))
+            else:
+                cart_item.save()
 
     return redirect('cart:cartPage')
+
 
 
 def removeItemCart(request,id):
@@ -117,7 +123,6 @@ def addAddress(request):
         )
         return redirect('cart:checkout')
     return render(request,'cart/addAddress.html')
-
 
 
 

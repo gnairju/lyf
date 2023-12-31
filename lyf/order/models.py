@@ -11,5 +11,6 @@ class order(models.Model):
     quantity=models.PositiveIntegerField(default=1)
     days_needed=models.PositiveIntegerField(default=3)
     date = models.DateField(default=datetime.now)
+    total_price = models.PositiveBigIntegerField(default=0)
     is_active = models.BooleanField(default=False)
     

@@ -30,6 +30,7 @@ def providerAddProduct(request):
         price = request.POST.get('price')
         category_Name = request.POST.get('category')
         quantity = request.POST.get('quantity')
+        pincodePro = request.POST.get('pincodePro')
 
         # Handle main image upload
         main_image = request.FILES.get('image') if 'image' in request.FILES else None
@@ -48,7 +49,8 @@ def providerAddProduct(request):
             description=description,
             price=price,
             image=main_image,
-            quantity=quantity
+            quantity=quantity,
+            pincodePro = pincodePro,
         )
 
         # Create MultipleImage instances for additional images
@@ -86,11 +88,12 @@ def providerUpdateProducts(request, id):
         description = request.POST.get('description')
         price = request.POST.get('price')
         image = request.FILES.get('image') if 'image' in request.FILES else None
-
+        pincodePro = request.POST.get('pincodePro')
         # Update the product fields
         product.title = title
         product.description = description
         product.price = price
+        product.pincodePro = pincodePro
 
         if image:
             product.image = image
@@ -106,13 +109,7 @@ def providerUpdateProducts(request, id):
 def providerApproval(request):
     ord = order.objects.filter(product__user=request.user)
     #total_price = ord.product.price * ord.quantity * ord.days_needed
-    for i in ord:
-        pprice=i.product.price
-        q = i.quantity
-        d = i.days_needed
-        total_price = pprice*d*q
     context={
-        'total_price':total_price,
         'ord':ord
     }
     return render(request, 'provider/providerApproval.html', context)
@@ -120,6 +117,9 @@ def providerApproval(request):
 
 def activateOrder(request,id):
     ord = order.objects.get(id=id)
-    ord.is_active = True
+    if ord.is_active:
+        ord.is_active=False
+    else:
+        ord.is_active=True
     ord.save()
     return redirect(reverse('provider:providerApproval'))

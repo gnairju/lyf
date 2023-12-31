@@ -1,6 +1,13 @@
 {% extends 'homePage.html' %}
 {% block content %}
   <h4 class="card-title mb-4 " style="margin-left: 110px;">Your Shopping Cart</h4>
+  {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+  {% endif %}
   {% if cart_items %}
   <form  id=cartForm action="{% url 'cart:updateCart' %}" method="post">
     {% csrf_token %}
@@ -29,8 +36,6 @@
   <div class="d-flex justify-content-end" style="margin-right: 70px;">
     <a href="{%url 'cart:checkout' %}"><button type="submit" class="btn btn-primary btn-block" >Proceed</button></a>
   </div>
-
-
 
 
   <script>
