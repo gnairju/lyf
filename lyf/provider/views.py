@@ -117,9 +117,16 @@ def providerApproval(request):
 
 def activateOrder(request,id):
     ord = order.objects.get(id=id)
-    if ord.is_active:
-        ord.is_active=False
-    else:
-        ord.is_active=True
+    ord.is_active=True
+    subject = 'Rental Confirmation'
+    message = f'Rental Confirmed for "{ord.product}".'
+    from_email = 'o23211671@gmail.com'  
+    email = ord.user
+    send_mail(subject, message, from_email, [email])
     ord.save()
+    return redirect(reverse('provider:providerApproval'))
+
+def deleteOrder(request,id):
+    ord = order.objects.get(id=id)
+    ord.delete()
     return redirect(reverse('provider:providerApproval'))

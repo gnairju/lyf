@@ -88,7 +88,7 @@
                     <span class="mb-2" style="color: #000000;">Total price: ₹{{ i.total_price }}</span>
                     <div class="footer">
                         {% if i.is_active %}
-                            <a href="{% url 'provider:activateOrder' i.id%}" class="btn btn-block">Reacitvate</a>
+                            <a href="{% url 'provider:deleteOrder' i.id%}" class="btn btn-block">Reacitvate</a>
                         {% else %}
                             <a href="{% url 'provider:activateOrder' i.id%}" class="btn btn-block">Confirm Rental</a>
                         {% endif %}

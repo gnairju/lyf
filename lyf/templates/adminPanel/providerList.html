@@ -6,27 +6,27 @@
         <div class="list-group list-group-flush">
             <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
-            </a><br><br>
+            </a>
             <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
-            </a><br><br>
+            </a>
             <a href="" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-lock fa-fw me-3"></i><span>Order Details</span>
-            </a><br><br>
+                <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
+            </a>
             <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
-            </a><br><br>
+            </a>
             <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
-            </a><br><br>
+            </a>
             <a href="{% url 'adminPanel:renterList' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
-            </a><br>
+            </a>
         </div>
     </div>
 </div>
 
-<div class="container mt-4" style="margin-left: 270px;">
+<div class="container mt-40" style="margin-left: 270px; ">
     <h1 class="text-2xl">Provider List</h1>
     {% if provider %}
         {% for user in provider %}
@@ -35,12 +35,7 @@
                     <h5 class="card-title">{{ user.get_full_name }}</h5>
                     <p class="card-text">Email: {{ user.email }}</p>
                     <p class="card-text">Phone Number: {{ user.phone_number }}</p>
-
-                    <!-- Add more user details as needed -->
-
                     <p class="card-text">Number of Products Added: {{ user.products.count }}</p>
-
-                    <!-- Button to ban the user -->
                     <form method="post" action="{% url 'adminPanel:blockUnblockUserRenter' user.id %}" class="d-inline">
                         {% csrf_token %}
                         {% if user.is_active %}

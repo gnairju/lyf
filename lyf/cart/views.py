@@ -9,6 +9,28 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 
+
+def updateCart(request):
+    if request.method == 'POST':
+        for cart_item in cart.objects.filter(user=request.user):
+            quantity_key = f'quantity_{cart_item.id}'
+            days_needed_key = f'days_needed_{cart_item.id}'
+            
+            quantity = int(request.POST.get(quantity_key))
+            days_needed = int(request.POST.get(days_needed_key))
+
+            cart_item.quantity = quantity
+            cart_item.days_needed = days_needed
+
+            if cart_item.quantity > cart_item.product.quantity:
+                messages.error(request, 'Product not available')
+                return redirect(reverse('cart:cartPage'))
+            else:
+                cart_item.save()
+
+    return redirect('cart:cartPage')
+
+
 def addToCart(request, id):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -39,33 +61,6 @@ def addToCart(request, id):
             return redirect('user:performlogin')
         
 
-def updateCart(request):
-    if request.method == 'POST':
-        for cart_item in cart.objects.filter(user=request.user):
-            quantity_key = f'quantity_{cart_item.id}'
-            days_needed_key = f'days_needed_{cart_item.id}'
-            
-            quantity = int(request.POST.get(quantity_key))
-            days_needed = int(request.POST.get(days_needed_key))
-
-            cart_item.quantity = quantity
-            cart_item.days_needed = days_needed
-
-            if cart_item.quantity > cart_item.product.quantity:
-                messages.error(request, 'Product not available')
-                return redirect(reverse('cart:cartPage'))
-            else:
-                cart_item.save()
-
-    return redirect('cart:cartPage')
-
-
-
-def removeItemCart(request,id):
-    citem=cart.objects.get(id=id)
-    citem.delete()
-    return redirect('cart:cartPage')
-
 
 @login_required(login_url='user:performlogin')
 def cartPage(request):
@@ -88,6 +83,12 @@ def cartPage(request):
             'address':address
     }
     return render(request, 'cart/cart.html', context)
+
+
+def removeItemCart(request,id):
+    citem=cart.objects.get(id=id)
+    citem.delete()
+    return redirect('cart:cartPage')
 
 
 
@@ -132,3 +133,4 @@ def deleteUserAddress(request, id):
     add = get_object_or_404(userAddress, id=id)
     add.delete()
     return redirect('cart:checkout')
+

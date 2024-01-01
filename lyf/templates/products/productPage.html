@@ -29,10 +29,11 @@
             <p>Description: {{ product.description }}</p>
             <h1>Price: {{ product.price }}/day</h1>
             <p>Provided by: {{ product.user.first_name }}</p>
+            <a href="{% url 'cart:cartPage' %}" class="btn btn-block">Rent it</a>
         </div>
         <div style="float: right; width: 40%;">
             <!-- Main Product Image with Zoom.js -->
-            <img id="main-image" class="main-image zoom" style="width: 100%; max-width: 400px; height: auto; object-fit: cover;" 
+            <img id="main-image" class="main-image zoom"  
                 src="{{ product.image.url }}" alt="Main Product Image">
         </div>
         <div style="clear: both;"></div>
