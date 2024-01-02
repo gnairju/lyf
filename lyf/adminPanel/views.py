@@ -49,29 +49,31 @@ def adminDeleteCategory(request,id):
     ct.delete()
     return redirect('adminPanel:adminCategory')
 
-def adminUpdateCategory(request,id):
-    cu=Categories.objects.get(id=id)
+
+def adminUpdateCategory(request, id):
+    # Get the category instance using the id
+    cu = Categories.objects.get(id=id)
+
     if request.method == 'POST':
-        Name=request.POST.get('Name')
-        description=request.POST.get('description')
-        Products=request.POST.get('Products')
+        # Process the form submission
+        Name = request.POST.get('Name')
+        description = request.POST.get('description')
 
+        # Update category fields if provided
         if Name:
-            cu.Name=Name
+            cu.Name = Name
         if description:
-            cu.description=description
-        if Products:
-            cu.Products=Products
+            cu.description = description
 
-        if not Name or not Products:
-            messages.error(request,'Invalid data')
-            return render(request,'adminPanel/adminUpdateCategory.html',{'cu':cu})
-        cu.save()
-
-        return redirect('adminPanel:adminCategory')
-    else:
-        return render(request, 'adminPanel/adminUpdateCategory.html',{'cu':cu})
+        if not Name:
+            messages.error(request, 'Invalid data')
+        else:
+            cu.save()
+            return redirect('adminPanel:adminCategory')
     
+    return render(request, 'adminPanel/adminUpdateCategory.html', {'cu': cu})
+
+
 
 def renterList(request):
     renter=CustomUser.objects.all().exclude(is_staff=True)

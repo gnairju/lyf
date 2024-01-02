@@ -119,7 +119,7 @@ def activateOrder(request,id):
     ord = order.objects.get(id=id)
     ord.is_active=True
     subject = 'Rental Confirmation'
-    message = f'Rental Confirmed for "{ord.product}".'
+    message = f'Rental Confirmed for "{ord.product}". Please login to your user profile to make payments.'
     from_email = 'o23211671@gmail.com'  
     email = ord.user
     send_mail(subject, message, from_email, [email])

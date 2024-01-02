@@ -26,6 +26,13 @@
 </div>
 
 <div class="container" style="margin-left: 250px; margin-top: 120px;">
+    {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+    {% endif %}
     <form class="form-inline ">
         <a href="{% url 'adminPanel:adminAddCategory' %}" class="btn btn-success">Add Category</a>
     </form>

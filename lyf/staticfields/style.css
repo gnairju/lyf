@@ -123,3 +123,8 @@ a{
     padding: 20px;
     border-radius: 10px;
 }
+
+.custom-size-input {
+    width: 450px; /* Set your desired width */
+    height: 40px; /* Set your desired height */
+}

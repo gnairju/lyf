@@ -35,10 +35,6 @@ def addToCart(request, id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             product = get_object_or_404(Product, id=id)
-            # quantity = request.POST.get('quantity')
-            # days_needed = request.POST.get('days_needed')
-
-            # Fetch all cart items for the user
             cart_items = cart.objects.filter(user=request.user)
 
             # Get the cart item for the selected product or create a new one
@@ -59,8 +55,8 @@ def addToCart(request, id):
             return render(request, 'cart/cart.html', {'cart_items': cart_items})
         else:
             return redirect('user:performlogin')
-        
-
+    
+    return render(request,'cart/cart.html')
 
 @login_required(login_url='user:performlogin')
 def cartPage(request):

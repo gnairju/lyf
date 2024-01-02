@@ -21,6 +21,13 @@
         .additional-image:hover {
             border-color: #555; /* Change border color on hover */
         }
+
+        #main-image {
+            max-width: 100%;  /* Set maximum width to ensure responsiveness */
+            max-height: 300px;  /* Set maximum height as needed */
+            width: auto;  /* Allow the image to scale with the width */
+            height: auto;  /* Allow the image to scale with the height */
+        } 
     </style>
 
     <div class='products view' style="margin-left: 150px; margin-right: 150px; margin-top: 50px; border: 1.5px solid black; padding: 20px; border-radius: 10px;">
@@ -29,7 +36,11 @@
             <p>Description: {{ product.description }}</p>
             <h1>Price: {{ product.price }}/day</h1>
             <p>Provided by: {{ product.user.first_name }}</p>
-            <a href="{% url 'cart:cartPage' %}" class="btn btn-block">Rent it</a>
+            <form method="post" action="{% url 'cart:addToCart' product.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <button type="submit" class="btn ">Rent it</button>
+            </form>
         </div>
         <div style="float: right; width: 40%;">
             <!-- Main Product Image with Zoom.js -->

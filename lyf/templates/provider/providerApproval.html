@@ -83,6 +83,10 @@
                     <h4 class="mb-1">Product: {{ i.product }}</h4>
                     <p class="mb-1">Quantity: {{ i.quantity }}</p> 
                     <p class="mb-1">Days required: {{ i.days_needed }}</p>
+                    <p class="mb-1">Address: <span>{{ i.address.firstname }} {{ i.address.lastname }}</span></p>
+                    <p class="mb-1">{{ i.address.address }},{{ i.address.street }},{{ i.address.city }}</p>
+                    <p class="mb-1">{{ i.address.phone }}</p>
+                    
                 </div>
                 <div class="col d-flex flex-column align-items-end">
                     <span class="mb-2" style="color: #000000;">Total price: ₹{{ i.total_price }}</span>
