@@ -11,7 +11,7 @@ from pyotp import TOTP
 from django.core.mail import send_mail
 from datetime import datetime, timedelta  # Import datetime and timedelta
 from django.contrib.auth.decorators import login_required
-
+from order.models import order
 
 
 CustomUser = get_user_model()
@@ -169,3 +169,21 @@ def perform_logout(request):
     logout(request)
     request.session.flush()
     return redirect('home:homePage')
+
+
+@login_required(login_url='user:performlogin')
+def user_profile(request):
+    user_orders = order.objects.filter(user=request.user)
+    return render(request,'user/user_profile.html')
+
+
+def user_payment(request):
+    user=request.user
+    confirm_order=order.objects.filter(user=user,is_active=True)
+    return render(request,'user/user_payment.html',{'confirm_order':confirm_order})
+
+
+def user_cancel_rental(request,id):
+    o=order.objects.get(id=id)
+    o.delete()
+    return redirect('user:user_payment')

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,56 +12,33 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            height: 100vh;
-            background-color: white ;
+        background-image: url('{% static "image/logo.png" %}');
+        background-size: cover;
+        background-position: center;
+        background-size: 95%;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100vh;
         }
+
 
         .container {
-            display: flex;
-            width: 50%;
-            height: 80%;
-            margin: auto;
-            border: 1px solid #fff;
-            background-color: #CEE9F1; /* Set a background color for the container */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+            width: 100%;
+            margin-right: 190px; /* Add margin */
         }
 
-        .img_container,
-        .form_container {
-            flex: 1;
-            padding: 20px;
+        .form-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        .img_container {
-            border-right: 1px solid #ddd;
-        }
-
-        .img_container h3 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .img_container p {
-            margin: 0;
-            font-size: 16px;
-            text-align: center;
-        }
-
-        .form_container {
-            border-left: 1px solid #ddd;
-        }
-
-        .text_container {
-            max-width: 300px;
-            text-align: center;
         }
 
         .form-control {
@@ -86,35 +64,30 @@
 
 <body>
     <div class="container">
-        <div class="img_container">
-            <h3>Login</h3>
-            <p>Rent <br>
-                Anytime <br>
-                Anywhere <br>
-            </p>
-        </div>
-        <form method="POST" class="form_container">
-            {% csrf_token %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
+        <div class="form-container">
+            <form method="POST">
+                {% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
-            <div class="text_container">
-                <label for="email">Email</label><br>
-                <input type="email" class="form-control" name="email" placeholder="example@email.com">
-                <br>
-                <label for="password">Password</label><br>
-                <input type="password" class="form-control" name="password" placeholder="********">
-                <br>
-                <button type="submit" class="btn btn-primary">Login</button>
-                <br>
-                <a href="{% url 'user:user_registration' %}">New to lyf? Create an account</a>
-            </div>
-        </form>
+                <div class="text_container">
+                    <label for="email">Email</label><br>
+                    <input type="email" class="form-control" name="email" placeholder="example@email.com">
+                    <br>
+                    <label for="password">Password</label><br>
+                    <input type="password" class="form-control" name="password" placeholder="********">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <br>
+                    <a href="{% url 'user:user_registration' %}">New to lyf? Create an account</a>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Include Bootstrap JS and jQuery (optional) -->

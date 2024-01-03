@@ -1,37 +1,96 @@
 {% extends "homePage.html" %}
 {% block content %}
     <style>
+        .products.view {
+            margin-left: 150px;
+            margin-right: 150px;
+            margin-top: 50px;
+            border: 1.5px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden; /* Clear floats */
+        }
+
+        #additional-images-container {
+            flex: 1;
+            position: sticky;
+            top: 20px; /* Adjust the top distance as needed */
+            height: 300px; /* Set a fixed height for the sticky container */
+            overflow-y: auto; /* Add vertical scroll if needed */
+            margin-right: 5px; /* Reduced margin for spacing */
+        }
+
         .additional-images-container {
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 10px; /* Adjust the gap between additional images */
-            margin-top: 20px;
+            flex-direction: column;
+            gap: 5px; /* Adjust the gap between additional images */
         }
 
         .additional-image {
-            width: 100px; /* Adjust the width of additional images */
+            width: 100px;
             height: auto;
-            border: 2px solid #ddd; /* Border color */
-            border-radius: 8px; /* Border radius for a rounded look */
+            border: 2px solid #eee; /* Light-colored border */
+            border-radius: 8px;
             cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
         }
 
         .additional-image:hover {
-            border-color: #555; /* Change border color on hover */
+            border-color: #ddd; /* Darker border color on hover */
+        }
+
+        #main-image-container {
+            flex: 1;
+            position: sticky;
+            top: 20px; /* Adjust the top distance as needed */
+            height: 300px; /* Set a fixed height for the sticky container */
+            overflow-y: auto; /* Add vertical scroll if needed */
+            margin-right: 5px; /* Reduced margin for spacing */
+        }
+
+        #text-container {
+            flex: 1;
+            padding-left: 5px; /* Reduced padding for spacing */
         }
 
         #main-image {
-            max-width: 100%;  /* Set maximum width to ensure responsiveness */
-            max-height: 300px;  /* Set maximum height as needed */
-            width: auto;  /* Allow the image to scale with the width */
-            height: auto;  /* Allow the image to scale with the height */
-        } 
+            max-width: 100%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border: 2px solid #eee; /* Light-colored border */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+
+        h2, p, h1, form {
+            text-align: left;
+            margin-bottom: 10px; /* Add margin for spacing between elements */
+        }
     </style>
 
-    <div class='products view' style="margin-left: 150px; margin-right: 150px; margin-top: 50px; border: 1.5px solid black; padding: 20px; border-radius: 10px;">
-        <div style="float: left; width: 60%;">
+    <div class='products view'>
+        <div id="additional-images-container">
+            {% if product.multipleimage_set.all %}
+                <div class="additional-images-container">
+                    {% for image in product.multipleimage_set.all %}
+                        <!-- Additional Image with Zoom.js -->
+                        <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div id="main-image-container">
+            <!-- Main Product Image with Zoom.js -->
+            <img id="main-image" class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
+        </div>
+
+        <div id="text-container">
             <h2>{{ product.title }}</h2>
             <p>Description: {{ product.description }}</p>
             <h1>Price: {{ product.price }}/day</h1>
@@ -42,28 +101,10 @@
                 <button type="submit" class="btn ">Rent it</button>
             </form>
         </div>
-        <div style="float: right; width: 40%;">
-            <!-- Main Product Image with Zoom.js -->
-            <img id="main-image" class="main-image zoom"  
-                src="{{ product.image.url }}" alt="Main Product Image">
-        </div>
-        <div style="clear: both;"></div>
-        <div class="additional-images-container">
-            {% if product.multipleimage_set.all %}
-                {% for image in product.multipleimage_set.all %}
-                    <!-- Additional Image with Zoom.js -->
-                    <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
-                {% endfor %}
-            {% else %}
-                <p>No additional images available.</p>
-            {% endif %}
-        </div>  
     </div>
 
     <script>
-        
         function swapImages(clickedImage) {
-            // Swap the src attributes between the main image and the clicked additional image
             var mainImage = document.getElementById('main-image');
             var tempSrc = mainImage.src;
             mainImage.src = clickedImage.src;

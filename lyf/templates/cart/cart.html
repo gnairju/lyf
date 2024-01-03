@@ -11,28 +11,32 @@
   {% if cart_items %}
   <form  id=cartForm action="{% url 'cart:updateCart' %}" method="post">
     {% csrf_token %}
-    <ul class="list-group" style="margin-right: 70px; margin-left: 70px;">
+    <ul class="list-group" style="margin-right: 150px; margin-left: 150px;">
       {% for cart_item in cart_items %}
-        <li class="list-group-item">
-          <div class="row">
+      <li class="list-group-item shadow p-3 mb-3 bg-white rounded">
+        <div class="row">
             <div class="col-md-4">
-              <img src="{{ cart_item.product.image.url }}" class="img-fluid rounded-start img-thumbnail" style="max-width: 20%;" alt="{{ cart_item.product.name }}">
+                <img src="{{ cart_item.product.image.url }}" class="img-fluid rounded-start img-thumbnail" style="width: 100%; max-width: 150px; max-height: 100px;" alt="{{ cart_item.product.name }}">
             </div>
             <div class="col-md-8" style="padding-top: 40px;">
-              <h5 class="card-title">{{ cart_item.product.name }}</h5>
-              <div class="d-flex justify-content-between align-items-center">
-                Quantity:<input type="number" class="form-control" value="{{ cart_item.quantity }}" min="1" style="width: 70px;" name="quantity_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
-                Days required:<input type="number" class="form-control" value="{{ cart_item.days_needed }}" min="3" style="width: 70px;" name="days_needed_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
-                <p class="h5">₹{{ cart_item.product.price|floatformat:2 }} per day</p>
-                <a href="{% url 'cart:removeItemCart' cart_item.id %}" class="btn btn-danger btn-sm">Remove</a>
-              </div>
+                <h5 class="card-title">{{ cart_item.product.name }}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    Quantity:
+                    <input type="number" class="form-control" value="{{ cart_item.quantity }}" min="1" style="width: 70px;" name="quantity_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
+    
+                    Days required:
+                    <input type="number" class="form-control" value="{{ cart_item.days_needed }}" min="3" style="width: 70px;" name="days_needed_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
+    
+                    <p class="h5">₹{{ cart_item.product.price|floatformat:2 }} per day</p>
+                    <a href="{% url 'cart:removeItemCart' cart_item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                </div>
             </div>
-          </div>
-        </li><br>
+        </div>
+    </li>    
       {% endfor %}
     </ul> 
   </form>
-  <div class="d-flex justify-content-end" style="margin-right: 70px;">
+  <div class="d-flex justify-content-end" style="margin-right: 150px;">
     <a href="{%url 'cart:checkout' %}"><button type="submit" class="btn btn-primary btn-block" >Proceed</button></a>
   </div>
 

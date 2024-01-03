@@ -13,4 +13,5 @@ class order(models.Model):
     date = models.DateField(default=datetime.now)
     total_price = models.PositiveBigIntegerField(default=0)
     is_active = models.BooleanField(default=False)
+    payment = models.BooleanField(default=False)
     

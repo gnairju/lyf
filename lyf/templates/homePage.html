@@ -11,7 +11,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="{% url 'home:homePage' %}"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo"></a>
+            <a href="{% url 'home:homePage' %}"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo hover"></a>
             <ul class="list-unstyled"> <!-- Adding list-unstyled to remove default list styles -->
                 <li class="d-inline-block">
                     <form class="form-inline">
@@ -27,9 +27,9 @@
         </div>
         <div class="nav-right">
             <ul>
-                <li><a href="{% url 'provider:providerPanel' %}">Become a Provider</a></li>
-                <li><a href="{% url 'cart:cartPage' %}"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
-                <li>
+                <li class="hover"><a href="{% url 'provider:providerPanel' %}">Become a Provider</a></li>
+                <li class="hover"><a href="{% url 'cart:cartPage' %}"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
+                <li class="hover">
                     {% if user.is_authenticated %}
                         <a href="{% url 'user:perform_logout' %}">
                             <img src="{% static 'image/logout.jpg' %}" alt="User logout">
@@ -41,12 +41,12 @@
                     {% endif %}
                 </li>
                 
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown hover">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{% static 'image/FilterRight.jpg' %}" alt="Filter">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'user:user_profile' %}">My Profile</a>
                         <a class="dropdown-item" href="#">Contact us</a>
                     </div>
                 </li>
@@ -58,28 +58,77 @@
         <div class="container mt-4">
             <div class="row">
                 {% for product in products %}
-                    <div class="col-md-3 mb-4">
-                        <div class="card" style="width: 250px; height: 420px;">
-                            <img class="card-img-top" style="width: 100%; height: 60%; object-fit: cover;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'image/placeholder_image.jpg' %}{% endif %}" alt="Product Image">
-                            <div class="card-body">
-                                <a href="{% url 'products:productPage' product.id %}">
-                                    <h5 class="card-title">{{ product.title }}</h5>
-                                </a>
-                                <p class="card-text">{{ product.description }}</p>
-
-                                <!-- Add to Cart Button -->
-                                <form method="post" action="{% url 'cart:addToCart' product.id %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="product_id" value="{{ product.id }}">
-                                    <button type="submit" class="btn ">Add to Cart</button>
-                                </form>
-                            </div>
+                <div class="col-md-3 mb-4">
+                    <div class="card border shadow hover" style="width: 250px; height: 420px;">
+                        <img class="card-img-top border-bottom p-3 rounded-top" style="width: 100%; height: 60%; object-fit: cover;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'image/placeholder_image.jpg' %}{% endif %}" alt="Product Image">
+                        <div class="card-body">
+                            <a href="{% url 'products:productPage' product.id %}">
+                                <h5 class="card-title">{{ product.title }}</h5>
+                            </a>
+                            <p class="card-text">{{ product.description }}</p>
+                
+                            <!-- Add to Cart Button -->
+                            <form method="post" action="{% url 'cart:addToCart' product.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button type="submit" class="btn ">Add to Cart</button>
+                            </form>
                         </div>
                     </div>
+                </div>                                                     
                 {% endfor %}
             </div>
         </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="brand-info">
+                    <div class="brand-name">lyf</div>
+                    <div class="brand-description">We help you find your dream plant</div>
+                </div>
+                <div class="icons">
+                    <div class="icon">
+                        <div class="icon-circle"></div>
+                        <div class="icon-line"></div>
+                    </div>
+                    <div class="icon">
+                        <div class="icon-circle"></div>
+                        <div class="icon-line"></div>
+                    </div>
+                    <div class="icon">
+                        <div class="icon-circle"></div>
+                        <div class="icon-line"></div>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <div class="footer-heading">Information</div>
+                        <a href="#">About</a>
+                        <a href="#">Product</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-section">
+                        <div class="footer-heading">Company</div>
+                        <a href="#">Community</a>
+                        <a href="#">Career</a>
+                        <a href="#">Our story</a>
+                    </div>
+                    <div class="footer-section">
+                        <div class="footer-heading">Contact</div>
+                        <a href="#">Getting Started</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">Resources</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div>Rent anything anywhere anytime</div>
+            </div>
+        </footer>
+    
     {% endblock %}
+
+    
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
