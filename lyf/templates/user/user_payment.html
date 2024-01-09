@@ -80,7 +80,7 @@
                                 Days required:
                                 <input type="number" class="form-control" value="{{ ord.days_needed }}" style="width: 70px;" readonly>
                 
-                                <a href="" class="btn btn-primary btn-sm">Make Payment</a>
+                                <a href="{% url 'payments:make_payments' ord.id %}" class="btn btn-primary btn-sm">Make Payment</a>
                                 <a href="{% url 'user:user_cancel_rental' ord.id %}" class="btn btn-danger btn-sm">Cancel Rental</a>
                             </div>
                         </div>

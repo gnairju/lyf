@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Admin - Add coupons</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Add Coupons</h2>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'adminPanel:add_coupons' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="coupon_type" class="label">Type:</label>
+                            <select name="coupon_type" id="coupon_type">
+                                {% for choice in COUPON_CHOICE %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == i.status %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                {% endfor %}
+                            </select><br>
+                            <label for="name" class="form-label">Coupons Name:</label><br>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="num" class="form-label">Number of Coupons:</label>
+                            <input type="number" class="form-control" id="num" name="num" required>
+                            <label for="discount" class="form-label">Discount:</label><br>
+                            <input type="number" class="form-control" id="discount" name="discount"  required></input>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Coupon</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8/Nv3pIVuPphJtYWB9Lk3m6Hg3eELx5WqlRmSCAEe3sBThb6hqRI3OkJlNIH6" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js" integrity="sha384-XihSBy5XsVGkBcFFh4G8kCiT6nBFWyRpgGBPHLmVqBRL5iK3wFjAfiJBI5hUJwSw" crossorigin="anonymous"></script>
+
+</body>
+</html>

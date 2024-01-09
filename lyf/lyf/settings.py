@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'paypal.standard.ipn',
     'home',
     'user',
     'adminPanel',
@@ -142,3 +143,10 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587 
 EMAIL_HOST_USER = 'o23211671@gmail.com'  
 EMAIL_HOST_PASSWORD = 'vqkf hmra aeta sjwo' 
+
+
+#paypal settings
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = 'sb-mztef29124808@business.example.com'
+
+#sb-fxbjf29208477@personal.example.com

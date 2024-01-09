@@ -10,11 +10,14 @@
             <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
             </a>
-            <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+            <a href="{% url 'order:rental_management' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
             </a>
             <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+            </a>
+            <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
             </a>
             <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
@@ -30,33 +33,51 @@
     <!-- Your content goes here -->
 </div>
 
-<div class="container mt-4" style="margin-left: 270px;">
-    <h1 class="text-2xl">Renter List</h1>
+<div class="container mt-4" style="margin-left: 270px; max-width: 1050px;">
+    <h1 class="text-2xl">Rental Details</h1><br>
+    <ul class="list-group">
+        {% for i in ord %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="mb-1">Product: {{ i.product }}</h4>
+                    <p class="mb-1">Quantity: {{ i.quantity }}</p> 
+                    <p class="mb-1">Days required: {{ i.days_needed }}</p>
+                    <p class="mb-1">Address: <span>{{ i.address.firstname }} {{ i.address.lastname }}</span></p>
+                    <p class="mb-1">{{ i.address.address }},{{ i.address.street }},{{ i.address.city }}</p>
+                    <p class="mb-1">{{ i.address.phone }}</p>
+                    
+                </div>
+                <div class="col d-flex flex-column align-items-end">
+                    <span class="mb-2" style="color: #000000;">Total price: ₹{{ i.total_price }}</span>
+                    <div class="footer">
+                        {% if i.payment %}
+                            <!-- your_template.html -->
+                            <form method="post" action="{% url 'order:statusChange' i.id %}">
+                                {% csrf_token %}
+                                
+                                <label for="status" class="label">Status:</label>
+                                <select name="status" id="status">
+                                    {% for choice in i.STATUS_CHOICES %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == i.status %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <button type="submit" class="btn btn-block">Save</button>
+                            </form>
 
-    {% if renter %}
-        {% for user in renter %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{ user.get_full_name }}</h5>
-                    <p class="card-text">Email: {{ user.email }}</p>
-                    <p class="card-text">Phone Number: {{ user.phone_number }}</p>
-
-                    <form method="post" action="{% url 'adminPanel:blockUnblockUserRenter' user.id %}" class="d-inline">
-                        {% csrf_token %}
-                        {% if user.is_active %}
-                            <button type="submit" class="btn btn-danger btn-sm">Block Renter</button>
                         {% else %}
-                            <button type="submit" class="btn btn-success btn-sm">Unblock Renter</button>
+                            <a href="" class="btn btn-block">Not Confirmed</a>
                         {% endif %}
-                    </form>
+                    </div>
                 </div>
             </div>
+        </li>
         {% endfor %}
-    {% else %}
-        <div class="alert alert-info mt-4">
-            No Renters found.
-        </div>
-    {% endif %}
+    </ul>
 </div>
+
 
 {% endblock %}

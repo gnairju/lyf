@@ -173,13 +173,13 @@ def perform_logout(request):
 
 @login_required(login_url='user:performlogin')
 def user_profile(request):
-    user_orders = order.objects.filter(user=request.user)
-    return render(request,'user/user_profile.html')
+    user_orders = order.objects.filter(user=request.user,payment=True)
+    return render(request,'user/user_profile.html',{'user_orders':user_orders})
 
 
 def user_payment(request):
     user=request.user
-    confirm_order=order.objects.filter(user=user,is_active=True)
+    confirm_order =order.objects.filter(user=user,is_active=True,payment=False)
     return render(request,'user/user_payment.html',{'confirm_order':confirm_order})
 
 

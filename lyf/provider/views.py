@@ -22,6 +22,16 @@ def providerPanel(request):
     return render(request,'provider/providerPanel.html',{'product':product})
 
 
+def create_security(given_price):
+    price = int(given_price)
+    if price>100:
+        x=price*5
+        return x
+    else:
+        x=price*10
+        return x
+
+
 @login_required(login_url='user:performlogin')
 def providerAddProduct(request):
     if request.method == 'POST':
@@ -41,6 +51,7 @@ def providerAddProduct(request):
         # Assuming you have a Categories model with an id field
         category = Categories.objects.get(Name=category_Name)
 
+        security=create_security(price)
         # Create the product
         product = Product.objects.create(
             user=request.user,
@@ -51,6 +62,7 @@ def providerAddProduct(request):
             image=main_image,
             quantity=quantity,
             pincodePro = pincodePro,
+            security=security,
         )
 
         # Create MultipleImage instances for additional images

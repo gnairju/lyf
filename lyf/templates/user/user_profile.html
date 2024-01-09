@@ -62,7 +62,7 @@
     <!-- Page content -->
     <div class="container">
         <div class="profile-section">
-            <h2>Welcome, {{ request.user.firstname }}!</h2>
+            <h2>Welcome, {{ request.user.first_name }}!</h2>
             
             <!-- Display user information -->
             <div id="user-details" class="user-info">
@@ -77,9 +77,10 @@
                 <ul class="list-group">
                     {% for order in user_orders %}
                         <li class="list-group-item">
-                            <strong>Order ID:</strong> {{ order.id }}<br>
-                            <strong>Total Amount:</strong> ${{ order.total_amount }}<br>
-                            {% comment %} <strong>Status:</strong> {{ order.delivery_status }} {% endcomment %}
+                            <strong>Product Name:</strong> {{ order.product }}<br>
+                            <strong>Total Amount:</strong> ₹{{ order.total_charges }}<br>
+                            <img src="{{ order.product.image.url }}" alt="{{ order.product }}" class="thumbnail" style="float: right; margin-left: 10px; width: 70px; height: 70px;">
+                            <strong>Status:</strong> {{ order.status }}
                             <!-- Add more order details as needed -->
                         </li>
                     {% endfor %}

@@ -1,0 +1,42 @@
+{% extends "homePage.html" %}
+{% block content %}
+<div class="container-shadow" style="margin-top: 20px; margin-left: 40px; margin-right: 70px;">
+    <div class="row">
+        <div class="col-md-6 d-flex justify-content-end">
+            <div class="card w-100">
+
+                <div class="card-body ">
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                    <h3>Rental Details</h3>
+                    <h5 class="card-title">{{ ord.product }}</h5>
+                    <p class="card-text">
+                        <form action="{% url 'order:coupon_apply' ord.id %}" method="post">
+                        <strong>Days Required:</strong> {{ ord.days_needed }} Day<br>
+                        <strong>Quantity:</strong> {{ ord.quantity }} Number<br>
+                        <strong>Product Price:</strong> ₹{{ ord.total_price }}<br>
+                        <strong>Delivery Charges:</strong> ₹{{ ord.delivery_charge }}<br>
+                        <strong>Platform Charges:</strong> {{ ord.platform_charges }}<br>
+                        <strong>Security Charges:</strong> {{ ord.caution_deposit }}<br>
+                        
+                            {% csrf_token %}
+                            <input type="text" name="coupons" for="coupons" placeholder="Enter Coupon code">
+                            <button type="submit" class="btn btn-block">Check</button>
+                            <br><h4>Total Charges: ₹{{ ord.total_charges }}/-</h4><br>
+                        </form>
+                        <form action="{% url 'payments:final_pay' ord.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn">Pay now</button>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
