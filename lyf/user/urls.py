@@ -11,4 +11,5 @@ urlpatterns = [
     path('user_profile/',views.user_profile,name='user_profile'),
     path('user_payment',views.user_payment,name='user_payment'),
     path('user_cancel_rental/<int:id>',views.user_cancel_rental,name='user_cancel_rental'),
+    path('user_invoice/<int:id>',views.user_invoice,name='user_invoice'),
 ]

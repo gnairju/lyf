@@ -1,0 +1,17 @@
+{% extends "homePage.html" %}
+{% block content %}
+    <div class="container">
+        <h2>Make payment</h2>
+        <p>You can pay using your wallet balance</p>
+        <h4>Your wallet balance ₹{{ wallet.balance_amount }}</h4>
+        <h3>Amount payable ₹{{ ord.total_charges }}</h3>
+        {% if ord.payment %}
+        <p>Payed</p>
+        {% else %}
+        <form action="{% url 'payments:wallet_debit' ord.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger">Pay Know</button>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

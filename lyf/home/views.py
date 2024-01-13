@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from adminPanel.models import Product
 from django.views.decorators.cache import never_cache
+from django.contrib import messages
+from django.db.models import Q
 
 @never_cache
 def homePage(request):
@@ -15,3 +17,17 @@ def homePage(request):
         products = Product.objects.filter(is_active=True)
         context = {'products': products}
         return render(request, 'homePage.html', context)
+
+
+def searchbar(request):
+    query = request.GET.get('q')
+    if query:
+        products = Product.objects.filter(
+            Q(title__icontains=query)|Q(category__Name__icontains=query)
+        )
+        print(products)
+        context={
+            'products':products,
+            'query':query,
+        }
+    return render(request, 'homePage.html', context)

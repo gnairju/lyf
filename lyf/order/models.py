@@ -16,11 +16,17 @@ class order(models.Model):
     total_price = models.PositiveBigIntegerField(default=0)
     is_active = models.BooleanField(default=False)
     payment = models.BooleanField(default=False)
+    payment_provider = models.BooleanField(default=False)
     caution_deposit = models.PositiveBigIntegerField()
     delivery_charge = models.PositiveBigIntegerField(default=40)
     platform_charges = models.PositiveBigIntegerField(default=10)
     total_charges = models.PositiveBigIntegerField(default=0)
     coupon = models.OneToOneField(coupons, related_name='order', null=True, blank=True, on_delete=models.SET_NULL)
+    offer_total_price= models.PositiveBigIntegerField(default=0)
+    offer_delivery_charge = models.PositiveBigIntegerField(default=0)
+    offer_caution_deposit = models.PositiveBigIntegerField(default=0)
+    offer_total_charges = models.PositiveBigIntegerField(default=0)
+    cancelled_rental=models.BooleanField(default=False)
 
     STATUS_CHOICES = [
         ('confirmed','confirmed'),
@@ -29,6 +35,12 @@ class order(models.Model):
         ('delivered', 'delivered'),
         ('rental_period','rental_period'),
         ('returned','returned'),
+        ('cancelled','cancelled'),
+    ]
+
+    PAYMENT_CHOICES = [
+        ('paypal','paypal'),
+        ('wallet','wallet'),
     ]
 
     status = models.CharField(
@@ -36,4 +48,14 @@ class order(models.Model):
         choices=STATUS_CHOICES
     )
 
+    payment_choice=models.CharField(
+        max_length=20,
+        choices=PAYMENT_CHOICES
+    )
 
+    def save(self,*args, **kwargs):
+        self.offer_delivery_charge=self.delivery_charge
+        self.offer_caution_deposit=self.caution_deposit
+        self.offer_total_price=self.total_price
+        self.offer_total_charges=self.total_charges
+        super().save(*args,**kwargs)

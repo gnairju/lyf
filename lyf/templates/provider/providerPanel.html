@@ -57,6 +57,21 @@
         padding-top: 56px;
         margin-top: 50px;
     }
+
+    .thumbnail-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .thumbnail {
+        max-width: 100px;
+        max-height: 100px;
+        margin-right: 10px;
+    }
+
+    .details {
+        flex: 1;
+    }
 </style>
 
 <div id="sidebarMenu" class="sidebar bg-white">
@@ -65,6 +80,9 @@
             <a href="{% url 'provider:providerPanel' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
             </a>
+            <a href="{% url 'provider:provider_details' %}" class="list-group-item list-group-item-action py-2 ripple ">
+                <i class="fas fa-chart-area fa-fw me-3"></i><span>Provider Details</span>
+            </a>
             <a href="{% url 'provider:providerApproval' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-lock fa-fw me-3"></i><span>Rental Confirmation</span>
             </a>
@@ -72,28 +90,27 @@
     </div>
 </div>
 
-
 <div class="container mt-4" style="margin-left: 270px; max-width: 1050px;">
     <h1 class="text-2xl">My Products</h1>
-    <a href="{% url 'provider:providerAddProducts' %}" class="btn btn-primary mt-2">Add Products</a>
-    <h2 class="mt-4 mb-2 text-xl">My Products</h2>
+    <a href="{% url 'provider:providerAddProducts' %}" class="btn btn-primary mt-2">Add Products</a><br>
 
     {% if request.user.products.all %}
-        <div class="row">
-            {% for product in request.user.products.all %}
-                <div class="col-md-3 mb-4">
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <h5>{{ product.title }}</h5>
+    <ul class="list-group" style="margin:10px;">
+        {% for product in request.user.products.all %}
+            <li class="list-group-item border p-3 mb-3 bg-white rounded">
+                <div class="row">
+                    <div class="col-md-4">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="img-fluid rounded-start img-thumbnail" style="width: 100%; max-width: 150px; max-height: 100px;" alt="{{ product.title }}">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8" style="padding-top: 20px;">
+                        <h5>{{ product.title }}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
                             <p>{{ product.description }}</p>
                             <p>Price: ₹{{ product.price }}</p>
-                            
-                            {% if product.image %}
-                                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="img-thumbnail float-right" style="max-width: 100px; max-height: 100px;">
-                            {% else %}
-                                <p>No image available</p>
-                            {% endif %}
-                            <br><br>
                             <div class="btn-group" role="group">
                                 <a href="{% url 'provider:providerDeleteProducts' product.id %}" class="btn btn-danger mb-2">Delete</a>
                                 <a href="{% url 'provider:providerUpdateProducts' product.id%}" class="btn btn-primary mb-2">Update</a>
@@ -102,12 +119,10 @@
                         </div>
                     </div>
                 </div>
-
-                {% if forloop.counter|divisibleby:4 and not forloop.last %}
-                    </div><div class="row">
-                {% endif %}
-            {% endfor %}
-        </div>
+            </li>
+        {% endfor %}
+    </ul>
+    
     {% else %}
         <div class="alert alert-info mt-4">
             You don't have any products yet...

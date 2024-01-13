@@ -150,3 +150,5 @@ def coupons_activate_deactivate(request,id):
             cop.is_active=True
     cop.save()
     return redirect('adminPanel:coupons_page')
+
+

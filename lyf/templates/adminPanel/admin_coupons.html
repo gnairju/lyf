@@ -138,6 +138,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Discount</th>
+                    <th>Discount type</th>
                     <th>Coupons Left</th>
                 </tr>
             </thead>
@@ -146,6 +147,8 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ c.name }}</td>
+                    <td>{{ c.discount }}%</td>
+                    <td>{{ c.coupon_type }}</td>
                     <td>{{ c.num }}</td>
                     <td>
                         <form action="{% url 'adminPanel:coupons_activate_deactivate' c.id %}" method="post">

@@ -19,6 +19,18 @@
                         <form action="{% url 'order:coupon_apply' ord.id %}" method="post">
                         <strong>Days Required:</strong> {{ ord.days_needed }} Day<br>
                         <strong>Quantity:</strong> {{ ord.quantity }} Number<br>
+                        {% if ord.coupon %}
+                        <strong>Product Price:</strong> ₹{{ ord.offer_total_price }}<br>
+                        <strong>Delivery Charges:</strong> ₹{{ ord.offer_delivery_charge }}<br>
+                        <strong>Platform Charges:</strong> {{ ord.platform_charges }}<br>
+                        <strong>Security Charges:</strong> {{ ord.offer_caution_deposit }}<br>
+                        
+                            {% csrf_token %}
+                            <input type="text" name="coupons" for="coupons" placeholder="Enter Coupon code" value={{ ord.coupon }}>
+                            <button type="submit" class="btn btn-block">Check</button>
+                            <br><h4>Total Charges: ₹{{ ord.offer_total_charges }}/-</h4><br>
+                        </form>
+                        {% else %}
                         <strong>Product Price:</strong> ₹{{ ord.total_price }}<br>
                         <strong>Delivery Charges:</strong> ₹{{ ord.delivery_charge }}<br>
                         <strong>Platform Charges:</strong> {{ ord.platform_charges }}<br>
@@ -27,10 +39,19 @@
                             {% csrf_token %}
                             <input type="text" name="coupons" for="coupons" placeholder="Enter Coupon code">
                             <button type="submit" class="btn btn-block">Check</button>
-                            <br><h4>Total Charges: ₹{{ ord.total_charges }}/-</h4><br>
+                            <br><h4>Total Charges: ₹{{ ord.total_charges }}/-</h4>
                         </form>
-                        <form action="{% url 'payments:final_pay' ord.id %}" method="post">
+                        {% endif %}
+                        <form action="{% url 'payments:payment_selection' ord.id %}" method="post">
                             {% csrf_token %}
+                            <label for="payment_type" class="label">Type:</label>
+                            <select name="payment_type" id="payment_type">
+                                {% for choice in PAYMENT_CHOICE %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == i.payment_choice %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
+                                {% endfor %}
+                            </select><br><br>
                             <button class="btn">Pay now</button>
                         </form>
                     </p>

@@ -142,3 +142,7 @@ def deleteOrder(request,id):
     ord = order.objects.get(id=id)
     ord.delete()
     return redirect(reverse('provider:providerApproval'))
+
+
+def provider_details(request):
+    return render(request,'provider/provider_details.html')

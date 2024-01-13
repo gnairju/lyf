@@ -80,7 +80,19 @@
                             <strong>Product Name:</strong> {{ order.product }}<br>
                             <strong>Total Amount:</strong> ₹{{ order.total_charges }}<br>
                             <img src="{{ order.product.image.url }}" alt="{{ order.product }}" class="thumbnail" style="float: right; margin-left: 10px; width: 70px; height: 70px;">
-                            <strong>Status:</strong> {{ order.status }}
+
+                            {% if order.cancelled_rental %}
+                                <button class="btn btn-danger">Cancelled</button>
+                            {% else %}
+                                <strong>Status:</strong> {{ order.status }}<br>
+                                <a href="{% url 'user:user_invoice' order.id %}" class="btn btn-default">Invoice</a>
+                            
+                                {% if order.status == 'confirmed' or order.status == 'Taken' or order.status == 'Shipped' %}
+                                    <a href="{% url 'payments:wallet_credit' order.id %}" class="btn btn-danger">Cancel Rental</a>
+                                {% else %}
+                                    <a href="" class="btn btn-danger">Early Return</a>
+                                {% endif %}
+                            {% endif %}
                             <!-- Add more order details as needed -->
                         </li>
                     {% endfor %}

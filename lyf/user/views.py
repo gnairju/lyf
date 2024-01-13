@@ -187,3 +187,8 @@ def user_cancel_rental(request,id):
     o=order.objects.get(id=id)
     o.delete()
     return redirect('user:user_payment')
+
+
+def user_invoice(request,id):
+    ord=order.objects.filter(id=id)
+    return render(request,'user/invoice.html',{'ord':ord})

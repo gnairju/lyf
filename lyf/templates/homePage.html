@@ -15,20 +15,32 @@
             <a href="{% url 'home:homePage' %}"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo hover"></a>
             <ul class="list-unstyled"> <!-- Adding list-unstyled to remove default list styles -->
                 <li class="d-inline-block">
-                    <form class="form-inline">
+                    {% if query %}
+                    <form class="form-inline" method="get" action="{% url 'home:searchbar' %}">
                         <div class="input-group">
-                            <input class="form-control custom-size-input" type="search" placeholder="Search" aria-label="Search">
+                            <input class="form-control custom-size-input" type="search"  aria-label="Search" name="q" value="{{ query }}">
                             <button type="submit" class="btn">
                                 <img src="{% static 'image/Search.svg' %}" alt="Search Icon" class="search-icon">
                             </button>
                         </div>
                     </form>
+                    {% else %}
+                    <form class="form-inline" method="get" action="{% url 'home:searchbar' %}">
+                        <div class="input-group">
+                            <input class="form-control custom-size-input" type="search" placeholder="Search" aria-label="Search" name="q" >
+                            <button type="submit" class="btn">
+                                <img src="{% static 'image/Search.svg' %}" alt="Search Icon" class="search-icon">
+                            </button>
+                        </div>
+                    </form>
+                    {% endif %}
                 </li>
             </ul>            
         </div>
         <div class="nav-right">
             <ul>
                 <li class="hover"><a href="{% url 'provider:providerPanel' %}">Become a Provider</a></li>
+                <li class="hover"><a href="{% url 'payments:wallet' %} "><img src="{% static 'image/wallet.png' %}" alt="User wallet" style="width: 110%; height: 110%;"></a></li>
                 <li class="hover"><a href="{% url 'cart:cartPage' %}"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
                 <li class="hover">
                     {% if user.is_authenticated %}
@@ -57,6 +69,7 @@
 
     {% block content %}
         <div class="container mt-4">
+            {% if products%}
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-3 mb-4">
@@ -79,6 +92,9 @@
                 </div>                                                     
                 {% endfor %}
             </div>
+            {% else %}
+                <h3>No products Found</h3>
+            {% endif %}
         </div>
 
     

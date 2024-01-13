@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        .padding {
+            padding: 2rem !important;
+        }
+
+        .card {
+            margin-bottom: 30px;
+            border: none;
+            -webkit-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+            -moz-box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+            box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+        }
+
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #e6e6f2;
+        }
+
+        h3 {
+            font-size: 20px;
+        }
+
+        h5 {
+            font-size: 15px;
+            line-height: 26px;
+            color: #3d405c;
+            margin: 0px 0px 15px 0px;
+            font-family: 'Circular Std Medium';
+        }
+
+        .text-dark {
+            color: #3d405c !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 padding">
+        {% for i in ord %}
+        <div class="card">
+            <div class="card-header p-4">
+                <a class="pt-2 d-inline-block" href="" data-abc="true"><img src="{% static 'image/icon.png' %}" alt="" width="100px" height="100px"></a><h1 style="margin-left: 20px;">lyf</h1>
+                <div class="float-right">
+                    <h3 class="mb-0">Invoice #BBB10234</h3>
+                    <h3 class="mb-0">{{ i.date }}</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <h5 class="mb-3">To:</h5>
+                        <h3 class="text-dark mb-1">{{ i.user }}</h3>
+                        <div>478, Nai Sadak</div>
+                        <div>Chandni chowk, New delhi, 110006</div>
+                        <div>Email: info@tikon.com</div>
+                        <div>Phone: +91 9895 398 009</div>
+                    </div>
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="center">#</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th class="right">Price</th>
+                                <th class="center">Qty</th>
+                                <th class="right">Number of days</th>
+                                <th class="right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="center">#</td>
+                                <td>{{ i.product }}</td>
+                                <td>{{ i.product.description }}</td>
+                                <td class="right">{{ i.product.price }}</td>
+                                <td class="center">{{ i.quantity }}</td>
+                                <td class="right">{{ i.days_needed }}</td>
+                                <td class="end">{{ i.total_price }}</td>
+                            </tr>
+                            <tr>
+                                <td class="center"></td>
+                                <td></td>
+                                <td></td>
+                                <td class="right"></td>
+                                <td class="center"></td>
+                                <td class="right">Platform Charge</td>
+                                <td class="end">{{ i.platform_charges }}</td>
+                            </tr>
+                            <tr>
+                                <td class="center"></td>
+                                <td></td>
+                                <td></td>
+                                <td class="right"></td>
+                                <td class="center"></td>
+                                <td class="right">Delivery fee</td>
+                                <td class="end">{{ i.delivery_charge }}</td>
+                            </tr>
+                            <tr>
+                                <td class="center"></td>
+                                <td></td>
+                                <td></td>
+                                <td class="right"></td>
+                                <td class="center"></td>
+                                <th class="right">Total</th>
+                                <th class="end">{{ i.total_charges }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-sm-5"></div>
+                    <div class="col-lg-4 col-sm-5 ml-auto">
+                        <table class="table table-clear">
+                            <tbody>
+                                <!-- Summary Section -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <p class="mb-0">lyf Rentals, Rent Smart, Anything, Anywhere</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -29,31 +29,46 @@
     </div>
 </div>
 
-<div class="container mt-40" style="margin-left: 270px; ">
+<div id="content" class="container" style="margin-top: 25px;">
+    <!-- Your content goes here -->
+</div>
+
+<div class="container mt-4" style="margin-left: 270px;">
     <h1 class="text-2xl">Provider List</h1>
     {% if provider %}
-        {% for user in provider %}
-            <div class="card mb-3" style="margin-top: 50px;" >
-                <div class="card-body">
-                    <h5 class="card-title">{{ user.get_full_name }}</h5>
-                    <p class="card-text">Email: {{ user.email }}</p>
-                    <p class="card-text">Phone Number: {{ user.phone_number }}</p>
-                    <p class="card-text">Number of Products Added: {{ user.products.count }}</p>
-                    <form method="post" action="{% url 'adminPanel:blockUnblockUserRenter' user.id %}" class="d-inline">
-                        {% csrf_token %}
-                        {% if user.is_active %}
-                            <button type="submit" class="btn btn-danger btn-sm">Block Provider</button>
-                        {% else %}
-                            <button type="submit" class="btn btn-success btn-sm">Unblock Provider</button>
-                        {% endif %}
-                    </form>
-                </div>
-            </div>
-        {% endfor %}
+        <ul class="list-unstyled" style="margin-top: 20px;">
+            {% for user in provider %}
+                <li class="mb-4 pb-3 border-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <h5>{{ user.get_full_name }}</h5>
+                            <p class="mb-0">Email: {{ user.email }}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-0">Phone Number: {{ user.phone_number }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p class="mb-0">Products Added: {{ user.products.count }}</p>
+                        </div>
+                        <div class="col-md-3 text-md-right">
+                            <form method="post" action="{% url 'adminPanel:blockUnblockUserRenter' user.id %}" class="d-inline">
+                                {% csrf_token %}
+                                {% if user.is_active %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Block</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-success btn-sm">Unblock</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     {% else %}
         <div class="alert alert-info mt-4">
             No providers found.
         </div>
     {% endif %}
 </div>
+
 {% endblock %}

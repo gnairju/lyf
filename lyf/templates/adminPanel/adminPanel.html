@@ -120,9 +120,34 @@
             </div>
         </div>
     </div>
-    <div id="content" class="container" style="margin-top: 15px;">
-        <!-- Your content goes here -->
-    </div>
+    <div id="content" class="container" style="width: 1000px; height: 500px; margin-top: 80px; margin-left: 300px;">
+        <canvas id="chart" width="500" height="500"></canvas>
+    </div>    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+    <script>
+        let ctx = document.getElementById("chart").getContext("2d");
+
+        let chart = new Chart(ctx, {
+        type: "bar",
+            data: {
+                labels: ["2020/Q1", "2020/Q2", "2020/Q3", "2020/Q4"],
+                datasets: [
+                    {
+                    label: "Gross volume ($)",
+                    backgroundColor: "#79AEC8",
+                    borderColor: "#417690",
+                    data: [26900, 28700, 27300, 29200]
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    text: "Gross Volume in 2020",
+                    display: true
+                }
+            }
+            });
+    </script>
     {% endblock %}
 </body>
 </html>

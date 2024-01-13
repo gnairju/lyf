@@ -65,6 +65,9 @@
             <a href="{% url 'provider:providerPanel' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
             </a>
+            <a href="{% url 'provider:provider_details' %}" class="list-group-item list-group-item-action py-2 ripple ">
+                <i class="fas fa-chart-area fa-fw me-3"></i><span>Provider Details</span>
+            </a>
             <a href="{% url 'provider:providerApproval' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-lock fa-fw me-3"></i><span>Rental Confirmation</span>
             </a>
@@ -83,9 +86,6 @@
                     <h4 class="mb-1">Product: {{ i.product }}</h4>
                     <p class="mb-1">Quantity: {{ i.quantity }}</p> 
                     <p class="mb-1">Days required: {{ i.days_needed }}</p>
-                    <p class="mb-1">Address: <span>{{ i.address.firstname }} {{ i.address.lastname }}</span></p>
-                    <p class="mb-1">{{ i.address.address }},{{ i.address.street }},{{ i.address.city }}</p>
-                    <p class="mb-1">{{ i.address.phone }}</p>
                     
                 </div>
                 <div class="col d-flex flex-column align-items-end">

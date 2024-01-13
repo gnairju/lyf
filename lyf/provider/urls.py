@@ -10,4 +10,5 @@ urlpatterns = [
     path('providerApproval',views.providerApproval,name='providerApproval'),
     path('activateOrder/<int:id>',views.activateOrder,name='activateOrder'),  
     path('deleteOrder/<int:id>',views.deleteOrder,name='deleteOrder'),
+    path('provider_details',views.provider_details,name='provider_details'),
 ]

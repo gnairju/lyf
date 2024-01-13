@@ -1,111 +1,121 @@
 {% extends "homePage.html" %}
 {% block content %}
     <style>
-        .products.view {
-            margin-left: 150px;
-            margin-right: 150px;
-            margin-top: 50px;
-            border: 1.5px solid #ddd;
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            position: relative;
-            overflow: hidden; /* Clear floats */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+            color: #343a40;
+            margin: 0;
         }
 
-        #additional-images-container {
-            flex: 1;
-            position: sticky;
-            top: 20px; /* Adjust the top distance as needed */
-            height: 300px; /* Set a fixed height for the sticky container */
-            overflow-y: auto; /* Add vertical scroll if needed */
-            margin-right: 5px; /* Reduced margin for spacing */
+        .product-container {
+            display: flex;
+            align-items: flex-start;
+            max-width: 800px;
+            overflow: hidden;
+            background-color: #ffffff;
+            border-radius: 10px;
+            margin: 10px auto; /* Adjusted margin */
         }
 
         .additional-images-container {
             display: flex;
             flex-direction: column;
-            gap: 5px; /* Adjust the gap between additional images */
+            gap: 10px;
+            margin-left: 10px;
         }
 
         .additional-image {
             width: 100px;
             height: auto;
-            border: 2px solid #eee; /* Light-colored border */
+            border: 2px solid #dee2e6;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .additional-image:hover {
-            border-color: #ddd; /* Darker border color on hover */
+        .main-image-container {
+            width: 65%;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
-        #main-image-container {
-            flex: 1;
-            position: sticky;
-            top: 20px; /* Adjust the top distance as needed */
-            height: 300px; /* Set a fixed height for the sticky container */
-            overflow-y: auto; /* Add vertical scroll if needed */
-            margin-right: 5px; /* Reduced margin for spacing */
-        }
-
-        #text-container {
-            flex: 1;
-            padding-left: 5px; /* Reduced padding for spacing */
-        }
-
-        #main-image {
+        .main-image {
             max-width: 100%;
             max-height: 300px;
             width: auto;
             height: auto;
-            border: 2px solid #eee; /* Light-colored border */
+            object-fit: contain;
+            border: 2px solid #dee2e6;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+            margin-bottom: 10px;
+        }
+
+        .text-container {
+            width: 30%;
+            padding: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         h2, p, h1, form {
             text-align: left;
-            margin-bottom: 10px; /* Add margin for spacing between elements */
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #007bff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            color: #ffffff;
         }
     </style>
 
-    <div class='products view'>
-        <div id="additional-images-container">
-            {% if product.multipleimage_set.all %}
-                <div class="additional-images-container">
-                    {% for image in product.multipleimage_set.all %}
-                        <!-- Additional Image with Zoom.js -->
-                        <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+    <div class="product-container">
+        {% if product.multipleimage_set.all %}
+            <div class="additional-images-container">
+                {% for image in product.multipleimage_set.all %}
+                    <!-- Additional Image with Zoom.js -->
+                    <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <div id="main-image-container">
+        <div class="main-image-container">
             <!-- Main Product Image with Zoom.js -->
-            <img id="main-image" class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
+            <img class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
         </div>
 
-        <div id="text-container">
+        <div class="text-container">
             <h2>{{ product.title }}</h2>
             <p>Description: {{ product.description }}</p>
             <h1>Price: {{ product.price }}/day</h1>
             <p>Provided by: {{ product.user.first_name }}</p>
             <form method="post" action="{% url 'cart:addToCart' product.id %}">
                 {% csrf_token %}
-                <input type="hidden" name="product_id" value="{{ product.id }}">
-                <button type="submit" class="btn ">Rent it</button>
+                <button type="submit">Rent it</button>
             </form>
         </div>
     </div>
 
     <script>
+        // Disable Zoom.js scaling bar
+        Zoom.noZoom = true;
+
         function swapImages(clickedImage) {
-            var mainImage = document.getElementById('main-image');
+            var mainImage = document.querySelector('.main-image');
             var tempSrc = mainImage.src;
             mainImage.src = clickedImage.src;
             clickedImage.src = tempSrc;
@@ -113,5 +123,4 @@
     </script>
     <!-- Zoom.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zoom/2.3.2/zoom.min.js"></script>
-
 {% endblock %}

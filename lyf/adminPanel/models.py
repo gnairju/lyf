@@ -5,6 +5,7 @@ class Categories(models.Model):
     Name = models.CharField(max_length=50,null=False,unique=True)
     description = models.CharField(max_length=500,null=True)
     
+
     def __str__(self) -> str:
         return self.Name
 
@@ -21,6 +22,7 @@ class Product(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
+    
 
     def __str__(self) -> str:
         return self.title
