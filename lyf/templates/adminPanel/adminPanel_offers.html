@@ -12,10 +12,10 @@
             <a href="{% url 'order:rental_management' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
             </a>
-            <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple active">
+            <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
             </a>
-            <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
+            <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
             </a>
             <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
@@ -39,34 +39,6 @@
             {% endfor %}
         </div>
     {% endif %}
-    <form class="form-inline" method="post" action="{% url 'adminPanel:adminAddCategory' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-success">Add Category</button>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Products</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in cat %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ category.Name }}</td>
-                    <td>{{ category.description }}</td>
-                    <td>{{ category.Products.count }}</td>
-                    <td>
-                        <a href="{% url 'adminPanel:adminDeleteCategory' category.id %}" class="btn btn-danger">Delete</a>
-                        <a href="{% url 'adminPanel:adminUpdateCategory' category.id %}" class="btn btn-primary">Update</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    
 </div>
 {% endblock %}

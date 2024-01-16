@@ -32,19 +32,6 @@
             margin-right: 20px;
         }
 
-        #sidebarMenu {
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow-y: auto;
-            background-color: #fff;
-            border-right: 1px solid #000000;
-            padding-top: 56px;
-            margin-top: 50px;
-        }
-
         .list-group-item {
             border: none;
             cursor: pointer;
@@ -108,6 +95,9 @@
                 <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
                 </a>
+                <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
+                </a>
                 <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
                 </a>
@@ -120,34 +110,56 @@
             </div>
         </div>
     </div>
-    <div id="content" class="container" style="width: 1000px; height: 500px; margin-top: 80px; margin-left: 300px;">
-        <canvas id="chart" width="500" height="500"></canvas>
-    </div>    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+    <div id="productContent" class="container d-flex flex-column" style="max-width: 600px; height: 700px; margin-top: 110px; margin-left: 300px;">
+        <div class="align-self-end">
+            <form action="{% url 'adminPanel:adminPanel' %}" method="post">
+                {% csrf_token %}
+                <div class="align-self-end">
+                    <select name="status" id="status">
+                        <option value="yearly">Yearly</option>
+                        <option value="daily">Daily</option>
+                        <option value="monthly">Monthly</option>
+                    </select>                  
+                    <button class="btn">Get Reports</button>
+                </div>
+            </form>
+        </div>
+        <canvas id="orderChart" width="500" height="500"></canvas>
+    </div>
+        
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script>
-        let ctx = document.getElementById("chart").getContext("2d");
+        var selectedOption = localStorage.getItem('selectedOption') || 'yearly';
 
-        let chart = new Chart(ctx, {
-        type: "bar",
-            data: {
-                labels: ["2020/Q1", "2020/Q2", "2020/Q3", "2020/Q4"],
-                datasets: [
-                    {
-                    label: "Gross volume ($)",
-                    backgroundColor: "#79AEC8",
-                    borderColor: "#417690",
-                    data: [26900, 28700, 27300, 29200]
-                    }
-                ]
-            },
-            options: {
-                title: {
-                    text: "Gross Volume in 2020",
-                    display: true
-                }
-            }
-            });
+        // Set the selected option in the dropdown
+        document.getElementById('status').value = selectedOption;
+
+        // Add an event listener to update the selected option in localStorage
+        document.getElementById('status').addEventListener('change', function () {
+            selectedOption = this.value;
+            localStorage.setItem('selectedOption', selectedOption);
+        });
+
+        var ctx = document.getElementById('orderChart').getContext('2d');
+        var orderData = {
+            labels: [{% for label in chart_labels %}{{ label }}, {% endfor %}],  // Fix variable name here
+            datasets: [{
+                label: 'Number of Rentals',
+                data: [{% for data in chart_data %}{{ data }}, {% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+    
+        var orderChart = new Chart(ctx, {
+            type: 'bar',
+            data: orderData,
+        });
     </script>
+    
+    
     {% endblock %}
 </body>
+
 </html>

@@ -50,3 +50,17 @@ class coupons(models.Model):
     def __str__(self) -> str:
         return self.name
     
+
+class offers(models.Model):
+    name=models.CharField(max_length=50,null=False)
+    OFFER_CHOICE = [
+        ('category','category'),
+        ('product','product'),
+    ]
+    offer_type = models.CharField(max_length=50, choices=OFFER_CHOICE, blank=True)
+    offer_percentage=models.FloatField(null=False)
+    is_active=models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+    

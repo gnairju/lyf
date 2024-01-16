@@ -16,7 +16,10 @@
             <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
             </a>
-            <a href="" class="list-group-item list-group-item-action py-2 ripple">
+            <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
+            </a>
+            <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
             </a>
             <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple active">
@@ -29,11 +32,8 @@
     </div>
 </div>
 
-<div id="content" class="container" style="margin-top: 25px;">
-    <!-- Your content goes here -->
-</div>
 
-<div class="container mt-4" style="margin-left: 270px;">
+<div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 110px; margin-left: 300px;">
     <h1 class="text-2xl">Provider List</h1>
     {% if provider %}
         <ul class="list-unstyled" style="margin-top: 20px;">

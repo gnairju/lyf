@@ -52,10 +52,3 @@ class order(models.Model):
         max_length=20,
         choices=PAYMENT_CHOICES
     )
-
-    def save(self,*args, **kwargs):
-        self.offer_delivery_charge=self.delivery_charge
-        self.offer_caution_deposit=self.caution_deposit
-        self.offer_total_price=self.total_price
-        self.offer_total_charges=self.total_charges
-        super().save(*args,**kwargs)

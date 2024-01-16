@@ -1,4 +1,5 @@
 from django.shortcuts import render,get_object_or_404,redirect
+from django.contrib.auth.decorators import login_required
 from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
 from order.models import order
@@ -6,7 +7,8 @@ from decimal import Decimal
 from django.urls import reverse
 from django.contrib import messages
 from .models import user_wallet
-
+from provider.models import provider_credentials
+from user.views import performlogin
 
 def make_payments(request,id):
     PAYMENT_CHOICE=order.PAYMENT_CHOICES
@@ -92,6 +94,7 @@ def wallet_credit(request, id):
 
     return redirect('user:user_profile')
 
+@login_required(login_url='user:performlogin')
 def wallet(request):
     user=request.user
     wall = get_object_or_404(user_wallet, user=user)
@@ -118,16 +121,20 @@ def provider_pay(request,id):
     product = ord.product
     host = request.get_host()
     total_price_decimal = Decimal(str(ord.total_price)).quantize(Decimal('0.01'))
-
-
+    if product:
+        pro=product.user
+        if pro:
+            provider=provider_credentials.objects.get(provider=pro)
+    
+    provider_mail=provider.paypal_id
     paypal_dict={
-        'business': product.paypal_email,
+        'business': provider_mail,
         'amount': '%.2f' % total_price_decimal,
         'item_name' : 'order {}'.format(ord.id),
         'invoice':str(ord.id),
         'country_code':"USD",
         'notify_url' : 'https://{}{}'.format(host,reverse('paypal-ipn')),
-        'return_url': 'http://{}{}'.format(host, reverse('payments:payment_done', kwargs={'id': ord.id})),
+        'return_url': 'http://{}{}'.format(host, reverse('adminPanel:pay_provider_success', kwargs={'id': ord.id})),
         'cancel_return': 'http://{}{}'.format(host,reverse('payments:payment_cancelled')),
         
     }

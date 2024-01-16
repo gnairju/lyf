@@ -76,7 +76,43 @@
 </div>
 
 
-<div class="container mt-4" style="margin-left: 270px; max-width: 1050px;">
+<div id="productContent" class="container" style="max-width: 800px; margin-top: 15px; margin-left: 300px;">
+
+    <form action="{% url 'provider:provider_details' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if provider_instance_set %}
+                <div class="form-group">
+                    <label for="pan_number">PAN Number:</label>
+                    <input type="text" class="form-control" name="pan_number" required value="{{ provider_instance_set.pan_card }}"><br>
+                </div>
+                <div class="form-group">
+                    <label for="pan_image">PAN Image:</label>
+                    {% if provider_instance_set.pan_photo %}
+                        <img src="{{ provider_instance_set.pan_photo.url }}" alt="PAN Image" style="max-width: 100%;">
+                        <br>
+                    {% endif %}
+                    <input type="file" class="form-control-file" id="pan_image" name="pan_image"><br>
+                </div>
+                <div class="form-group">
+                    <label for="paypal_mail">Paypal email:</label>
+                    <input type="email" class="form-control" name="paypal_mail" required value="{{ provider_instance_set.paypal_id }}"><br>
+                </div>
+        {% else %}
+            <div class="form-group">
+                <label for="pan_number">PAN Number:</label>
+                <input type="text" class="form-control" name="pan_number" required><br>
+            </div>
+            <div class="form-group">
+                <label for="pan_image">PAN Image:</label>
+                <input type="file" class="form-control-file" id="pan_image" name="pan_image" required><br>
+            </div>
+            <div class="form-group">
+                <label for="paypal_mail">Paypal email:</label>
+                <input type="email" class="form-control" name="paypal_mail" required><br>
+            </div>
+        {% endif %}
+        <button class="btn">Submit</button>
+    </form>
     
 </div>
 

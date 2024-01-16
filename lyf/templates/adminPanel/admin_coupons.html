@@ -96,7 +96,7 @@
     <div id="sidebarMenu" class="sidebar bg-white">
         <div class="position-sticky">
             <div class="list-group list-group-flush">
-                <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple active">
+                <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
                 </a>
                 <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple ">
@@ -107,6 +107,9 @@
                 </a>
                 <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+                </a>
+                <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
                 </a>
                 <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple active">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
@@ -120,7 +123,7 @@
             </div>
         </div>
     </div>
-    <div class="container" style="margin-left: 250px; margin-top: 120px;">
+    <div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 110px; margin-left: 300px;">
         {% if messages %}
                 <div class="alert alert-danger">
                     {% for message in messages %}

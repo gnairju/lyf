@@ -9,6 +9,8 @@ from geopy.distance import geodesic
 from adminPanel.models import Product
 from datetime import datetime, timedelta
 from adminPanel.models import coupons
+from django.http import HttpResponseServerError
+
 
 def get_coordinates_from_postal_code(postal_code):
     key = '632ebcb5bf224551955bab10f7b9974c'  # Replace with your OpenCage API key
@@ -123,35 +125,29 @@ def coupon_apply(request, id):
                 delivery_charge = order_instance.delivery_charge
                 discount_amount = (discount_percentage / 100) * delivery_charge
                 order_instance.offer_delivery_charge = delivery_charge - discount_amount
-                order_instance.save()
-                print(order_instance.offer_delivery_charge)
+                order_instance.offer_caution_deposit = order_instance.caution_deposit
+                order_instance.offer_total_price=order_instance.total_price
+
+
 
             elif coupon_type == 'caution':
                 print('caution')
                 caution_deposit = order_instance.caution_deposit
                 discount_amount = (discount_percentage / 100) * caution_deposit
                 order_instance.offer_caution_deposit = caution_deposit - discount_amount
-                order_instance.save()
+                order_instance.offer_delivery_charge=order_instance.delivery_charge
+                order_instance.offer_total_price=order_instance.total_price
+
+
 
             elif coupon_type == 'Total':
                 print('total')
-                total_charges = order_instance.total_charges
-                discount_amount = (discount_percentage / 100) * total_charges
-                order_instance.offer_total_charges = total_charges - discount_amount
-                order_instance.save()
-            
-            a=order_instance.offer_caution_deposit
-            b=order_instance.offer_delivery_charge 
-            c=order_instance.offer_total_price
-            d=order_instance.platform_charges
+                total_price = order_instance.total_price
+                discount_amount = (discount_percentage / 100) * total_price
+                order_instance.offer_total_charges = total_price - discount_amount
 
-            print(a);print(b);print(c);print(d)
 
-            order_instance.offer_total_charges = (
-                a+b+c+d
-            )
-
-            order_instance.save()
+            order_instance.offer_total_charges = order_instance.offer_delivery_charge + order_instance.offer_caution_deposit + order_instance.offer_total_price + order_instance.platform_charges
             print(order_instance.offer_total_charges)
 
             # Assign the new coupon
@@ -160,9 +156,22 @@ def coupon_apply(request, id):
             if coupon.num == 1:
                 coupon.is_active = False
             coupon.save()
+
+            # Save the order_instance after all modifications
             order_instance.save()
 
         except coupons.DoesNotExist:
             messages.error(request, 'Invalid coupon')
+            # If there's an exception, you may want to log it or handle it accordingly
+            return HttpResponseServerError("Internal Server Error")
 
     return redirect('payments:make_payments', id=id)
+
+
+def coupon_clear(request, id):
+    ord = order.objects.get(id=id)
+    ord.coupon = None
+    ord.save()
+    next_url = reverse('payments:make_payments', kwargs={'id': id})
+
+    return redirect(next_url)

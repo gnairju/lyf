@@ -1,18 +1,17 @@
 from django.shortcuts import render,redirect
 from adminPanel.models import Categories
-from .models import Product
+from adminPanel.models import Product
 from django.contrib.auth.decorators import login_required
 from user.views import performlogin
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product
 from django.http import HttpResponseBadRequest
 from adminPanel.models import multipleImage
 from django.core.mail import send_mail
 from user.models import CustomUser
 from django import http
 from order.models import order
+from .models import provider_credentials
 from adminPanel.models import Product
-from user.models import CustomUser
 from django.urls import reverse
 
 
@@ -143,6 +142,39 @@ def deleteOrder(request,id):
     ord.delete()
     return redirect(reverse('provider:providerApproval'))
 
+def reactivate_product(request,id):
+    ord=order.objects.get(id=id)
+    ord.product.quantity+=1
+    if ord.product.is_active==False:
+        ord.product.is_active=True
+    return redirect(reverse('provider:providerApproval'))
+
 
 def provider_details(request):
-    return render(request,'provider/provider_details.html')
+    provider_instance_set = get_object_or_404(provider_credentials, provider=request.user)
+
+    if request.method == 'POST':
+        pan_number = request.POST.get('pan_number')
+        pan_image = request.FILES.get('pan_image') if 'pan_image' in request.FILES else None
+        paypal_mail = request.POST.get('paypal_mail')
+        print(pan_image)
+
+
+        if provider_instance_set:
+            provider_instance_set.pan_card = pan_number
+            provider_instance_set.pan_photo = pan_image
+            provider_instance_set.paypal_id = paypal_mail
+
+            if pan_image:
+                provider_instance_set.pan_photo=pan_image
+            provider_instance_set.save()
+        else:
+            # If no instance exists, create a new one
+            provider_credentials.objects.create(
+                provider=request.user,
+                pan_card=pan_number,
+                pan_photo=pan_image,
+                paypal_id=paypal_mail,
+            )
+
+    return render(request, 'provider/provider_details.html', {'provider_instance_set': provider_instance_set})
