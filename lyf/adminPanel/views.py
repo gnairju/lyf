@@ -1,10 +1,18 @@
+import csv
 from django.shortcuts import render, redirect
 from .models import Categories, Product, coupons, offers
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from user.models import CustomUser
 from order.models import order
-
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from datetime import datetime
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 @login_required(login_url='user:perform_login')
@@ -164,9 +172,9 @@ def coupons_activate_deactivate(request,id):
     return redirect('adminPanel:coupons_page')
 
 
+
 @login_required(login_url='user:perform_login')
 def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=None, chart_data_month=None):
-    
     orders = order.objects.all()
 
     orders_by_month = {}
@@ -174,7 +182,7 @@ def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=N
     orders_by_day = {}
 
     for o in orders:
-        month = o.date.month  # Convert the month to a three-letter abbreviation
+        month = o.date.month
         if month in orders_by_month:
             orders_by_month[month] += o.quantity
         else:
@@ -192,25 +200,77 @@ def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=N
         else:
             orders_by_day[day] = o.quantity
 
+    detailed_report = None
+
     if request.method == 'POST':
         report = request.POST.get('status')
-        
+
         if report == 'yearly':
             chart_labels = list(orders_by_year.keys())
             chart_data = list(orders_by_year.values())
+            detailed_report = order.objects.filter(date__year=datetime.now().year)
 
-        if report == 'monthly':
+        elif report == 'monthly':
             chart_labels = list(orders_by_month.keys())
             chart_data = list(orders_by_month.values())
+            detailed_report = order.objects.filter(date__month=datetime.now().month)
 
-        if report == 'daily':
+        elif report == 'daily':
             chart_labels = list(orders_by_day.keys())
             chart_data = list(orders_by_day.values())
+            detailed_report = order.objects.filter(date=datetime.now().date())
+
+    return render(request, 'adminPanel/adminPanel.html', {'chart_labels': chart_labels, 'chart_data': chart_data, 'detailed_report': detailed_report})
+
+
+def download_detailed_report(request):
+    if request.method=='POST':
+        status = request.POST.get('status')
+        print('status',status)
+        orders = None
+        if status == 'yearly':
+            orders = order.objects.filter(date__year=datetime.now().year)
+        elif status == 'monthly':
+            orders = order.objects.filter(date__month=datetime.now().month)
+        elif status == 'daily':
+            orders = order.objects.filter(date=datetime.now().date())
+
+        
+        
+        request.session['status']=status
+
+        if orders:
+            return render(request, 'adminPanel/adminPanel_report.html', {'orders': orders})
+        else:
+            return render(request, 'adminPanel/adminPanel_report.html')
     
-        return render(request, 'adminPanel/adminPanel.html', {'chart_labels': chart_labels, 'chart_data': chart_data})
+def report_download(request):
+    template = get_template('adminPanel/adminPanel_report.html')
+    status=request.session['status']
+    if status == 'yearly':
+        orders = order.objects.filter(date__year=datetime.now().year)
+    elif status == 'monthly':
+        orders = order.objects.filter(date__month=datetime.now().month)
+    elif status == 'daily':
+        orders = order.objects.filter(date=datetime.now().date())
+    context={
+            'orders':orders,
+        }
     
-    return render(request, 'adminPanel/adminPanel.html', {'chart_labels': chart_labels,
-                                                           'chart_data': chart_data})
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="your_pdf_filename.pdf"'
+
+    # Create a PDF object
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    # If there are any error messages, show them
+    if pisa_status.err:
+        return HttpResponse('We had some errors with code %s <pre>%s</pre>' % (pisa_status.err, html))
+
+    return response
+
 
 
 def pay_provider_success(request,id):

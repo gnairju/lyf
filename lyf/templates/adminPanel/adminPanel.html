@@ -70,7 +70,7 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href=""><img src="{% static 'image/logo.png' %}" class="logo"></a>
+            <a href="{% url 'adminPanel:adminPanel' %}"><img src="{% static 'image/logo.png' %}" class="logo"></a>
         </div>
         <div class="nav-right">
             <ul>
@@ -112,37 +112,42 @@
     </div>
     <div id="productContent" class="container d-flex flex-column" style="max-width: 600px; height: 700px; margin-top: 110px; margin-left: 300px;">
         <div class="align-self-end">
-            <form action="{% url 'adminPanel:adminPanel' %}" method="post">
+            <form  method="post" action="{% url 'adminPanel:adminPanel' %}">
                 {% csrf_token %}
                 <div class="align-self-end">
                     <select name="status" id="status">
                         <option value="yearly">Yearly</option>
                         <option value="daily">Daily</option>
                         <option value="monthly">Monthly</option>
-                    </select>                  
-                    <button class="btn">Get Reports</button>
+                    </select>
+                    <button class="btn">Get Charts</button>
+                    <button class="btn" formaction="{% url 'adminPanel:download_detailed_report' %}">Get Reports</button>
                 </div>
             </form>
         </div>
         <canvas id="orderChart" width="500" height="500"></canvas>
+    
+        {% comment %} {% if detailed_report %}
+            <!-- <a href="{% url 'adminPanel:download_detailed_report' %}?status={{ selectedOption }}" class="btn btn-primary">Download Detailed Report</a> -->
+        {% endif %} {% endcomment %}
     </div>
-        
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script>
         var selectedOption = localStorage.getItem('selectedOption') || 'yearly';
-
+    
         // Set the selected option in the dropdown
         document.getElementById('status').value = selectedOption;
-
+    
         // Add an event listener to update the selected option in localStorage
         document.getElementById('status').addEventListener('change', function () {
             selectedOption = this.value;
             localStorage.setItem('selectedOption', selectedOption);
         });
-
+    
         var ctx = document.getElementById('orderChart').getContext('2d');
         var orderData = {
-            labels: [{% for label in chart_labels %}{{ label }}, {% endfor %}],  // Fix variable name here
+            labels: [{% for label in chart_labels %}{{ label }}, {% endfor %}],
             datasets: [{
                 label: 'Number of Rentals',
                 data: [{% for data in chart_data %}{{ data }}, {% endfor %}],
