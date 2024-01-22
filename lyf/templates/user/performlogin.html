@@ -69,7 +69,7 @@
                 {% csrf_token %}
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -81,7 +81,7 @@
                     <br>
                     <label for="password">Password</label><br>
                     <input type="password" class="form-control" name="password" placeholder="********">
-                    <br>
+                    <a href="{% url 'user:password_forget_maiil' %}">Forgot password</a><br><br>
                     <button type="submit" class="btn btn-primary">Login</button>
                     <br>
                     <a href="{% url 'user:user_registration' %}">New to lyf? Create an account</a>

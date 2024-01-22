@@ -17,11 +17,11 @@
                 </div>
                 <div class="card-body">
                     {% if messages %}
-                        <div class="alert alert-danger">
-                            {% for message in messages %}
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                                 {{ message }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
                     {% endif %}
 
                     <form method="post" action="{% url 'adminPanel:adminAddCategory' %}">
@@ -36,6 +36,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Add Category</button>
                     </form>
+
                 </div>
             </div>
         </div>

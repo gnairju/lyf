@@ -110,7 +110,7 @@
             </div>
         </div>
     </div>
-    <div id="productContent" class="container d-flex flex-column" style="max-width: 600px; height: 700px; margin-top: 110px; margin-left: 300px;">
+    <div id="productContent" class="container d-flex flex-column" style="max-width: 600px; height: 700px; margin-top: 120px; margin-left: 300px;">
         <div class="align-self-end">
             <form  method="post" action="{% url 'adminPanel:adminPanel' %}">
                 {% csrf_token %}
@@ -125,7 +125,9 @@
                 </div>
             </form>
         </div>
-        <canvas id="orderChart" width="500" height="500"></canvas>
+        <div>
+            <canvas id="orderChart" width="300" height="200"></canvas>
+        </div>
     
         {% comment %} {% if detailed_report %}
             <!-- <a href="{% url 'adminPanel:download_detailed_report' %}?status={{ selectedOption }}" class="btn btn-primary">Download Detailed Report</a> -->

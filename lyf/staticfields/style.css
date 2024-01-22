@@ -20,14 +20,10 @@ nav{
 
 
 }
-
-
-
-.btn{
+/* .btn{
     color: black;
     background-color: #cee9f1;
-}
-
+} */
 .logo{
     width: 250px;
     height: auto;
@@ -135,4 +131,11 @@ a{
 }
 
 
-
+input[type=text], input[type=password],input[type=email], input[type=number], select {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}

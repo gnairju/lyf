@@ -31,3 +31,6 @@ def searchbar(request):
             'query':query,
         }
     return render(request, 'homePage.html', context)
+
+def contactus(request):
+    return render(request,'contactus.html')

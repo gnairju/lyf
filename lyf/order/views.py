@@ -10,10 +10,12 @@ from adminPanel.models import Product
 from datetime import datetime, timedelta
 from adminPanel.models import coupons
 from django.http import HttpResponseServerError
-
+from django.contrib.auth.decorators import login_required
+from user.views import performlogin
+from adminPanel.views import admin_access_required
 
 def get_coordinates_from_postal_code(postal_code):
-    key = '632ebcb5bf224551955bab10f7b9974c'  # Replace with your OpenCage API key
+    key = '632ebcb5bf224551955bab10f7b9974c'  #OpenCage API key
     geocoder = OpenCageGeocode(key)
 
     results = geocoder.geocode(postal_code)
@@ -23,18 +25,8 @@ def get_coordinates_from_postal_code(postal_code):
         return (location['lat'], location['lng'])
     else:
         return None
-
-def calculate_distance(postal_code1, postal_code2):
-    coords1 = get_coordinates_from_postal_code(postal_code1)
-    coords2 = get_coordinates_from_postal_code(postal_code2)
-
-    if coords1 and coords2:
-        distance = geodesic(coords1, coords2).kilometers
-        print(distance)
-        return distance
-    else:
-        return None
     
+
 def calculate_platform_fee(total_price):
     x=total_price/100
     if x>30:
@@ -42,21 +34,41 @@ def calculate_platform_fee(total_price):
     else:
         return x 
 
+
+def calculate_distance(postal_code1, postal_code2):
+    coords1 = get_coordinates_from_postal_code(postal_code1)
+    coords2 = get_coordinates_from_postal_code(postal_code2)
+
+    if coords1 and coords2:
+        distance = geodesic(coords1, coords2).kilometers
+        print('distance')
+        print(type(distance))
+        print(distance)
+        return distance
+    else:
+        return None
+    
+@login_required(login_url='user:performlogin')
 def confirmRental(request):
     if request.method == 'POST':
         address = request.POST.get('selected_address')
         add = userAddress.objects.get(id=address)
-        user = request.user
-        cart_instance = cart.objects.filter(user=user)
+        print(add)
+        present_user = request.user
+        cart_instance = cart.objects.filter(user=present_user)
         x = add.pincode
+        print(x)
+        print(type(x))
         for i in cart_instance:
             y = i.product.pincodePro
+            print(y)
+            print(type(y))
             distance = calculate_distance(x, y)
+            print(distance)
             if distance is not None and distance > 10:
                 messages.error(request, 'Distance is too far. Order cannot be processed.')
                 return redirect(reverse('cart:checkout'))
             else:
-
                 total_price = i.product.price * i.quantity * i.days_needed
                 security = i.product.security
                 platform_charges = calculate_platform_fee(total_price)
@@ -73,6 +85,7 @@ def confirmRental(request):
                     platform_charges=platform_charges,
                     caution_deposit = security,
                     total_charges=total_charges,
+                    distance=distance,
                 )
                 c=Product.objects.get(id=i.product.id)
                 c.quantity-=i.quantity
@@ -88,7 +101,7 @@ def confirmRental(request):
     return redirect('home:homePage')
 
 
-
+@admin_access_required
 def rental_management(request):
     ord=order.objects.all()
     return render(request,'adminPanel/adminRentalDetails.html',{'ord':ord})
@@ -105,6 +118,7 @@ def statusChange(request,id):
         ord.ret_date=ord.del_date+timedelta(days=days_req)
         ord.status=status
         ord.save()
+        messages.success(request,'Status changed')
     return redirect('order:rental_management')
 
 
@@ -156,8 +170,6 @@ def coupon_apply(request, id):
             if coupon.num == 1:
                 coupon.is_active = False
             coupon.save()
-
-            # Save the order_instance after all modifications
             order_instance.save()
 
         except coupons.DoesNotExist:

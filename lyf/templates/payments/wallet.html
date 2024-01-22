@@ -1,12 +1,15 @@
 {% extends "homePage.html" %}
 {% block content %}
-    <div class="container">
-        <h2>Wallet</h2>
-        {% if wall %}
-        <p>Your Wallet balance is <input readonly value="₹{{ wall.balance_amount }}/-"></input></p>
-        {% else %}
-        <p>Your wallet is empty
-        </p>
-        {% endif %}
-    </div>
+<div class="card" style="margin-left: 100px; margin-top: 50px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <h1 style="margin-bottom: 20px;">Wallet</h1>
+    
+    {% if wall %}
+    <p style="font-size: 18px; margin-bottom: 10px;">Your Wallet balance is 
+        <input type="text" readonly value="₹{{ wall.balance_amount }}/-" style="border: none; font-size: 18px; color: #333; background-color: #f9f9f9; padding: 5px; border-radius: 4px;"></input>
+    </p>
+    {% else %}
+    <p style="font-size: 18px;">Your wallet is empty</p>
+    {% endif %}
+</div>
+
 {% endblock %}

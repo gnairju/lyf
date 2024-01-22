@@ -8,53 +8,60 @@ from order.models import order
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 
-@login_required(login_url='user:perform_login')
+def admin_access_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden("You don't have permission to access this page.")
+
+    return wrapper
+ 
+@admin_access_required
 def adminProducts(request):
     products=Product.objects.all()
     return render(request, 'adminPanel/adminProducts.html',{'products': products})
 
 
-@login_required(login_url='user:perform_login')
+@admin_access_required
 def adminAddProducts(request):
     pass
 
 
-@login_required(login_url='user:perform_login')
+@admin_access_required
 def adminCategory(request):
     cat = Categories.objects.all()
     return render(request, 'adminPanel/adminCategory.html', {'cat': cat})
 
 
-@login_required(login_url='user:perform_login')
+@admin_access_required
 def adminAddCategory(request):
     if request.method == 'POST':
         Name = request.POST.get('Name')
         description = request.POST.get('Description')
-        Products = request.POST.get('Products')
-
         if not Name:
             messages.error(request, 'Category name is required')
         else:
-            obj=Categories.objects.create(Name=Name,description=description)
+            Categories.objects.create(Name=Name,description=description)
             messages.success(request, 'Category added successfully')
             return redirect('adminPanel:adminCategory')
 
     return render(request,'adminPanel/adminAddCategory.html')
 
-
+@admin_access_required
 def adminDeleteCategory(request,id):
     ct=Categories.objects.get(id=id)
     ct.delete()
     return redirect('adminPanel:adminCategory')
 
-
+@admin_access_required
 def adminUpdateCategory(request, id):
     cu = Categories.objects.get(id=id)
 
@@ -78,15 +85,17 @@ def adminUpdateCategory(request, id):
     return render(request, 'adminPanel/adminUpdateCategory.html', {'cu': cu})
 
 
-
+@admin_access_required
 def renterList(request):
     renter=CustomUser.objects.all().exclude(is_staff=True)
     return render(request,'adminPanel/renterList.html',{'renter':renter})
 
+@admin_access_required
 def providerList(request):
     provider=CustomUser.objects.filter(is_staff=True).exclude(is_superuser=True)
     return render(request,'adminPanel/providerList.html',{'provider':provider})
 
+@admin_access_required
 def blockUnblockUserProvider(request,id=id):
     if request.method == 'POST':
         u=CustomUser.objects.get(id=id)
@@ -97,7 +106,7 @@ def blockUnblockUserProvider(request,id=id):
         u.save()
     return redirect('adminPanel:providerList')
 
-
+@admin_access_required
 def blockUnblockUserRenter(request,id=id):
     if request.method == 'POST':
         u=CustomUser.objects.get(id=id)
@@ -108,7 +117,7 @@ def blockUnblockUserRenter(request,id=id):
         u.save()
     return redirect('adminPanel:renterList')
 
-
+@admin_access_required
 def activeDeactiveProducts(request,id=id):
     if request.method=='POST':
         ban=Product.objects.get(id=id)
@@ -120,31 +129,36 @@ def activeDeactiveProducts(request,id=id):
     return redirect('adminPanel:adminProducts')
 
 
-
+@admin_access_required
 def user_offers(request):
     return render(request,'adminPanel/adminPanel_offers.html')
 
-
+@admin_access_required
 def add_user_offer(request):
+    OFFER_CHOICE = offers.OFFER_CHOICE
+    print(OFFER_CHOICE)
     if request.method == 'POST':
         name=request.POST.get('offer_name')
         offer_type=request.POST.get('offer_type')
         offer_percentage=request.POST.get('offer_percentage')
-        offers.objects.create(
-            name=name,
-            offer_type=offer_type,
-            offer_percentage=offer_percentage
-        )
-        messages.success(request, 'Coupouns added successfully')
-        return redirect('adminPanel:add_user_offer')
-    return render(request,'adminPanel/add_user_offer.html',{})
+        if not name:
+            messages.error(request,'Name is required')
+        else:
+            offers.objects.create(
+                name=name,
+                offer_type=offer_type,
+                offer_percentage=offer_percentage
+            )
+            messages.success(request, 'Offer added successfully')
+            return redirect('adminPanel:add_user_offer')
+    return render(request,'adminPanel/add_user_offer.html',{'OFFER_CHOICE':OFFER_CHOICE})
 
-
+@admin_access_required
 def coupons_page(request):
     cop=coupons.objects.all()
     return render(request,'adminPanel/admin_coupons.html',{'cop':cop})
 
-
+@admin_access_required
 def add_coupons(request):
     COUPON_CHOICE = coupons.COUPON_CHOICE
     if request.method == 'POST':
@@ -161,6 +175,7 @@ def add_coupons(request):
     return render(request,'adminPanel/add_coupons.html',{'COUPON_CHOICE': COUPON_CHOICE })
 
 
+@admin_access_required
 def coupons_activate_deactivate(request,id):
     if request.method=='POST':
         cop=coupons.objects.get(id=id)
@@ -173,7 +188,7 @@ def coupons_activate_deactivate(request,id):
 
 
 
-@login_required(login_url='user:perform_login')
+@admin_access_required
 def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=None, chart_data_month=None):
     orders = order.objects.all()
 
@@ -222,7 +237,7 @@ def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=N
 
     return render(request, 'adminPanel/adminPanel.html', {'chart_labels': chart_labels, 'chart_data': chart_data, 'detailed_report': detailed_report})
 
-
+@admin_access_required
 def download_detailed_report(request):
     if request.method=='POST':
         status = request.POST.get('status')
@@ -244,6 +259,7 @@ def download_detailed_report(request):
         else:
             return render(request, 'adminPanel/adminPanel_report.html')
     
+@admin_access_required
 def report_download(request):
     template = get_template('adminPanel/adminPanel_report.html')
     status=request.session['status']
@@ -272,7 +288,7 @@ def report_download(request):
     return response
 
 
-
+@admin_access_required
 def pay_provider_success(request,id):
     ord=order.objects.get(id=id)
     ord.payment_provider=True
@@ -280,3 +296,7 @@ def pay_provider_success(request,id):
     return redirect('order:rental_management')
 
 
+def order_complete_details(request,id):
+    ord=order.objects.get(id=id)
+    print(ord)
+    return render(request,'adminPanel/order_complete_details.html',{'ord':ord})

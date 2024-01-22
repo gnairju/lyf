@@ -10,6 +10,8 @@ from .models import user_wallet
 from provider.models import provider_credentials
 from user.views import performlogin
 
+
+@login_required(login_url='user:performlogin')
 def make_payments(request,id):
     PAYMENT_CHOICE=order.PAYMENT_CHOICES
     ord = order.objects.get(id=id)
@@ -20,6 +22,9 @@ def make_payments(request,id):
     
     return render(request,'payments/payments.html',context)
 
+
+
+@login_required(login_url='user:performlogin')
 def payment_selection(request,id):
     ord=order.objects.get(id=id)
     PAYMENT_CHOICE=order.PAYMENT_CHOICES
@@ -43,12 +48,12 @@ def payment_selection(request,id):
 def final_pay(request,id):
     ord = order.objects.get(id=id)
     host = request.get_host()
-    total_charges_decimal = Decimal(str(ord.total_charges)).quantize(Decimal('0.01'))
+    offer_total_charges_decimal = Decimal(str(ord.offer_total_charges)).quantize(Decimal('0.01'))
 
 
     paypal_dict={
         'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': '%.2f' % total_charges_decimal,
+        'amount': '%.2f' % offer_total_charges_decimal,
         'item_name' : 'order {}'.format(ord.id),
         'invoice':str(ord.id),
         'country_code':"USD",
@@ -67,16 +72,21 @@ def final_pay(request,id):
     
     return render(request,'payments/payment_paypal.html',context)
 
+
+@login_required(login_url='user:performlogin')
 def payment_done(request,id):
     ord=order.objects.get(id=id)
     ord.payment=True
     ord.save()
-    messages.success(request,"payment done")
-    return render(request,'user/user_payment.html')
+    messages.success(request,"payment done sucessfuly")
+    return redirect('user:user_profile')
 
+
+@login_required(login_url='user:performlogin')
 def payment_cancelled(request):
     messages.error(request,"payment cancelled")
     return render(request,'user/user_payment.html')
+
 
 def wallet_credit(request, id):
     ord = get_object_or_404(order, id=id)
@@ -101,6 +111,8 @@ def wallet(request):
     print(wall)
     return render(request,'payments/wallet.html',{'wall':wall})
 
+
+@login_required(login_url='user:performlogin')
 def wallet_debit(request,id):
     wallet=user_wallet.objects.get(user=request.user)
     ord=order.objects.get(id=id)
@@ -109,9 +121,9 @@ def wallet_debit(request,id):
         'wallet':wallet,
     }
     if request.method=='POST':
-        wallet.balance_amount=wallet.balance_amount-ord.total_charges
+        wallet.balance_amount=wallet.balance_amount-ord.offer_total_charges
         wallet.save()
-        return redirect('payment:payment_done',id=id)
+        return redirect('payments:payment_done',id=id)
 
     return render(request,'payments/wallet_payment.html',context)
 

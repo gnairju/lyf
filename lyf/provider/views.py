@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect
 from adminPanel.models import Categories
 from adminPanel.models import Product
-from django.contrib.auth.decorators import login_required
 from user.views import performlogin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest
@@ -13,6 +12,7 @@ from order.models import order
 from .models import provider_credentials
 from adminPanel.models import Product
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url='user:performlogin')
@@ -39,6 +39,11 @@ def providerAddProduct(request):
         price = request.POST.get('price')
         category_Name = request.POST.get('category')
         quantity = request.POST.get('quantity')
+        phone=request.POST.get('phone')
+        address=request.POST.get('address')
+        street=request.POST.get('street')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
         pincodePro = request.POST.get('pincodePro')
 
         # Handle main image upload
@@ -61,7 +66,12 @@ def providerAddProduct(request):
             image=main_image,
             quantity=quantity,
             pincodePro = pincodePro,
-            security=security,
+            phone = phone,
+            address = address,
+            street = street,
+            city = city,
+            state = state,
+            security = security,
         )
 
         # Create MultipleImage instances for additional images
@@ -82,13 +92,14 @@ def providerAddProduct(request):
     return render(request, 'provider/providerAddProducts.html', {'categories': categories})
 
 
-
+@login_required(login_url='user:performlogin')
 def providerDeleteProducts(request,id):
     pro=Product.objects.get(id=id)
     pro.delete()
     return redirect('provider:providerPanel')
 
 
+@login_required(login_url='user:performlogin')
 def providerUpdateProducts(request, id):
     # Get the product instance using the product_id
     product = get_object_or_404(Product, id=id)
@@ -116,7 +127,7 @@ def providerUpdateProducts(request, id):
     return render(request, 'provider/providerUpdateProducts.html', {'product': product})
 
 
-
+@login_required(login_url='user:performlogin')
 def providerApproval(request):
     ord = order.objects.filter(product__user=request.user)
     #total_price = ord.product.price * ord.quantity * ord.days_needed
@@ -126,6 +137,7 @@ def providerApproval(request):
     return render(request, 'provider/providerApproval.html', context)
 
 
+@login_required(login_url='user:performlogin')
 def activateOrder(request,id):
     ord = order.objects.get(id=id)
     ord.is_active=True
@@ -134,24 +146,37 @@ def activateOrder(request,id):
     from_email = 'o23211671@gmail.com'  
     email = ord.user
     send_mail(subject, message, from_email, [email])
+    ord.status='confirmed'
     ord.save()
     return redirect(reverse('provider:providerApproval'))
 
+
+@login_required(login_url='user:performlogin')
 def deleteOrder(request,id):
     ord = order.objects.get(id=id)
     ord.delete()
     return redirect(reverse('provider:providerApproval'))
 
+
+@login_required(login_url='user:performlogin')
 def reactivate_product(request,id):
     ord=order.objects.get(id=id)
     ord.product.quantity+=1
+    print(ord.product.quantity)
     if ord.product.is_active==False:
         ord.product.is_active=True
+    ord.save()
+    print(ord.product.quantity)
     return redirect(reverse('provider:providerApproval'))
 
-
+@login_required(login_url='user:performlogin')
 def provider_details(request):
-    provider_instance_set = get_object_or_404(provider_credentials, provider=request.user)
+    provider_instance_set=None
+    try:
+        provider_instance_set = get_object_or_404(provider_credentials, provider=request.user)
+        print(provider_instance_set)
+    except:
+        provider_instance_set=None
 
     if request.method == 'POST':
         pan_number = request.POST.get('pan_number')
@@ -168,13 +193,15 @@ def provider_details(request):
             if pan_image:
                 provider_instance_set.pan_photo=pan_image
             provider_instance_set.save()
+            return redirect('provider:provider_details')
         else:
-            # If no instance exists, create a new one
             provider_credentials.objects.create(
                 provider=request.user,
                 pan_card=pan_number,
                 pan_photo=pan_image,
                 paypal_id=paypal_mail,
             )
+            return redirect('provider:provider_details')
+
 
     return render(request, 'provider/provider_details.html', {'provider_instance_set': provider_instance_set})

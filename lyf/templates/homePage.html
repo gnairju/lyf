@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link rel="icon" href="{% static "image/icon.png" %}">
     <title>lyf Rentals</title>
+    
 </head>
 <body>
     <nav>
@@ -19,7 +20,7 @@
                     <form class="form-inline" method="get" action="{% url 'home:searchbar' %}">
                         <div class="input-group">
                             <input class="form-control custom-size-input" type="search"  aria-label="Search" name="q" value="{{ query }}">
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn" style="background-color: #DCECEC;">
                                 <img src="{% static 'image/Search.svg' %}" alt="Search Icon" class="search-icon">
                             </button>
                         </div>
@@ -28,7 +29,7 @@
                     <form class="form-inline" method="get" action="{% url 'home:searchbar' %}">
                         <div class="input-group">
                             <input class="form-control custom-size-input" type="search" placeholder="Search" aria-label="Search" name="q" >
-                            <button type="submit" class="btn">
+                            <button type="submit" class="btn" style="background-color: #DCECEC;">
                                 <img src="{% static 'image/Search.svg' %}" alt="Search Icon" class="search-icon">
                             </button>
                         </div>
@@ -60,7 +61,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'user:user_profile' %}">My Profile</a>
-                        <a class="dropdown-item" href="#">Contact us</a>
+                        <a class="dropdown-item" href="{% url 'home:contactus' %}">Contact us</a>
                     </div>
                 </li>
             </ul>
@@ -69,11 +70,19 @@
 
     {% block content %}
         <div class="container mt-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
             {% if products%}
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-3 mb-4">
-                    <div class="card border shadow hover" style="width: 250px; height: 420px;">
+                    <div class="card border shadow hover" style="width: 250px; height: 420px; background-color: #FFFFFF;">
                         <img class="card-img-top border-bottom p-3 rounded-top" style="width: 100%; height: 60%; object-fit: cover;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'image/placeholder_image.jpg' %}{% endif %}" alt="Product Image">
                         <div class="card-body">
                             <a href="{% url 'products:productPage' product.id %}">
@@ -85,7 +94,7 @@
                             <form method="post" action="{% url 'cart:addToCart' product.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <button type="submit" class="btn ">Add to Cart</button>
+                                <button type="submit" class="btn btn-secondary">Add to Cart</button>
                             </form>
                         </div>
                     </div>

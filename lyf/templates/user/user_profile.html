@@ -2,105 +2,105 @@
 {% block content %}
 <style>
     body {
-        background-color: #f8f9fa;
+        background-color: #ffffff;
     }
 
-    .profile-section {
-        margin-left: 120px;
-        padding: 30px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 4px;
-        border: 1px solid black;
-        width: 100%;
-    }
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #C1DCDC;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-top: 130px;
+}
 
-    .user-info {
-        margin-bottom: 20px;
-    }
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+}
 
-    .order-history {
-        border-top: 1px solid #dee2e6;
-        padding-top: 20px;
-    }
+.sidenav a:hover {
+  color: #f1f1f1;
+}
 
-    .sidebar {
-        position: fixed;
-        height: 100%;
-        width: 250px;
-        padding-top: 20px;
-        background-color: #fff;
-        border: 1px solid black;
-    }
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 50px 100px;
+  padding-top: 20px;
+}
 
-    .sidebar a {
-        color: black;
-    }
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
 
-    .sidebar-heading {
-        font-size: 1.2rem;
-        padding: 10px 0;
-    }
+.list-group-item {
+    box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1); /* Adjust the shadow values as needed */
+    margin-bottom: 15px; /* Adjust the margin as needed */
+    background-color: #ffffff;
+    border-radius: 1px;
+}
+
+small{
+    font-size: 80%;
+}
+
+.active {
+    background-color: white;
+}
+
 </style>
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <h2 class="text-center sidebar-heading">User Profile</h2>
-        <p class="text-center">{{ request.user.firstname }}</p>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'user:user_profile' %}">User Details</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'user:user_payment' %}">Payment</a>
-            </li>
-        </ul>
-    </div>
 
-    <!-- Page content -->
-    <div class="container">
+    <div class="sidenav">
+        <a href="{% url 'user:user_profile' %}" class="active">User</a>
+        <a href="{% url 'user:user_edit' %}">User Details</a>
+        <a href="{% url 'user:user_payment' %}">Payments</a>
+        <a href="{% url 'user:user_referral' %}">My Referrals</a>
+    </div>
+      
+    <div class="main">
         <div class="profile-section">
-            <h2>Welcome, {{ request.user.first_name }}!</h2>
-            
-            <!-- Display user information -->
-            <div id="user-details" class="user-info">
-                <h3>User Details</h3>
-                <p><strong>Email:</strong> {{ request.user.email }}</p>
-                <!-- Add more user details as needed -->
-            </div>
-            
+            <h2>Welcome, {{ request.user.first_name }}!</h2>        
             <!-- Display order history -->
             <div id="payment" class="order-history">
-                <h3>Order History</h3>
                 <ul class="list-group">
+                    <h2>Order History</h2>
                     {% for order in user_orders %}
                         <li class="list-group-item">
-                            <strong>Product Name:</strong> {{ order.product }}<br>
-                            <strong>Total Amount:</strong> ₹{{ order.total_charges }}<br>
+                            <small>Product Name:</small> {{ order.product }}<br>
+                            <small>Total Amount:</small> ₹{{ order.total_charges }}<br>
                             <img src="{{ order.product.image.url }}" alt="{{ order.product }}" class="thumbnail" style="float: right; margin-left: 10px; width: 70px; height: 70px;">
 
                             {% if order.cancelled_rental %}
                                 <button class="btn btn-danger">Cancelled</button>
                             {% else %}
-                                <strong>Status:</strong> {{ order.status }}<br>
-                                <a href="{% url 'user:user_invoice' order.id %}" class="btn btn-default">Invoice</a>
+                                <small>Status:</small>{{ order.status }}<br>
+                                <a href="{% url 'user:user_invoice' order.id %}" class="btn btn-dark">Invoice</a>
                             
                                 {% if order.status == 'confirmed' or order.status == 'Taken' or order.status == 'Shipped' %}
                                     <a href="{% url 'payments:wallet_credit' order.id %}" class="btn btn-danger">Cancel Rental</a>
-                                {% else %}
-                                    <a href="" class="btn btn-danger">Early Return</a>
+                                {% comment %} {% else %}
+                                    <a href="" class="btn btn-danger">Early Return</a> {% endcomment %}
                                 {% endif %}
                             {% endif %}
                             <!-- Add more order details as needed -->
-                        </li>
+                        </li><br>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
-
     <!-- Include Bootstrap JS (optional, if needed) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94uKmpw/OiGKl2f" crossorigin="anonymous"></script>

@@ -21,6 +21,9 @@ urlpatterns = [
     path('coupons_activate_deactivate/<int:id>',views.coupons_activate_deactivate,name='coupons_activate_deactivate'),
     path('pay_provider_success/<int:id>',views.pay_provider_success,name='pay_provider_success'),
     path('user_offers',views.user_offers,name='user_offers'),
+    path('add_user_offer',views.add_user_offer,name='add_user_offer'),
     path('download_detailed_report',views.download_detailed_report,name='download_detailed_report'),
     path('report_download',views.report_download,name='report_download'),
+    path('pay_provider_success/<int:id>/',views.pay_provider_success,name='pay_provider_success'),
+    path('order_complete_details/<int:id>',views.order_complete_details,name='order_complete_details'),
 ]

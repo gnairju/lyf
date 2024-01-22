@@ -31,14 +31,45 @@
     </div>
 </div>
 
-<div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 110px; margin-left: 300px;">
+<div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 120px; margin-left: 300px;">
     {% if messages %}
-        <div class="alert alert-danger">
-            {% for message in messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
                 {{ message }}
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     {% endif %}
-    
+    <a href="{% url 'adminPanel:add_user_offer' %}"><button type="submit" class="btn btn-success">Add Offer</button></a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Discount</th>
+                <th>Offer type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in cop %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ c.name }}</td>
+                <td>{{ c.discount }}%</td>
+                <td>{{ c.coupon_type }}</td>
+                <td>
+                    <form action="{% url 'adminPanel:coupons_activate_deactivate' c.id %}" method="post">
+                        {% csrf_token %}
+                        {% if c.is_active %}
+                            <button type="submit" class="btn btn-danger">Deactivate</button>
+                        {% else %}
+                            <button type="submit" class="btn btn-primary">Activate</button>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

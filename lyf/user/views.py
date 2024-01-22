@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 from datetime import datetime, timedelta  # Import datetime and timedelta
 from django.contrib.auth.decorators import login_required
 from order.models import order
-
+from payments.models import user_wallet
 
 CustomUser = get_user_model()
 
@@ -48,9 +48,11 @@ def user_registration(request):
         password1 = forms.CharField(widget=forms.PasswordInput, label='Password')
         password2 = forms.CharField(widget=forms.PasswordInput, label='Confirm Password')
 
+        referrer_code = forms.CharField(required=False)
+
         class Meta:
             model = CustomUser
-            fields = ['email', 'first_name', 'last_name', 'phone_number']
+            fields = ['email', 'first_name', 'last_name', 'phone_number','referrer_code']
 
         def clean_password2(self):
             password1 = self.cleaned_data.get("password1")
@@ -66,6 +68,18 @@ def user_registration(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             
+            referrer_code = form.cleaned_data['referrer_code']
+
+            if referrer_code:
+                try:
+                    referrer_user=CustomUser.objects.get(referral_code=referrer_code)
+                    referrer_id = referrer_user.id
+                    request.session['referrer_id']=referrer_id
+
+                except:
+                    messages.error(request,'Invalid referral')
+
+
             #otp section
             totp = pyotp.TOTP(pyotp.random_base32(), interval=60)
             otp = totp.now()
@@ -80,12 +94,13 @@ def user_registration(request):
                 'first_name': user.first_name,
                 'last_name': user.last_name,
                 'phone_number': user.phone_number,
+                'referral_code':user.referral_code,
             }
 
             # Send OTP via email
             subject = 'Your OTP for Login'
             message = f'Your OTP for login is: {otp}'
-            from_email = 'o23211671@gmail.com'  
+            from_email = 'o23211671@gmail.com'
             print(otp)
             send_mail(subject, message, from_email, [user.email])
 
@@ -120,15 +135,36 @@ def otpPage(request):
                     # OTP verification successful
                     # Retrieve user details from the session
                     user_details = request.session.get('user_details', {})
+                    referrer_id = request.session.get('referrer_id')
+                    referrer=CustomUser.objects.get(id=referrer_id)
                     user = CustomUser(**user_details)
-
-                    # Set the user's password and save the user
+                    user.referrer=referrer
                     user.set_password(request.session.get('password'))
                     user.save()
                     login(request,user)
+                    #user_wallet creation
+                    if user.referrer is not None:
+                        user_wallet.objects.create(
+                            user=request.user,
+                            balance_amount=100,
+                        )
+                        #credit to referrar
+                        referrer=CustomUser.objects.get(id=referrer_id)
+                        referral_wallet=user_wallet.objects.get(user=referrer)
+                        referral_wallet.balance_amount = referral_wallet.balance_amount + 100
+                        referral_wallet.save()
+
+                        messages.success(request,'₹100 credited to your wallet.')
+
+                    else:
+                        user_wallet.objects.create(
+                            user=request.user
+                        )
+            
                     del request.session['user_details']
                     del request.session['otp_secret_key']
                     del request.session['otp_valid_date']
+                    del request.session['referrer_id']
                     # Redirect to the desired page
                     return redirect("home:homePage")
                 else:
@@ -192,3 +228,115 @@ def user_cancel_rental(request,id):
 def user_invoice(request,id):
     ord=order.objects.filter(id=id)
     return render(request,'user/invoice.html',{'ord':ord})
+
+
+def password_forget_maiil(request):
+    if request.method=='POST':
+        useremail=request.POST.get('useremail')
+        try:
+            user=CustomUser.objects.get(email=useremail)
+            request.session['current_user']=useremail
+            totp = pyotp.TOTP(pyotp.random_base32(), interval=60)
+            otp = totp.now()
+            request.session["otp_secret_key_for"] = totp.secret
+            valid_date = datetime.now() + timedelta(seconds=60)
+            request.session["otp_valid_date_for"] = str(valid_date)
+
+            # Send OTP via email
+            subject = 'Your OTP for Login'
+            message = f'Your OTP for login is: {otp}'
+            from_email = 'o23211671@gmail.com'
+            print(otp)
+            send_mail(subject, message, from_email, [useremail])
+            return redirect(reverse('user:password_forget_maiil'))
+        except CustomUser.DoesNotExist:
+            messages.error(request, 'Enter a registered email')
+
+    return render(request,'user/user_forgot.html')
+
+def forgot_otp_verify(request):
+    if request.method=='POST':
+        entered_otp =request.POST.get('otp')
+        otp_secret_key_for = request.session.get('otp_secret_key_for')
+        otp_valid_date_for = request.session.get('otp_valid_date_for')
+
+        # Verify the OTP
+        if otp_secret_key_for and otp_valid_date_for is not None:
+            valid_until = datetime.fromisoformat(otp_valid_date_for)
+
+            # Check if the OTP is still valid
+            if valid_until > datetime.now():
+                totp = pyotp.TOTP(otp_secret_key_for, interval=60)
+                current_otp=totp.now()
+                if current_otp==entered_otp:
+                    del request.session['otp_secret_key_for']
+                    del request.session['otp_valid_date_for']
+                    return redirect('user:password_change')
+                else:
+                    messages.error(request,'Invalid OTP')
+                    return redirect('forgot_otp_verify')
+    return render(request,'user_forgot.html')
+
+def password_change(request):
+    if request.method=='POST':
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
+        if password1==password2:
+            current_user_mail=request.session['current_user']
+            current_user=CustomUser.objects.get(email=current_user_mail)
+            current_user.set_password(password1)
+            current_user.save()
+            del request.session['current_user']
+            return redirect('user:performlogin')
+        else:
+            messages.error(request,'password donot match')
+    return render(request,'user/password_again.html')
+
+
+
+def user_edit(request):
+    user_email = request.user.email
+    details = CustomUser.objects.get(email=user_email)
+
+    if request.method == 'POST':
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get('lastname')
+        phone_number = request.POST.get('mobile')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+        if first_name:
+            details.first_name = first_name
+        if last_name:
+            details.last_name = last_name
+        if phone_number:
+            details.phone_number = phone_number
+
+        if not (first_name and last_name and phone_number):
+            messages.error(request, 'Invalid Data')
+        
+        if password1 and password2:
+            if password1 == password2:
+                details.set_password(password1)
+                details.save()
+                messages.success(request, 'User details updated successfully')
+                messages.success(request, 'Please login')
+                return redirect('user:performlogin')
+            else:
+                messages.error(request, 'Password does not match')
+        messages.success(request,'User details updated successfully')
+        details.save()
+
+    return render(request, 'user/user_edit.html', {'details': details})
+
+
+def user_referral(request):
+    user = request.user
+    referred_users = user.referred_users.all()
+
+    context = {
+        'referred_users': referred_users,
+        'user_refer': user,
+    }
+    return render(request, 'user/user_referrals.html', context)
+    

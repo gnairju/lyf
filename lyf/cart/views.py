@@ -8,8 +8,10 @@ from django.views.decorators.cache import never_cache
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='user:performlogin')
 def updateCart(request):
     if request.method == 'POST':
         for cart_item in cart.objects.filter(user=request.user):

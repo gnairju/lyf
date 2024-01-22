@@ -1,27 +1,39 @@
 {% extends "homePage.html" %}
 {% block content %}
 <div class="container-shadow" style="margin-top: 20px; margin-left: 40px; margin-right: 70px;">
-    <div class="row">
+    <div class="container">
         <div class="col-md-6 d-flex justify-content-end">
             <div class="card w-100">
                 <div class="card-body ">
                     {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                     {% endif %}
                     <h3>Rental Details</h3>
-                    <h5 class="card-title">{{ ord.product }}</h5>
+                    <h2 class="card-title">Product: {{ ord.product }}</h2>
                     <p class="card-text">
-                        <strong>Days Required:</strong> {{ ord.days_needed }} Day<br>
-                        <strong>Quantity:</strong> {{ ord.quantity }} Number<br>
+                        <label for="days-required">Days Required:</label>
+                        <input type="text" id="days-required" name="days_required" value="{{ ord.days_needed }}" readonly><br>
+
+                        <label for="quantity">Quantity:</label>
+                        <input type="text" id="quantity" name="quantity" value="{{ ord.quantity }}" readonly><br>
+
                         {% if ord.coupon %}
-                            <strong>Product Price:</strong> ₹{{ ord.offer_total_price }}<br>
-                            <strong>Delivery Charges:</strong> ₹{{ ord.offer_delivery_charge }}<br>
-                            <strong>Platform Charges:</strong> {{ ord.platform_charges }}<br>
-                            <strong>Security Charges:</strong> {{ ord.offer_caution_deposit }}<br>
+                            <label for="product-price">Product Price:</label>
+                            <input type="text" id="product-price" name="product_price" value="₹{{ ord.offer_total_price }}" readonly><br>
+                            
+                            <label for="delivery-charges">Delivery Charges:</label>
+                            <input type="text" id="delivery-charges" name="delivery_charges" value="₹{{ ord.offer_delivery_charge }}" readonly><br>
+                            
+                            <label for="platform-charges">Platform Charges:</label>
+                            <input type="text" id="platform-charges" name="platform_charges" value="{{ ord.platform_charges }}" readonly><br>
+                            
+                            <label for="security-charges">Security Charges:</label>
+                            <input type="text" id="security-charges" name="security_charges" value="{{ ord.offer_caution_deposit }}" readonly><br>
+                            
                         
                             <form action="{% url 'order:coupon_clear' ord.id %}" method="post">
                                 {% csrf_token %}
@@ -31,15 +43,23 @@
                             </form>
                             <br><h4>Total Charges: ₹{{ ord.offer_total_charges }}/-</h4><br>
                         {% else %}
-                            <strong>Product Price:</strong> ₹{{ ord.total_price }}<br>
-                            <strong>Delivery Charges:</strong> ₹{{ ord.delivery_charge }}<br>
-                            <strong>Platform Charges:</strong> {{ ord.platform_charges }}<br>
-                            <strong>Security Charges:</strong> {{ ord.caution_deposit }}<br>
-                        
+                            <label for="product-price">Product Price:</label>
+                            <input type="text" id="product-price" name="product_price" value="₹{{ ord.total_price }}" readonly><br>
+                            
+                            <label for="delivery-charges">Delivery Charges:</label>
+                            <input type="text" id="delivery-charges" name="delivery_charges" value="₹{{ ord.delivery_charge }}" readonly><br>
+                            
+                            <label for="platform-charges">Platform Charges:</label>
+                            <input type="text" id="platform-charges" name="platform_charges" value="{{ ord.platform_charges }}" readonly><br>
+                            
+                            <label for="security-charges">Security Charges:</label>
+                            <input type="text" id="security-charges" name="security_charges" value="{{ ord.caution_deposit }}" readonly><br>
+                            
+                            
                             <form action="{% url 'order:coupon_apply' ord.id %}" method="post">
                                 {% csrf_token %}
                                 <input type="text" name="coupons" for="coupons" placeholder="Enter Coupon code">
-                                <button type="submit" class="btn btn-block">Check</button>
+                                <button type="submit" class="btn btn-outline-dark">Check</button>
                             </form>
                             <br><h4>Total Charges: ₹{{ ord.total_charges }}/-</h4>
                         {% endif %}
@@ -53,7 +73,7 @@
                                     </option>
                                 {% endfor %}
                             </select><br><br>
-                            <button class="btn">Pay now</button>
+                            <button class="btn btn-outline-dark">Pay now</button>
                         </form>
                     </p>
                 </div>

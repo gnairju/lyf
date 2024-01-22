@@ -2,102 +2,69 @@
 
 {% block content %}
 <style>
-    body {
-        margin: 0;
-        padding: 0;
+        body {
+            background-color: #ffffff;
+        }
+    
+    .sidenav {
+      height: 100%;
+      width: 160px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #C1DCDC;
+      overflow-x: hidden;
+      padding-top: 20px;
+      padding-top: 130px;
     }
-
-    #sidebarMenu {
-        width: 250px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        overflow-y: auto;
-        background-color: #fff;
-        border-right: 1px solid #000000;
-        padding-top: 56px;
-        margin-top: 50px;
+    
+    .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 20px;
+      color: black;
+      display: block;
     }
-
-    .list-group-item {
-        border: none;
-        cursor: pointer;
+    
+    .sidenav a:hover {
+      color: #f1f1f1;
     }
-
-    .list-group-item:hover {
-        background-color: #f8f9fa;
+    
+    .main {
+      margin-left: 160px; /* Same as the width of the sidenav */
+      font-size: 20px; /* Increased text to enable scrolling */
+      padding: 0px 50px 100px;
+      padding-top: 20px;
     }
-
+    
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+    
     .active {
-        background-color: #9cc4f0;
-        color: #fff;
+        background-color: white;
     }
-
-    #content {
-        margin-left: 250px; /* Adjust this value to control the space on the left */
-        padding-top: 56px;
-    }
-
-    .container {
-        margin: 4em; /* Add margin to the container for space */
-    }
-
-    #sidebarMenu {
-        width: 250px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100%;
-        overflow-y: auto;
-        background-color: #fff;
-        border-right: 1px solid #000000;
-        border-top: 4px solid #7dbcff;
-        box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
-        padding-top: 56px;
-        margin-top: 50px;
-    }
-
-    .thumbnail-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .thumbnail {
-        max-width: 100px;
-        max-height: 100px;
-        margin-right: 10px;
-    }
-
-    .details {
-        flex: 1;
+    .list-group-item{
+        background-color: #f1f1f1;
     }
 </style>
 
-<div id="sidebarMenu" class="sidebar bg-white">
-    <div class="position-sticky">
-        <div class="list-group list-group-flush">
-            <a href="{% url 'provider:providerPanel' %}" class="list-group-item list-group-item-action py-2 ripple active">
-                <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
-            </a>
-            <a href="{% url 'provider:provider_details' %}" class="list-group-item list-group-item-action py-2 ripple ">
-                <i class="fas fa-chart-area fa-fw me-3"></i><span>Provider Details</span>
-            </a>
-            <a href="{% url 'provider:providerApproval' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-lock fa-fw me-3"></i><span>Rental Confirmation</span>
-            </a>
-        </div>
-    </div>
+<div class="sidenav">
+    <a href="{% url 'provider:providerPanel' %}" class="active">Products</a>
+    <a href="{% url 'provider:provider_details' %}" >Profile</a>
+    <a href="{% url 'provider:providerApproval' %}" >Rentals</a>
 </div>
 
-<div id="productContent" class="container" style="max-width: 800px; margin-top: 15px; margin-left: 300px;">
+<div class="main" >
     <h1 class="text-2xl">My Products</h1>
     <a href="{% url 'provider:providerAddProducts' %}" class="btn btn-primary mt-2">Add Products</a><br>
 
     {% if request.user.products.all %}
     <ul class="list-group" style="margin:10px;">
         {% for product in request.user.products.all %}
-            <li class="list-group-item border p-3 mb-3 bg-white rounded">
+            <li class="list-group-item">
                 <div class="row">
                     <div class="col-md-4">
                         {% if product.image %}
@@ -119,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-            </li>
+            </li><br>
         {% endfor %}
     </ul>
     

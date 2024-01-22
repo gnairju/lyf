@@ -1,0 +1,121 @@
+{% extends "homePage.html" %}
+{% block content %}
+<style>
+    body {
+        background-color: #ffffff;
+    }
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #C1DCDC;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-top: 130px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 50px 100px;
+  padding-top: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.active {
+    background-color: white;
+}
+</style>
+</head>
+<body>
+    <!-- Sidebar -->
+
+    <div class="sidenav">
+        <a href="{% url 'user:user_profile' %}">User</a>
+        <a href="{% url 'user:user_edit' %}" class="active">User Details</a>
+        <a href="{% url 'user:user_payment' %}">Payments</a>
+        <a href="{% url 'user:user_referral' %}">My Referrals</a>
+    </div>
+      
+    <div class="main">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form class="form" action="{% url 'user:user_edit' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="firstname">First Name</label>
+                                <input class="form-control" type="text" name="firstname"  value="{{ details.first_name|striptags|linebreaksbr }}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="lastname">Last Name</label>
+                                <input class="form-control" type="text" name="lastname" value="{{ details.last_name }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12 col-sm-6 mb-3">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input class="form-control password-field" type="number" name="mobile" value="{{ details.phone_number }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password1">New Password</label>
+                        <input class="form-control password-field" type="password" name="password1" >
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password</label>
+                        <input class="form-control password-field" type="password" name="password2" >
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col d-flex justify-content-end">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                </div>
+            </div>
+            
+          </form>
+    </div>
+
+    <!-- Include Bootstrap JS (optional, if needed) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94uKmpw/OiGKl2f" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyZqVNC8A4MZEtXGUoIfBZhddAp0EAAwEFE" crossorigin="anonymous"></script>
+</body>
+{% endblock %}

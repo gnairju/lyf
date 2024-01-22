@@ -2,65 +2,63 @@
 {% block content %}
 <style>
     body {
-        background-color: #f8f9fa;
+        background-color: #ffffff;
     }
 
-    .payment_area {
-        margin-left: 120px;
-        padding: 30px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-top: 4px;
-        border: 1px solid black;
-        width: 100%;
-    }
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #C1DCDC;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-top: 130px;
+}
 
-    .user-info {
-        margin-bottom: 20px;
-    }
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+}
 
-    .order-history {
-        border-top: 1px solid #dee2e6;
-        padding-top: 20px;
-    }
+.sidenav a:hover {
+  color: #f1f1f1;
+}
 
-    .sidebar {
-        position: fixed;
-        height: 100%;
-        width: 250px;
-        padding-top: 20px;
-        background-color: #fff;
-        border: 1px solid black;
-    }
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 50px 100px;
+  padding-top: 20px;
+}
 
-    .sidebar a {
-        color: black;
-    }
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
 
-    .sidebar-heading {
-        font-size: 1.2rem;
-        padding: 10px 0;
-    }
+.active {
+    background-color: white;
+}
+
 </style>
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
-        <h2 class="text-center sidebar-heading">User Profile</h2>
-        <p class="text-center">{{ request.user.firstname }}</p>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'user:user_profile' %}">User Details</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'user:user_payment' %}">Payment</a>
-            </li>
-        </ul>
+
+    <div class="sidenav">
+        <a href="{% url 'user:user_profile' %}">User</a>
+        <a href="{% url 'user:user_edit' %}">User Details</a>
+        <a href="{% url 'user:user_payment' %}" class="active">Payments</a>
+        <a href="{% url 'user:user_referral' %}">My Referrals</a>
     </div>
-    
-    <!-- Page content -->
-    <div class="container">
+      
+    <div class="main">
         <div class="payment_area">
             <h4>User payment details</h4>
             {% if confirm_order %}

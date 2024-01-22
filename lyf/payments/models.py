@@ -8,6 +8,6 @@ class user_wallet(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
 
 
-    
-
+    def __str__(self) -> str:
+        return self.user.first_name
     

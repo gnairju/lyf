@@ -27,6 +27,7 @@ class order(models.Model):
     offer_caution_deposit = models.PositiveBigIntegerField(default=0)
     offer_total_charges = models.PositiveBigIntegerField(default=0)
     cancelled_rental=models.BooleanField(default=False)
+    distance  = models.FloatField(default=0)
 
     STATUS_CHOICES = [
         ('confirmed','confirmed'),
@@ -36,6 +37,7 @@ class order(models.Model):
         ('rental_period','rental_period'),
         ('returned','returned'),
         ('cancelled','cancelled'),
+        ('completed','completed'),
     ]
 
     PAYMENT_CHOICES = [

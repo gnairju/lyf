@@ -1,0 +1,90 @@
+{% extends "homePage.html" %}
+{% block content %}
+<style>
+    body {
+        background-color: #ffffff;
+    }
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #C1DCDC;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-top: 130px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 50px 100px;
+  padding-top: 20px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.active {
+    background-color: white;
+}
+</style>
+</head>
+<body>
+    <!-- Sidebar -->
+
+    <div class="sidenav">
+        <a href="{% url 'user:user_profile' %}">User</a>
+        <a href="{% url 'user:user_edit' %}" >User Details</a>
+        <a href="{% url 'user:user_payment' %}">Payments</a>
+        <a href="{% url 'user:user_referral' %}" class="active">My Referrals</a>
+    </div>
+      
+    <div class="main">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="">
+          <h3>Your Referral Code: {{ user_refer.referral_code }}</h3>
+        </div><br>
+        <h4>Your Referrals</h4>
+        {% if referred_users %}
+            <ul>
+                {% for referred_user in referred_users %}
+                    <li>{{ referred_user.first_name }} {{ referred_user.last_name }} </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No referred users found.</p>
+        {% endif %}
+        
+    </div>
+
+    <!-- Include Bootstrap JS (optional, if needed) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94uKmpw/OiGKl2f" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyZqVNC8A4MZEtXGUoIfBZhddAp0EAAwEFE" crossorigin="anonymous"></script>
+</body>
+{% endblock %}

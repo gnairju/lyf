@@ -39,17 +39,13 @@
             {% endfor %}
         </div>
     {% endif %}
-    <form class="form-inline" method="post" action="{% url 'adminPanel:adminAddCategory' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-success">Add Category</button>
-    </form>
+    <a href="{% url 'adminPanel:adminAddCategory' %}"><button type="submit" class="btn btn-success">Add Category</button></a>
     <table class="table">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Products</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -59,7 +55,6 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ category.Name }}</td>
                     <td>{{ category.description }}</td>
-                    <td>{{ category.Products.count }}</td>
                     <td>
                         <a href="{% url 'adminPanel:adminDeleteCategory' category.id %}" class="btn btn-danger">Delete</a>
                         <a href="{% url 'adminPanel:adminUpdateCategory' category.id %}" class="btn btn-primary">Update</a>
