@@ -3,7 +3,7 @@ import random
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
 
 
 class CustomUserManager(BaseUserManager):
@@ -31,6 +31,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         code='invalid_phone_number'
     )
 
+    password_validator = RegexValidator(
+        regex=r'^(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+        message='Password must contain at least one number and one special character. It should be at least 8 characters long.',
+        code='invalid_password'
+    )
+
+    # Override the AbstractBaseUser's password field to include the validators
+    
+
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30,null=True)
@@ -40,7 +50,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         null=True,
         validators=[phone_number_validator]
     )
-    
+    password = models.CharField(validators=[MinLengthValidator(8), MaxLengthValidator(128), password_validator], max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_super = models.BooleanField(default=False)

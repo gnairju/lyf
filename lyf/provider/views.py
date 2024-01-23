@@ -161,13 +161,20 @@ def deleteOrder(request,id):
 @login_required(login_url='user:performlogin')
 def reactivate_product(request,id):
     ord=order.objects.get(id=id)
-    ord.product.quantity+=1
-    print(ord.product.quantity)
-    if ord.product.is_active==False:
-        ord.product.is_active=True
+    quan=ord.quantity
+    pro=ord.product.id
+    product_instance=Product.objects.get(id=pro)
+    product_instance.quantity += quan
+    product_instance.save()
+    if product_instance.rentable==False:
+        product_instance.rentable=True
+    product_instance.save()
+    ord.status='completed'
     ord.save()
-    print(ord.product.quantity)
-    return redirect(reverse('provider:providerApproval'))
+    print(product_instance.quantity)
+    print(product_instance.rentable)
+    return redirect('provider:providerApproval')
+
 
 @login_required(login_url='user:performlogin')
 def provider_details(request):

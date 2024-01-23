@@ -82,7 +82,7 @@
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-3 mb-4">
-                    <div class="card border shadow hover" style="width: 250px; height: 420px; background-color: #FFFFFF;">
+                    <div class="card border shadow hover" style="width: 250px; height: 450px; background-color: #FFFFFF;">
                         <img class="card-img-top border-bottom p-3 rounded-top" style="width: 100%; height: 60%; object-fit: cover;" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'image/placeholder_image.jpg' %}{% endif %}" alt="Product Image">
                         <div class="card-body">
                             <a href="{% url 'products:productPage' product.id %}">
@@ -94,7 +94,8 @@
                             <form method="post" action="{% url 'cart:addToCart' product.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                                <button type="submit" class="btn btn-secondary">Add to Cart</button><br>
+                                <p><small>Delivery at<strong>10km radius</strong></small></p>
                             </form>
                         </div>
                     </div>

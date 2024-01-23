@@ -112,10 +112,11 @@ def user_registration(request):
 
     return render(request, 'user/user_registration.html', {'form': form})
 
+
+
 def otpPage(request):
     error_message = None
     if request.method == 'POST':
-        # Retrieve the OTP, secret, and expiry time stored in the session
         otp = request.POST.get('otp')
         otp_secret_key = request.session.get('otp_secret_key')
         otp_valid_date = request.session.get('otp_valid_date')
@@ -132,18 +133,16 @@ def otpPage(request):
                 print(current_otp)
                 if current_otp==otp:
                     print("OTP Verified")
-                    # OTP verification successful
-                    # Retrieve user details from the session
                     user_details = request.session.get('user_details', {})
                     referrer_id = request.session.get('referrer_id')
-                    referrer=CustomUser.objects.get(id=referrer_id)
-                    user = CustomUser(**user_details)
-                    user.referrer=referrer
-                    user.set_password(request.session.get('password'))
-                    user.save()
-                    login(request,user)
-                    #user_wallet creation
-                    if user.referrer is not None:
+                    if referrer_id is not None:
+                        referrer=CustomUser.objects.get(id=referrer_id)
+                        user = CustomUser(**user_details)
+                        user.referrer=referrer
+                        user.set_password(request.session.get('password'))
+                        user.save()
+                        login(request,user)
+                        #user_wallet creation
                         user_wallet.objects.create(
                             user=request.user,
                             balance_amount=100,
@@ -153,18 +152,22 @@ def otpPage(request):
                         referral_wallet=user_wallet.objects.get(user=referrer)
                         referral_wallet.balance_amount = referral_wallet.balance_amount + 100
                         referral_wallet.save()
-
+                        del request.session['referrer_id']
                         messages.success(request,'₹100 credited to your wallet.')
 
                     else:
+                        user = CustomUser(**user_details)
+                        user.set_password(request.session.get('password'))
+                        user.save()
+                        login(request,user)
                         user_wallet.objects.create(
                             user=request.user
                         )
-            
+
                     del request.session['user_details']
                     del request.session['otp_secret_key']
                     del request.session['otp_valid_date']
-                    del request.session['referrer_id']
+                    
                     # Redirect to the desired page
                     return redirect("home:homePage")
                 else:
@@ -276,6 +279,7 @@ def forgot_otp_verify(request):
                     messages.error(request,'Invalid OTP')
                     return redirect('forgot_otp_verify')
     return render(request,'user_forgot.html')
+
 
 def password_change(request):
     if request.method=='POST':

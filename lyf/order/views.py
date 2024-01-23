@@ -91,7 +91,7 @@ def confirmRental(request):
                 c.quantity-=i.quantity
                 c.save()
                 if c.quantity<1:
-                    c.is_active=False
+                    c.rentable=False
                     c.save()
                 cart_instance.delete()
             y=0
@@ -133,48 +133,51 @@ def coupon_apply(request, id):
             coupon = coupons.objects.get(name=cop_code)
             coupon_type = coupon.coupon_type
             discount_percentage = coupon.discount
-
-            if coupon_type == 'delivery':
-                print('delivery')
-                delivery_charge = order_instance.delivery_charge
-                discount_amount = (discount_percentage / 100) * delivery_charge
-                order_instance.offer_delivery_charge = delivery_charge - discount_amount
-                order_instance.offer_caution_deposit = order_instance.caution_deposit
-                order_instance.offer_total_price=order_instance.total_price
-
-
-
-            elif coupon_type == 'caution':
-                print('caution')
-                caution_deposit = order_instance.caution_deposit
-                discount_amount = (discount_percentage / 100) * caution_deposit
-                order_instance.offer_caution_deposit = caution_deposit - discount_amount
-                order_instance.offer_delivery_charge=order_instance.delivery_charge
-                order_instance.offer_total_price=order_instance.total_price
+            if coupon.is_active:
+                if coupon_type == 'delivery':
+                    print('delivery')
+                    delivery_charge = order_instance.delivery_charge
+                    discount_amount = (discount_percentage / 100) * delivery_charge
+                    order_instance.offer_delivery_charge = delivery_charge - discount_amount
+                    order_instance.offer_caution_deposit = order_instance.caution_deposit
+                    order_instance.offer_total_price=order_instance.total_price
 
 
 
-            elif coupon_type == 'Total':
-                print('total')
-                total_price = order_instance.total_price
-                discount_amount = (discount_percentage / 100) * total_price
-                order_instance.offer_total_charges = total_price - discount_amount
+                elif coupon_type == 'caution':
+                    print('caution')
+                    caution_deposit = order_instance.caution_deposit
+                    discount_amount = (discount_percentage / 100) * caution_deposit
+                    order_instance.offer_caution_deposit = caution_deposit - discount_amount
+                    order_instance.offer_delivery_charge=order_instance.delivery_charge
+                    order_instance.offer_total_price=order_instance.total_price
 
 
-            order_instance.offer_total_charges = order_instance.offer_delivery_charge + order_instance.offer_caution_deposit + order_instance.offer_total_price + order_instance.platform_charges
-            print(order_instance.offer_total_charges)
 
-            # Assign the new coupon
-            order_instance.coupon = coupon
-            coupon.num -= 1
-            if coupon.num == 1:
-                coupon.is_active = False
-            coupon.save()
-            order_instance.save()
+                elif coupon_type == 'Total':
+                    print('total')
+                    total_price = order_instance.total_price
+                    discount_amount = (discount_percentage / 100) * total_price
+                    order_instance.offer_total_charges = total_price - discount_amount
+                    order_instance.offer_delivery_charge=order_instance.delivery_charge
+                    order_instance.offer_caution_deposit = order_instance.caution_deposit
+
+                order_instance.offer_total_charges = order_instance.offer_delivery_charge + order_instance.offer_caution_deposit + order_instance.offer_total_price + order_instance.platform_charges
+                print(order_instance.offer_total_charges)
+
+                # Assign the new coupon
+                order_instance.coupon = coupon
+                coupon.num -= 1
+                if coupon.num == 1:
+                    coupon.is_active = False
+                coupon.save()
+                order_instance.save()
+                messages.success(request,'Coupon successfully')
+            else:
+                messages.error(request,'Invalid coupon')
 
         except coupons.DoesNotExist:
             messages.error(request, 'Invalid coupon')
-            # If there's an exception, you may want to log it or handle it accordingly
             return HttpResponseServerError("Internal Server Error")
 
     return redirect('payments:make_payments', id=id)

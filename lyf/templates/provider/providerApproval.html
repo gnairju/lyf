@@ -80,7 +80,7 @@
 
                     <div class="footer">
                         {% if i.is_active %}
-                            {% if i.status == 'returned' or i.status == 'cancelled' or i.status == 'completed' %}
+                            {% if i.status == 'returned' or i.status == 'cancelled' %}
                                 <a href="{% url 'provider:reactivate_product' i.id %}" class="btn btn-outline-warning">Reacitvate</a>
                             {% endif %}
                         {% else %}

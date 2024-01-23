@@ -35,6 +35,7 @@ class Product(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     availability=models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)
+    rentable = models.BooleanField(default=True)
 
     def __str__(self) -> str:
         return self.title
