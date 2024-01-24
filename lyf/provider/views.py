@@ -212,3 +212,10 @@ def provider_details(request):
 
 
     return render(request, 'provider/provider_details.html', {'provider_instance_set': provider_instance_set})
+
+
+def cancelOrder(request,id):
+    ord=order.objects.get(id=id)
+    ord.status='cancelled'
+    ord.save()
+    return redirect('provider:providerApproval')

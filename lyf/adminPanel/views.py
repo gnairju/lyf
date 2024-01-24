@@ -237,6 +237,8 @@ def adminPanel(request, chart_labels=None, chart_data=None, chart_labels_month=N
 
     return render(request, 'adminPanel/adminPanel.html', {'chart_labels': chart_labels, 'chart_data': chart_data, 'detailed_report': detailed_report})
 
+
+
 @admin_access_required
 def download_detailed_report(request):
     if request.method=='POST':

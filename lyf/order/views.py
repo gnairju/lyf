@@ -98,6 +98,7 @@ def confirmRental(request):
         print('Success')
 
     # Add the logic for rendering a confirmation page or redirecting to another view
+    messages.success(request,'Your request has been send to provider side.')
     return redirect('home:homePage')
 
 
@@ -142,8 +143,6 @@ def coupon_apply(request, id):
                     order_instance.offer_caution_deposit = order_instance.caution_deposit
                     order_instance.offer_total_price=order_instance.total_price
 
-
-
                 elif coupon_type == 'caution':
                     print('caution')
                     caution_deposit = order_instance.caution_deposit
@@ -151,8 +150,6 @@ def coupon_apply(request, id):
                     order_instance.offer_caution_deposit = caution_deposit - discount_amount
                     order_instance.offer_delivery_charge=order_instance.delivery_charge
                     order_instance.offer_total_price=order_instance.total_price
-
-
 
                 elif coupon_type == 'Total':
                     print('total')

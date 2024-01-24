@@ -207,6 +207,7 @@ def resendOtp(request):
 def perform_logout(request):
     logout(request)
     request.session.flush()
+    request.session['user_logged_out'] = True
     return redirect('home:homePage')
 
 
@@ -215,19 +216,19 @@ def user_profile(request):
     user_orders = order.objects.filter(user=request.user,payment=True)
     return render(request,'user/user_profile.html',{'user_orders':user_orders})
 
-
+@login_required(login_url='user:performlogin')
 def user_payment(request):
     user=request.user
     confirm_order =order.objects.filter(user=user,is_active=True,payment=False)
     return render(request,'user/user_payment.html',{'confirm_order':confirm_order})
 
-
+@login_required(login_url='user:performlogin')
 def user_cancel_rental(request,id):
     o=order.objects.get(id=id)
     o.delete()
     return redirect('user:user_payment')
 
-
+@login_required(login_url='user:performlogin')
 def user_invoice(request,id):
     ord=order.objects.filter(id=id)
     return render(request,'user/invoice.html',{'ord':ord})
@@ -245,7 +246,6 @@ def password_forget_maiil(request):
             valid_date = datetime.now() + timedelta(seconds=60)
             request.session["otp_valid_date_for"] = str(valid_date)
 
-            # Send OTP via email
             subject = 'Your OTP for Login'
             message = f'Your OTP for login is: {otp}'
             from_email = 'o23211671@gmail.com'
@@ -297,7 +297,7 @@ def password_change(request):
     return render(request,'user/password_again.html')
 
 
-
+@login_required(login_url='user:performlogin')
 def user_edit(request):
     user_email = request.user.email
     details = CustomUser.objects.get(email=user_email)
@@ -325,7 +325,8 @@ def user_edit(request):
                 details.save()
                 messages.success(request, 'User details updated successfully')
                 messages.success(request, 'Please login')
-                return redirect('user:performlogin')
+                request.session.flush()
+                return redirect('user:perform_logout')
             else:
                 messages.error(request, 'Password does not match')
         messages.success(request,'User details updated successfully')
@@ -334,6 +335,7 @@ def user_edit(request):
     return render(request, 'user/user_edit.html', {'details': details})
 
 
+@login_required(login_url='user:performlogin')
 def user_referral(request):
     user = request.user
     referred_users = user.referred_users.all()

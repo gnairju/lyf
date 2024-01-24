@@ -7,11 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" >
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link rel="icon" href="{% static "image/icon.png" %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>lyf Rentals</title>
     
 </head>
 <body>
-    <nav>
+    <nav class="navbar">
         <div class="nav-left">
             <a href="{% url 'home:homePage' %}"><img src="{% static 'image/logo.png' %}" alt="Logo" class="logo hover"></a>
             <ul class="list-unstyled"> <!-- Adding list-unstyled to remove default list styles -->
@@ -40,30 +41,26 @@
         </div>
         <div class="nav-right">
             <ul>
-                <li class="hover"><a href="{% url 'provider:providerPanel' %}">Become a Provider</a></li>
+                
                 <li class="hover"><a href="{% url 'payments:wallet' %} "><img src="{% static 'image/wallet.png' %}" alt="User wallet" style="width: 110%; height: 110%;"></a></li>
                 <li class="hover"><a href="{% url 'cart:cartPage' %}"><img src="{% static 'image/Cart.jpg' %}" alt="Shopping Cart"></a></li>
-                <li class="hover">
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'user:perform_logout' %}">
-                            <img src="{% static 'image/logout.jpg' %}" alt="User logout">
-                        </a>
-                    {% else %}
-                        <a href="{% url 'user:performlogin' %}">
-                            <img src="{% static 'image/Person.jpg' %}" alt="User Profile">
-                        </a>
-                    {% endif %}
-                </li>
-                
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown hover">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="{% static 'image/FilterRight.jpg' %}" alt="Filter">
+                        <!-- <img src="{% static 'image/FilterRight.jpg' %}" alt="Filter"> -->Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'user:user_profile' %}">My Profile</a>
                         <a class="dropdown-item" href="{% url 'home:contactus' %}">Contact us</a>
+                        <a class="dropdown-item" id="logout_btn" >logout</a>
                     </div>
                 </li>
+                {% else %}
+                    <a href="{% url 'user:performlogin' %}">
+                        <img src="{% static 'image/Person.jpg' %}" alt="User Profile">
+                    </a>
+                {% endif %}
+                <li class="hover"><a href="{% url 'provider:providerPanel' %}">Become a Provider</a></li>
             </ul>
         </div>
     </nav>
@@ -95,7 +92,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
                                 <button type="submit" class="btn btn-secondary">Add to Cart</button><br>
-                                <p><small>Delivery at<strong>10km radius</strong></small></p>
+                                <p><small>Delivery at <strong>10km radius</strong></small></p>
                             </form>
                         </div>
                     </div>
@@ -109,23 +106,31 @@
 
     
     {% endblock %}
-
     
-
-    <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Include Bootstrap JavaScript library -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JavaScript to show dropdown after clicking -->
     <script>
         $(document).ready(function(){
             // Show dropdown after clicking the toggle
             $(".nav-item.dropdown").on("click", function(){
                 $(this).find(".dropdown-menu").addClass("show");
             });
+            $('#logout_btn').on('click', function(){
+                Swal.fire({
+                    position: "center-center",
+                    icon: "success",
+                    title: "You are successfully logged out",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '{% url "user:perform_logout" %}';
+                });
+                // You can add your logout logic here
+            });
+            
         });
     </script>
+    
+    
 </body>
 </html>

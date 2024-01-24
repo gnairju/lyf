@@ -60,6 +60,7 @@ def addToCart(request, id):
     
     return render(request,'cart/cart.html')
 
+
 @login_required(login_url='user:performlogin')
 def cartPage(request):
     user = CustomUser.objects.get(id=request.user.id)  # Assuming user.id is the primary key

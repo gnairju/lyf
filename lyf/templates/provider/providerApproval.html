@@ -84,7 +84,12 @@
                                 <a href="{% url 'provider:reactivate_product' i.id %}" class="btn btn-outline-warning">Reacitvate</a>
                             {% endif %}
                         {% else %}
+                            {% if i.status == 'cancelled' %}
+                            <button href="" class="btn btn-danger">cancelled</button>
+                            {% else %}
                             <a href="{% url 'provider:activateOrder' i.id %}" class="btn btn-outline-success">Confirm Rental</a>
+                            <a href="{% url 'provider:cancelOrder' i.id %}" class="btn btn-outline-danger">Cancel Rental</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
