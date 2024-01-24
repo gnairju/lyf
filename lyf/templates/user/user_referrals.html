@@ -57,7 +57,7 @@
         <a href="{% url 'user:user_referral' %}" class="active">My Referrals</a>
     </div>
       
-    <div class="main">
+    <div class="main" style="margin-top: 8rem";>
         {% if messages %}
             {% for message in messages %}
                 <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">

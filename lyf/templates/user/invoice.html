@@ -63,11 +63,11 @@
                 <div class="row mb-4">
                     <div class="col-sm-6">
                         <h5 class="mb-3">To:</h5>
-                        <h3 class="text-dark mb-1">{{ i.user }}</h3>
-                        <div>478, Nai Sadak</div>
-                        <div>Chandni chowk, New delhi, 110006</div>
-                        <div>Email: info@tikon.com</div>
-                        <div>Phone: +91 9895 398 009</div>
+                        <h3 class="text-dark mb-1">{{ i.user.first_name }} {{ i.user.last_name }}</h3>
+                        <div>{{ i.address.address }}</div>
+                        <div>{{ i.address.street }}, {{ i.address.city }}, {{ i.address.pincode }}</div>
+                        <div>Email: {{ i.user }}</div>
+                        <div>Phone: {{ i.user.phone_number }}</div>
                     </div>
                 </div>
                 <div class="table-responsive-sm">
@@ -99,6 +99,15 @@
                                 <td></td>
                                 <td class="right"></td>
                                 <td class="center"></td>
+                                <td class="right">Security Deposit</td>
+                                <td class="end">{{ i.offer_caution_deposit }}</td>
+                            </tr>
+                            <tr>
+                                <td class="center"></td>
+                                <td></td>
+                                <td></td>
+                                <td class="right"></td>
+                                <td class="center"></td>
                                 <td class="right">Platform Charge</td>
                                 <td class="end">{{ i.platform_charges }}</td>
                             </tr>
@@ -109,7 +118,7 @@
                                 <td class="right"></td>
                                 <td class="center"></td>
                                 <td class="right">Delivery fee</td>
-                                <td class="end">{{ i.delivery_charge }}</td>
+                                <td class="end">{{ i.offer_delivery_charge }}</td>
                             </tr>
                             <tr>
                                 <td class="center"></td>
@@ -118,7 +127,7 @@
                                 <td class="right"></td>
                                 <td class="center"></td>
                                 <th class="right">Total</th>
-                                <th class="end">{{ i.total_charges }}</th>
+                                <th class="end">{{ i.offer_total_charges }}</th>
                             </tr>
                         </tbody>
                     </table>

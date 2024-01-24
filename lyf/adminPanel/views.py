@@ -1,6 +1,7 @@
 import csv
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect
-from .models import Categories, Product, coupons, offers
+from .models import Categories, Product, coupons, ProductOffer, CategoryOffer
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from user.models import CustomUser
@@ -13,6 +14,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from datetime import datetime
 
 
 def admin_access_required(view_func):
@@ -24,11 +26,6 @@ def admin_access_required(view_func):
 
     return wrapper
  
-@admin_access_required
-def adminProducts(request):
-    products=Product.objects.all()
-    return render(request, 'adminPanel/adminProducts.html',{'products': products})
-
 
 @admin_access_required
 def adminAddProducts(request):
@@ -44,7 +41,7 @@ def adminCategory(request):
 @admin_access_required
 def adminAddCategory(request):
     if request.method == 'POST':
-        Name = request.POST.get('Name')
+        Name = request.POST.get('Name').strip()
         description = request.POST.get('Description')
         if not Name:
             messages.error(request, 'Category name is required')
@@ -66,11 +63,9 @@ def adminUpdateCategory(request, id):
     cu = Categories.objects.get(id=id)
 
     if request.method == 'POST':
-        # Process the form submission
-        Name = request.POST.get('Name')
+        Name = request.POST.get('Name').strip()
         description = request.POST.get('description')
 
-        # Update category fields if provided
         if Name:
             cu.Name = Name
         if description:
@@ -86,13 +81,51 @@ def adminUpdateCategory(request, id):
 
 
 @admin_access_required
+def adminProducts(request):
+    products=Product.objects.all()
+    products_per_page = 10
+    paginator = Paginator(products, products_per_page)
+
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    return render(request, 'adminPanel/adminProducts.html',{'products': products})
+
+
+@admin_access_required
 def renterList(request):
-    renter=CustomUser.objects.all().exclude(is_staff=True)
-    return render(request,'adminPanel/renterList.html',{'renter':renter})
+    renters = CustomUser.objects.all().exclude(is_staff=True)
+    renters_per_page = 10
+    paginator = Paginator(renters, renters_per_page)
+
+    page = request.GET.get('page')
+    try:
+        renters = paginator.page(page)
+    except PageNotAnInteger:
+        renters = paginator.page(1)
+    except EmptyPage:
+        renters = paginator.page(paginator.num_pages)
+
+    return render(request, 'adminPanel/renterList.html', {'renter': renters})
 
 @admin_access_required
 def providerList(request):
     provider=CustomUser.objects.filter(is_staff=True).exclude(is_superuser=True)
+    provider_per_page = 10
+    paginator = Paginator(provider, provider_per_page)
+
+    page = request.GET.get('page')
+    try:
+        provider = paginator.page(page)
+    except PageNotAnInteger:
+        provider = paginator.page(1)
+    except EmptyPage:
+        provider = paginator.page(paginator.num_pages)
+        
     return render(request,'adminPanel/providerList.html',{'provider':provider})
 
 @admin_access_required
@@ -133,25 +166,6 @@ def activeDeactiveProducts(request,id=id):
 def user_offers(request):
     return render(request,'adminPanel/adminPanel_offers.html')
 
-@admin_access_required
-def add_user_offer(request):
-    OFFER_CHOICE = offers.OFFER_CHOICE
-    print(OFFER_CHOICE)
-    if request.method == 'POST':
-        name=request.POST.get('offer_name')
-        offer_type=request.POST.get('offer_type')
-        offer_percentage=request.POST.get('offer_percentage')
-        if not name:
-            messages.error(request,'Name is required')
-        else:
-            offers.objects.create(
-                name=name,
-                offer_type=offer_type,
-                offer_percentage=offer_percentage
-            )
-            messages.success(request, 'Offer added successfully')
-            return redirect('adminPanel:add_user_offer')
-    return render(request,'adminPanel/add_user_offer.html',{'OFFER_CHOICE':OFFER_CHOICE})
 
 @admin_access_required
 def coupons_page(request):
@@ -163,11 +177,11 @@ def add_coupons(request):
     COUPON_CHOICE = coupons.COUPON_CHOICE
     if request.method == 'POST':
         coupon_type=request.POST.get('coupon_type')
-        name = request.POST.get('name')
+        name = request.POST.get('name').strip()
         discount = request.POST.get('discount')
         num = request.POST.get('num')
-        if not name:
-            messages.error(request, 'Name is required')
+        if not name or not discount:
+            messages.error(request, 'Please provide correct details')
         else:
             obj=coupons.objects.create(name=name,discount=discount,num=num,coupon_type=coupon_type)
             messages.success(request, 'Coupouns added successfully')
@@ -297,8 +311,83 @@ def pay_provider_success(request,id):
     ord.save()
     return redirect('order:rental_management')
 
-
+@admin_access_required
 def order_complete_details(request,id):
     ord=order.objects.get(id=id)
-    print(ord)
     return render(request,'adminPanel/order_complete_details.html',{'ord':ord})
+
+
+
+def product_offer_form(request):
+    product_offer = ProductOffer.objects.all()
+    return render(request, 'adminPanel/adminPanel_offers.html', {'product_offer': product_offer})
+
+def category_offer_form(request):
+    categories_offer = CategoryOffer.objects.all()
+    return render(request, 'adminPanel/adminPanel_offers_cat.html', {'categories_offer': categories_offer})
+
+
+def add_product_offer(request):
+    all_product=Product.objects.all()
+    if request.method == 'POST':
+        product_id = request.POST.get('product')
+        discount_percentage = request.POST.get('discount_percentage')
+        start_date_str = request.POST.get('start_date')
+        end_date_str = request.POST.get('end_date')
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+        today=datetime.now().date()
+        if start_date < today:
+            messages.error(request,'Please choose a valid date')
+            return redirect('adminPanel:add_product_offer')
+        if start_date > end_date:
+            messages.error(request,'Please choose a valid date.')
+            return redirect('adminPanel:add_product_offer')
+        product = Product.objects.get(pk=product_id)
+        ProductOffer.objects.create(product=product, discount_percentage=discount_percentage, start_date=start_date, end_date=end_date)
+        return redirect('adminPanel:product_offer_form')
+    return render(request,'adminPanel/add_product_offer.html',{'all_product':all_product})
+
+
+def add_category_offer(request):
+    categories=Categories.objects.all()
+    print(categories)
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        discount_percentage = request.POST.get('discount_percentage')
+        start_date_str = request.POST.get('start_date')
+        end_date_str = request.POST.get('end_date')
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+        today=datetime.now().date()
+        if start_date < today:
+            messages.error(request,'Please choose a valid date')
+            return redirect('adminPanel:add_category_offer')
+        if start_date > end_date:
+            messages.error(request,'Please choose a valid date.')
+            return redirect('adminPanel:add_category_offer')
+        category = Categories.objects.get(pk=category_id)
+        CategoryOffer.objects.create(category=category, discount_percentage=discount_percentage, start_date=start_date, end_date=end_date)
+        return redirect('adminPanel:category_offer_form')
+    return render(request,'adminPanel/add_category_offer.html',{'categories':categories})
+
+
+def block_unblock_pro(request,id):
+    pro_offer=ProductOffer.objects.get(id=id)
+    if pro_offer.is_active:
+        pro_offer.is_active=False
+    else:
+        pro_offer.is_active=True
+    pro_offer.save()
+    return redirect('adminPanel:product_offer_form')
+
+def block_unblock_cat(request,id):
+    cat_offer=CategoryOffer.objects.get(id=id)
+    if cat_offer.is_active:
+        print('ee')
+        cat_offer.is_active=False
+    else:
+        cat_offer.is_active=True
+    cat_offer.save()
+    print('he')
+    return redirect('adminPanel:category_offer_form')

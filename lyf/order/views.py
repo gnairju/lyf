@@ -13,6 +13,8 @@ from django.http import HttpResponseServerError
 from django.contrib.auth.decorators import login_required
 from user.views import performlogin
 from adminPanel.views import admin_access_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def get_coordinates_from_postal_code(postal_code):
     key = '632ebcb5bf224551955bab10f7b9974c'  #OpenCage API key
@@ -104,7 +106,17 @@ def confirmRental(request):
 
 @admin_access_required
 def rental_management(request):
-    ord=order.objects.all()
+    ord=order.objects.all().order_by('-date')
+    ord_per_page=10
+    paginator = Paginator(ord,ord_per_page)
+
+    page = request.GET.get('page')
+    try:
+        ord = paginator.page(page)
+    except PageNotAnInteger:
+        ord = paginator.page(1)
+    except EmptyPage:
+        ord = paginator.page(paginator.num_pages)
     return render(request,'adminPanel/adminRentalDetails.html',{'ord':ord})
 
 

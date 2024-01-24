@@ -83,71 +83,42 @@
         }
     </style>
 
-    {% comment %} <div class="container mt-5">
-        <div class="product-container">
-            {% if product.multipleimage_set.all %}
-                <div class="additional-images-container">
-                    {% for image in product.multipleimage_set.all %}
-                        <img class="additional-image zoom" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
-                    {% endfor %}
-                </div>
-            {% endif %}
-    
-            <div class="main-image-container">
+<div style="margin-top: 10rem";>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
                 <img class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
-            </div>
-    
-            <div class="text-container">
-                <h2>{{ product.title }}</h2>
-                <p class="description">Description: {{ product.description }}</p>
-                <h1>Price: {{ product.price }}/day</h1>
-                <p>Provided by: {{ product.user.first_name }}</p>
-                <form method="post" action="{% url 'cart:addToCart' product.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Rent it</button>
-                </form>
-            </div>
-        </div>
-    </div> {% endcomment %}
-<div class="container mt-5">
-    <!-- Grid row -->
-    <div class="row">
-        <!-- Main Product Image Column -->
-        <div class="col-md-6 mb-4">
-            <img class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
-            <div class="additional-images-container mt-4">
-                <div class="d-flex flex-row">
-                    {% for image in product.multipleimage_set.all %}
-                        <img class="additional-image zoom me-2" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
-                    {% endfor %}
+                <div class="additional-images-container mt-4">
+                    <div class="d-flex flex-row">
+                        {% for image in product.multipleimage_set.all %}
+                            <img class="additional-image zoom me-2" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- Additional Images Column -->
-        <div class="col-md-6 mb-4">
-            <h2>{{ product.title }}</h2>
-            <div class="p-4">
-                <p class="lead">
-                    <span>₹{{ product.price }} per day</span>
-                </p>
-                <strong><p style="font-size: 20px;">Description</p></strong>
-                <p>{{ product.description }}</p>
-                <strong><p style="font-size: 20px;">Provided by</p></strong>
-                <p>{{ product.user.first_name }}</p>
-                <form class="d-flex justify-content-left" method="post" action="{% url 'cart:addToCart' product.id %}">
-                    {% csrf_token %}
-                    <div class="form-outline me-1" style="width: 100px;">
-                        <button type="submit" class="btn btn-primary">Rent it</button>
-                    </div>
-                </form>
+            <!-- Additional Images Column -->
+            <div class="col-md-6 mb-4">
+                <h2>{{ product.title }}</h2>
+                <div class="p-4">
+                    <p class="lead">
+                        <span>₹{{ product.price }} per day</span>
+                    </p>
+                    <strong><p style="font-size: 20px;">Description</p></strong>
+                    <p>{{ product.description }}</p>
+                    <strong><p style="font-size: 20px;">Provided by</p></strong>
+                    <p>{{ product.user.first_name }}</p>
+                    <form class="d-flex justify-content-left" method="post" action="{% url 'cart:addToCart' product.id %}">
+                        {% csrf_token %}
+                        <div class="form-outline me-1" style="width: 100px;">
+                            <button type="submit" class="btn btn-primary">Rent it</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Additional Images Container -->
             </div>
-            <!-- Additional Images Container -->
-            
-            
         </div>
-    </div>
+    </div>    
 </div>
-
 
     <script>
         // Disable Zoom.js scaling bar

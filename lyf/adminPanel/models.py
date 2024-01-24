@@ -20,6 +20,7 @@ class Product(models.Model):
     title  = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     price=models.IntegerField()
+    offer_price=models.IntegerField()
     security=models.IntegerField()
     quantity=models.PositiveIntegerField()
     image=models.ImageField(upload_to='uploads/product_images/',blank=True,null=True)
@@ -65,12 +66,18 @@ class coupons(models.Model):
         return self.name
     
 
-class offers(models.Model):
-    product=models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
-    category=models.ForeignKey(Categories,on_delete=models.CASCADE,null=True,blank=True)
-    discount_percentage=models.DecimalField(max_digits=5,decimal_places=2)
-    is_active=models.BooleanField(default=True)
+class ProductOffer(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.name
+class CategoryOffer(models.Model):
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_active = models.BooleanField(default=True)
+
     

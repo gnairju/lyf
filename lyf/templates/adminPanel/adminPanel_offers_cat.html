@@ -15,10 +15,10 @@
             <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
             </a>
-            <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple active">
+            <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Product Offers</span>
             </a>
-            <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
+            <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple active">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category Offers</span>
             </a>
             <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
@@ -42,9 +42,8 @@
             </div>
         {% endfor %}
     {% endif %}
-    <a href="{% url 'adminPanel:add_product_offer' %}"><button type="submit" class="btn btn-success">Add Offer</button></a>
-    <h2>Product Offers</h2>
-    
+    <a href="{% url 'adminPanel:add_category_offer' %}"><button type="submit" class="btn btn-success">Add Offer</button></a>
+    <h2>Category Offer</h2>
     <table class="table">
         <thead>
             <tr>
@@ -57,18 +56,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for i in product_offer %}
+            {% for i in categories_offer %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ i.product.title }}</td>
+                    <td>{{ i.category }}</td>
                     <td>{{ i.discount_percentage }}%</td>
                     <td>{{ i.start_date }}</td>
                     <td>{{ i.end_date }}</td>
                     <td>
                         {% if i.is_active %}
-                        <a href="{% url 'adminPanel:block_unblock_pro' i.id %}" class="btn btn-danger">Block</a>
+                        <a href="{% url 'adminPanel:block_unblock_cat' i.id %}" class="btn btn-danger">Block</a>
                         {% else %}
-                        <a href="{% url 'adminPanel:block_unblock_pro' i.id %}" class="btn btn-success">Unblock</a>
+                        <a href="{% url 'adminPanel:block_unblock_cat' i.id %}" class="btn btn-success">Unblock</a>
                         {% endif %}
                         {% comment %} <a href="{% url 'adminPanel:adminUpdateCategory' category.id %}" class="btn btn-primary">Update</a>  {% endcomment %}
                     </td>

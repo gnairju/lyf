@@ -21,9 +21,16 @@ urlpatterns = [
     path('coupons_activate_deactivate/<int:id>',views.coupons_activate_deactivate,name='coupons_activate_deactivate'),
     path('pay_provider_success/<int:id>',views.pay_provider_success,name='pay_provider_success'),
     path('user_offers',views.user_offers,name='user_offers'),
-    path('add_user_offer',views.add_user_offer,name='add_user_offer'),
     path('download_detailed_report',views.download_detailed_report,name='download_detailed_report'),
     path('report_download',views.report_download,name='report_download'),
     path('pay_provider_success/<int:id>/',views.pay_provider_success,name='pay_provider_success'),
     path('order_complete_details/<int:id>',views.order_complete_details,name='order_complete_details'),
+    path('product_offer_form/', views.product_offer_form, name='product_offer_form'),
+    path('category_offer_form/', views.category_offer_form, name='category_offer_form'),
+    path('add_product_offer/', views.add_product_offer, name='add_product_offer'),
+    path('add_category_offer/', views.add_category_offer, name='add_category_offer'),
+    path('block_unblock_cat/<int:id>',views.block_unblock_cat,name='block_unblock_cat'),
+    path('block_unblock_pro/<int:id>',views.block_unblock_pro,name='block_unblock_pro'),
+
+
 ]

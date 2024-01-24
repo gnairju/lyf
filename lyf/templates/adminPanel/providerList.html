@@ -16,8 +16,11 @@
             <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
             </a>
-            <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
+            <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Product Offers</span>
+            </a>
+            <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <i class="fas fa-chart-line fa-fw me-3"></i><span>Category Offers</span>
             </a>
             <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
                 <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
@@ -64,6 +67,25 @@
                 </li>
             {% endfor %}
         </ul>
+
+        <div class="pagination mt-4">
+            <span class="step-links">
+                {% if provider.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ provider.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ provider.number }} of {{ provider.paginator.num_pages }}.
+                </span>
+
+                {% if provider.has_next %}
+                    <a href="?page={{ provider.next_page_number }}">next</a>
+                    <a href="?page={{ provider.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        
     {% else %}
         <div class="alert alert-info mt-4">
             No providers found.

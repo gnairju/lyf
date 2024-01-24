@@ -105,11 +105,14 @@
                 <a href="{% url 'order:rental_management' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
                 </a>
-                <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple">
+                <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
                 </a>
+                <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Product Offers</span>
+                </a>
                 <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Offers</span>
+                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Category Offers</span>
                 </a>
                 <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple active">
                     <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
