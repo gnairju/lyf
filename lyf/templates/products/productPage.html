@@ -83,43 +83,50 @@
         }
     </style>
 
-<div style="margin-top: 10rem";>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <img class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
-                <div class="additional-images-container mt-4">
-                    <div class="d-flex flex-row">
-                        {% for image in product.multipleimage_set.all %}
-                            <img class="additional-image zoom me-2" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
-                        {% endfor %}
+    <div style="margin-top: 10rem;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    {% if product.image.url %}
+                    <img class="main-image zoom" src="{{ product.image.url }}" alt="Main Product Image">
+                    {% endif %}
+                    <div class="additional-images-container mt-4">
+                        <div class="d-flex flex-row">
+                            {% for image in product.multipleimage_set.all %}
+                                <img class="additional-image zoom me-2" src="{{ image.image.url }}" alt="Additional Product Image" onclick="swapImages(this)">
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Additional Images Column -->
-            <div class="col-md-6 mb-4">
-                <h2>{{ product.title }}</h2>
-                <div class="p-4">
-                    <p class="lead">
-                        <span>₹{{ product.price }} per day</span>
-                    </p>
-                    <strong><p style="font-size: 20px;">Description</p></strong>
-                    <p>{{ product.description }}</p>
-                    <strong><p style="font-size: 20px;">Provided by</p></strong>
-                    <p>{{ product.user.first_name }}</p>
-                    <form class="d-flex justify-content-left" method="post" action="{% url 'cart:addToCart' product.id %}">
-                        {% csrf_token %}
-                        <div class="form-outline me-1" style="width: 100px;">
-                            <button type="submit" class="btn btn-primary">Rent it</button>
-                        </div>
-                    </form>
+                <!-- Additional Images Column -->
+                <div class="col-md-6 mb-4">
+                    <h2>{{ product.title }}</h2>
+                    <div class="p-4">
+                        <p class="lead">
+                            {% if product.discounted_price %}
+                                <strong>Offer Price: ₹{{ product.discounted_price }} per day</strong><br>
+                                <p><strike>Price: ₹{{ product.price }} per day</strike></p>
+                            {% else %}
+                                <span>Price: ₹{{ product.price }} per day</span>
+                            {% endif %}
+                        </p>
+                        <strong><p style="font-size: 20px;">Description</p></strong>
+                        <p>{{ product.description }}</p>
+                        <strong><p style="font-size: 20px;">Provided by</p></strong>
+                        <p>{{ product.user.first_name }}</p>
+                        <form class="d-flex justify-content-left" method="post" action="{% url 'cart:addToCart' product.id %}">
+                            {% csrf_token %}
+                            <div class="form-outline me-1" style="width: 100px;">
+                                <button type="submit" class="btn btn-primary">Rent it</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Additional Images Container -->
                 </div>
-                <!-- Additional Images Container -->
             </div>
-        </div>
-    </div>    
-</div>
-
+        </div>    
+    </div>
+    
     <script>
         // Disable Zoom.js scaling bar
         Zoom.noZoom = true;

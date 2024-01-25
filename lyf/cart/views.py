@@ -70,7 +70,11 @@ def cartPage(request):
     for cart_item in cart_items:
         quantity = float(request.POST.get(f'quantity_{cart_item.id}', 0))
         days_required = float(request.POST.get(f'days_required_{cart_item.id}', 0))
-        total_price += quantity * days_required * cart_item.product.price
+        if cart_item.product.discounted_price>0:
+            total_price += quantity * days_required * cart_item.product.discounted_price
+        else:
+            total_price += quantity * days_required * cart_item.product.price
+
     
 
     request.session['total_price'] = total_price

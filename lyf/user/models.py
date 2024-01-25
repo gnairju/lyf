@@ -37,10 +37,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         code='invalid_password'
     )
 
-    # Override the AbstractBaseUser's password field to include the validators
-    
-
-
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30,null=True)
@@ -50,7 +46,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         null=True,
         validators=[phone_number_validator]
     )
-    password = models.CharField(validators=[MinLengthValidator(8), MaxLengthValidator(128), password_validator], max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_super = models.BooleanField(default=False)

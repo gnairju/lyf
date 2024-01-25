@@ -101,7 +101,6 @@ def wallet_credit(request, id):
     ord.cancelled_rental=True
     ord.status='cancelled'
     ord.save()
-
     return redirect('user:user_profile')
 
 @login_required(login_url='user:performlogin')

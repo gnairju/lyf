@@ -26,8 +26,11 @@
     
                     Days required:
                     <input type="number" class="form-control" value="{{ cart_item.days_needed }}" min="3" style="width: 70px;" name="days_needed_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
-    
+                    {% if  cart_item.product.discounted_price %}
+                    <p class="h5">₹{{ cart_item.product.discounted_price|floatformat:2 }} per day</p>
+                    {% else %}
                     <p class="h5">₹{{ cart_item.product.price|floatformat:2 }} per day</p>
+                    {% endif %}
                     <a href="{% url 'cart:removeItemCart' cart_item.id %}" class="btn btn-danger btn-sm">Remove</a>
                 </div>
             </div>

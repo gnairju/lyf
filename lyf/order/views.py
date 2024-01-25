@@ -43,9 +43,6 @@ def calculate_distance(postal_code1, postal_code2):
 
     if coords1 and coords2:
         distance = geodesic(coords1, coords2).kilometers
-        print('distance')
-        print(type(distance))
-        print(distance)
         return distance
     else:
         return None
@@ -71,7 +68,10 @@ def confirmRental(request):
                 messages.error(request, 'Distance is too far. Order cannot be processed.')
                 return redirect(reverse('cart:checkout'))
             else:
-                total_price = i.product.price * i.quantity * i.days_needed
+                if i.product.discounted_price:
+                    total_price = i.product.discounted_price * i.quantity * i.days_needed
+                else:
+                    total_price = i.product.price * i.quantity * i.days_needed
                 security = i.product.security
                 platform_charges = calculate_platform_fee(total_price)
                 print(platform_charges)

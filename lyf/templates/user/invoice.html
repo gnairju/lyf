@@ -88,7 +88,11 @@
                                 <td class="center">#</td>
                                 <td>{{ i.product }}</td>
                                 <td>{{ i.product.description }}</td>
+                                {% if i.product.discounted_price %}
+                                <td class="right">{{ i.product.discounted_price }}</td>
+                                {% else %}
                                 <td class="right">{{ i.product.price }}</td>
+                                {% endif %}
                                 <td class="center">{{ i.quantity }}</td>
                                 <td class="right">{{ i.days_needed }}</td>
                                 <td class="end">{{ i.total_price }}</td>
