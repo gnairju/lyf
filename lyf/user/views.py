@@ -1,4 +1,5 @@
 # views.py
+import re
 import pyotp
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -59,6 +60,11 @@ def user_registration(request):
             password2 = self.cleaned_data.get("password2")
             if password1 and password2 and password1 != password2:
                 raise forms.ValidationError("Passwords do not match.")
+            elif len(password1)<8 or len(password2)<8:
+                raise forms.ValidationError('Password must contain atleast 8 characters')
+            elif password1 and not re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1) :
+                raise forms.ValidationError('Password must contain one special character and one digits')
+
             request.session['password'] = password2 
             return password2
 
@@ -321,6 +327,7 @@ def user_edit(request):
         
         if password1 and password2:
             if password1 == password2:
+                
                 details.set_password(password1)
                 details.save()
                 messages.success(request, 'User details updated successfully')
@@ -345,4 +352,5 @@ def user_referral(request):
         'user_refer': user,
     }
     return render(request, 'user/user_referrals.html', context)
+    
     

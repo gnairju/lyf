@@ -94,7 +94,7 @@ def removeItemCart(request,id):
     return redirect('cart:cartPage')
 
 
-
+@login_required(login_url='user:performlogin')
 def checkout(request):
     address=userAddress.objects.filter(user=request.user)
     return render(request,'cart/checkout.html',{'address':address})
@@ -103,15 +103,15 @@ def checkout(request):
 @never_cache
 def addAddress(request):
     if request.method=='POST':
-        addressType = request.POST.get('addressType')
-        firstname = request.POST.get('firstname')
-        lastname = request.POST.get('lastname')
-        address = request.POST.get('address')
-        street = request.POST.get('street')
-        phone = request.POST.get('phone')
-        pincode = request.POST.get('pincode')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
+        addressType = request.POST.get('addressType').strip()
+        firstname = request.POST.get('firstname').strip()
+        lastname = request.POST.get('lastname').strip()
+        address = request.POST.get('address').strip()
+        street = request.POST.get('street').strip()
+        phone = request.POST.get('phone').strip()
+        pincode = request.POST.get('pincode').strip()
+        city = request.POST.get('city').strip()
+        state = request.POST.get('state').strip()
 
         userAddress.objects.create(
             addressType=addressType,

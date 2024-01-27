@@ -158,12 +158,12 @@
             </label><br>
             <label class="field">
                 <span class="field__label" for="phone">Phone</span>
-                <input class="field__input" type="text" id="phone" name="phone" required/>
+                <input class="field__input" type="text" id="phone" name="phone" pattern="\d{10}" title="Please enter 10 digits." required/>
             </label><br>
             <div class="fields fields--3">
                 <label class="field">
                     <span class="field__label" for="pincode">Pincode</span>
-                    <input class="field__input" type="text"  id="pincode" name="pincode" required/>
+                    <input class="field__input" type="text"  id="pincode" name="pincode" pattern="\d{6}" title="Please enter 6 digits." required/>
                 </label>
                 <label class="field">
                     <span class="field__label" for="city">City</span>
