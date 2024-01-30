@@ -87,9 +87,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'lyf',
         'USER': 'postgres',
-        'PASSWORD' : 'ammu',
+        'PASSWORD' : '2001',
         'HOST' : 'localhost',
-        'PORT' : '5433',
+        'PORT' : '5432',
     }
 }
 

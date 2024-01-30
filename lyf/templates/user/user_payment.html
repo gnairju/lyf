@@ -5,59 +5,63 @@
         background-color: #ffffff;
     }
 
-.sidenav {
-  height: 100%;
-  width: 160px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #C1DCDC;
-  overflow-x: hidden;
-  padding-top: 20px;
-  padding-top: 130px;
-}
+    .sidenav {
+        height: 100%;
+        width: 160px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #C1DCDC;
+        overflow-x: hidden;
+        padding-top: 20px;
+        padding-top: 130px;
+    }
 
-.sidenav a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  color: black;
-  display: block;
-}
+    .sidenav a {
+        padding: 8px 8px 8px 16px;
+        text-decoration: none;
+        font-size: 16px;
+        color: black;
+        display: block;
+    }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
 
-.main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 20px; /* Increased text to enable scrolling */
-  padding: 0px 50px 100px;
-  padding-top: 20px;
-}
+    .main {
+        margin-left: 160px; /* Same as the width of the sidenav */
+        font-size: 16px; /* Increased text to enable scrolling */
+        padding: 0px 20px 100px;
+        padding-top: 20px;
+    }
 
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 14px;}
+    }
 
-.active {
-    background-color: white;
-}
+    .active {
+        background-color: white;
+    }
 
+    /* Additional styling for buttons */
+    .btn-sm {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
 </style>
 </head>
 <body>
     <!-- Sidebar -->
-
     <div class="sidenav">
         <a href="{% url 'user:user_profile' %}">User</a>
         <a href="{% url 'user:user_edit' %}">User Details</a>
         <a href="{% url 'user:user_payment' %}" class="active">Payments</a>
         <a href="{% url 'user:user_referral' %}">My Referrals</a>
     </div>
-      
+
     <div class="main" style="margin-top: 8rem;">
         <div class="payment_area">
             <h4>User payment details</h4>
@@ -74,10 +78,10 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 Quantity:
                                 <input type="number" class="form-control" value="{{ ord.quantity }}" style="width: 70px;" readonly>
-                
+
                                 Days required:
                                 <input type="number" class="form-control" value="{{ ord.days_needed }}" style="width: 70px;" readonly>
-                
+
                                 <a href="{% url 'payments:make_payments' ord.id %}" class="btn btn-primary btn-sm">Make Payment</a>
                                 <a href="{% url 'user:user_cancel_rental' ord.id %}" class="btn btn-danger btn-sm">Cancel Rental</a>
                             </div>
@@ -90,12 +94,13 @@
             <h1>no payments</h1>
             {% endif %}
         </div>
-
     </div>
 
     <!-- Include Bootstrap JS (optional, if needed) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94uKmpw/OiGKl2f" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94u
+
+Kmpw/OiGKl2f" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyZqVNC8A4MZEtXGUoIfBZhddAp0EAAwEFE" crossorigin="anonymous"></script>
 </body>
 {% endblock %}
