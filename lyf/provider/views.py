@@ -89,7 +89,7 @@ def providerAddProduct(request):
     # Fetch categories from the database
     categories = Categories.objects.all()
 
-    return render(request, 'provider/providerAddProducts.html', {'categories': categories})
+    return render(request, 'provider/providerAddproducts.html', {'categories': categories})
 
 
 @login_required(login_url='user:performlogin')
