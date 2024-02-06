@@ -133,28 +133,36 @@ def provider_pay(request,id):
     host = request.get_host()
     total_price_decimal = Decimal(str(ord.total_price)).quantize(Decimal('0.01'))
     if product:
-        pro=product.user
-        if pro:
-            provider=provider_credentials.objects.get(provider=pro)
-    
-    provider_mail=provider.paypal_id
-    paypal_dict={
-        'business': provider_mail,
-        'amount': '%.2f' % total_price_decimal,
-        'item_name' : 'order {}'.format(ord.id),
-        'invoice':str(ord.id),
-        'country_code':"USD",
-        'notify_url' : 'https://{}{}'.format(host,reverse('paypal-ipn')),
-        'return_url': 'http://{}{}'.format(host, reverse('adminPanel:pay_provider_success', kwargs={'id': ord.id})),
-        'cancel_return': 'http://{}{}'.format(host,reverse('payments:payment_cancelled')),
-        
-    }
+        # pro=product.user
+        # if pro:
+        #     provider=provider_credentials.objects.get(provider=pro)
+        try:
+            provider=provider_credentials.objects.get(provider=product.user)
+            provider_mail=provider.paypal_id
+            paypal_dict={
+                'business': provider_mail,
+                'amount': '%.2f' % total_price_decimal,
+                'item_name' : 'order {}'.format(ord.id),
+                'invoice':str(ord.id),
+                'country_code':"USD",
+                'notify_url' : 'https://{}{}'.format(host,reverse('paypal-ipn')),
+                'return_url': 'http://{}{}'.format(host, reverse('adminPanel:pay_provider_success', kwargs={'id': ord.id})),
+                'cancel_return': 'http://{}{}'.format(host,reverse('payments:payment_cancelled')),
+                
+            }
+
+            
+            form = PayPalPaymentsForm(initial=paypal_dict)
+            context={
+                'ord':ord,
+                'form':form,
+            }
+            
+            return render(request,'payments/provider_payment.html',context)
+        except:
+            messages.error(request,'Provider payment details not updated')
+            return redirect('order:rental_management')
+
 
     
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    context={
-        'ord':ord,
-        'form':form,
-    }
     
-    return render(request,'payments/provider_payment.html',context)

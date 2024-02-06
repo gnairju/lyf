@@ -83,18 +83,20 @@ def confirmRental(request):
                     product=i.product,
                     quantity=i.quantity,
                     days_needed=i.days_needed,
+                    from_date=i.from_date,
+                    to_date=i.to_date,
                     total_price=total_price,
                     platform_charges=platform_charges,
                     caution_deposit = security,
                     total_charges=total_charges,
                     distance=distance,
                 )
-                c=Product.objects.get(id=i.product.id)
-                c.quantity-=i.quantity
-                c.save()
-                if c.quantity<1:
-                    c.rentable=False
-                    c.save()
+                # c=Product.objects.get(id=i.product.id)
+                # c.quantity-=i.quantity
+                # c.save()
+                # if c.quantity<1:
+                #     c.rentable=False
+                #     c.save()
                 cart_instance.delete()
             y=0
         print('Success')

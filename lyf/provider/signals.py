@@ -14,7 +14,7 @@ def send_new_product_email(sender, instance, created, **kwargs):
         user = instance.user
         subject = 'New Product Added'
         message = f'New product "{instance.title}" added by {user.first_name}.'
-        message += f' Please login to activate: http://127.0.0.1:8000/performlogin '
+        message += f' Please <a href="http://127.0.0.1:8000/performlogin">login</a> to activate.'
 
         from_email = 'o23211671@gmail.com'  
         email = 'lyfrentals04@gmail.com'
@@ -29,7 +29,7 @@ def send_new_rental_email(sender, instance, created, **kwargs):
         user = instance.user
         subject = 'New Rental'
         message = f'New rental "{instance.product}" by {user.first_name}.'
-        message += f' Please login to activate: http://127.0.0.1:8000/performlogin '
+        message += f' Please login to activate: <a href="http://127.0.0.1:8000/performlogin">Login</a>'
 
         from_email = 'o23211671@gmail.com'  
         email = instance.product.user

@@ -27,7 +27,7 @@ nav{
 .logo{
     width: 250px;
     height: auto;
-    margin-right: 40px;
+    /* margin-right: 40px; */
     transition: transform 0.8s; /* Add a smooth transition effect */
 
 }

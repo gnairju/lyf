@@ -1,16 +1,19 @@
 {% extends "homePage.html" %}
+{% load static %}
 {% block content %}
-<div class="card" style="margin-left: 100px; margin-top: 50px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <h1 style="margin-bottom: 20px;">Wallet</h1>
-    
-    {% if wall %}
-    <p style="font-size: 18px; margin-bottom: 10px;">Your Wallet balance is 
-        <input type="text" readonly value="₹{{ wall.balance_amount }}/-" style="border: none; font-size: 18px; color: #333; background-color: #f9f9f9; padding: 5px; border-radius: 4px;"></input>
-    </p>
-    <small>Your wallet updated at <strong>{{ wall.updated_at }}</strong></small>
-    {% else %}
-    <p style="font-size: 18px;">Your wallet is empty</p>
-    {% endif %}
-</div>
-
+{% if wall.balance_amount %}
+    <div class="card" style="margin-left: 100px; margin-top: 50px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-top: 8rem;">
+        <h1 style="margin-bottom: 20px;">Wallet</h1>
+        <p style="font-size: 18px; margin-bottom: 10px;">Your Wallet balance is 
+            <input type="text" readonly value="₹{{ wall.balance_amount }}/-" style="border: none; font-size: 18px; color: #333; background-color: #f9f9f9; padding: 5px; border-radius: 4px;"></input>
+        </p>
+        <small>Your wallet updated at <strong>{{ wall.updated_at }}</strong></small>
+    </div>
+{% else %}
+    <div class="mb-4 d-flex align-items-center justify-content-center" style="margin-top: 2rem; height: 100vh;">
+        <div style="text-align: center;">
+            <img src="{% static 'image/empy_wallets.jpg' %}" alt="empty cart image" class="img-fluid">
+        </div>
+    </div>
+{% endif %}
 {% endblock %}

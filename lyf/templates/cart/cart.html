@@ -1,68 +1,96 @@
 {% extends 'homePage.html' %}
+{% load static %}
 {% block content %}
-  <h4 class="card-title mb-4 " style="margin-left: 110px; margin-top: 7rem";>Your Shopping Cart</h4>
-  {% if messages %}
-            <div class="alert alert-danger">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            </div>
-  {% endif %}
-  {% if cart_items %}
-  <form  id=cartForm action="{% url 'cart:updateCart' %}" method="post">
-    {% csrf_token %}
-    <ul class="list-group" style="margin-right: 150px; margin-left: 150px;">
-      {% for cart_item in cart_items %}
-      <li class="list-group-item shadow p-3 mb-3 bg-white rounded">
-        <div class="row">
-            <div class="col-md-4">
-                <img src="{{ cart_item.product.image.url }}" class="img-fluid rounded-start img-thumbnail" style="width: 100%; max-width: 150px; max-height: 100px;" alt="{{ cart_item.product.name }}">
-            </div>
-            <div class="col-md-8" style="padding-top: 40px;">
-                <h5 class="card-title">{{ cart_item.product.name }}</h5>
-                <div class="d-flex justify-content-between align-items-center">
-                    Quantity:
-                    <input type="number" class="form-control" value="{{ cart_item.quantity }}" min="1" style="width: 70px;" name="quantity_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
-    
-                    Days required:
-                    <input type="number" class="form-control" value="{{ cart_item.days_needed }}" min="3" style="width: 70px;" name="days_needed_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
-                    {% if  cart_item.product.discounted_price %}
-                    <p class="h5">₹{{ cart_item.product.discounted_price|floatformat:2 }} per day</p>
-                    {% else %}
-                    <p class="h5">₹{{ cart_item.product.price|floatformat:2 }} per day</p>
-                    {% endif %}
-                    <a href="{% url 'cart:removeItemCart' cart_item.id %}" class="btn btn-danger btn-sm">Remove</a>
-                </div>
-            </div>
+
+{% if messages %}
+  <div class="modal" id="messageModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          {% for message in messages %}
+            <h5>{{ message }}</h5><br>
+          {% endfor %}
+          <a href="{% url 'cart:cartPage' %}">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </a>
         </div>
-    </li>    
-      {% endfor %}
-    </ul> 
-  </form>
-  <div class="d-flex justify-content-end" style="margin-right: 150px;">
-    <a href="{%url 'cart:checkout' %}"><button type="submit" class="btn btn-primary btn-block" >Proceed</button></a>
+      </div>
+    </div>
   </div>
 
+  <script>
+    $(document).ready(function(){
+      $('#messageModal').modal('show');
+    });
+  </script>
+{% endif %}
+
+{% if cart_items %}
+  <h4 class="card-title mb-4 text-center" style="margin-top: 8rem;">Your Rental Cart</h4>
+  <form id="cartForm" action="{% url 'cart:updateCart' %}" method="post" class="mx-md-5">
+    {% csrf_token %}
+    <ul class="list-group">
+      {% for cart_item in cart_items %}
+        <li class="list-group-item shadow p-3 mb-3 bg-white rounded">
+          <div class="row">
+            <div class="col-md-4">
+              <img src="{{ cart_item.product.image.url }}" class="img-fluid rounded-start img-thumbnail" style="max-width: 150px; max-height: 100px;" alt="{{ cart_item.product.name }}">
+            </div>
+            <div class="col-md-8 mt-3 mt-md-0">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-2 mb-md-0">
+                  <label class="mt-4">Quantity:</label><br>
+                  <input type="number" class="form-control" value="{{ cart_item.quantity }}" min="1" style="width: 70px;" name="quantity_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
+                </div>
+                <div class="mb-2 mb-md-0">
+                  <label>From:</label>
+                  <input type="date" class="form-control" value="{{ cart_item.from_date|date:'Y-m-d' }}" style="width: 125px;" name="from_date_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
+                </div>
+                <div class="mb-2 mb-md-0">
+                  <label>To:</label>
+                  <input type="date" class="form-control" value="{{ cart_item.to_date|date:'Y-m-d' }}" style="width: 125px;" name="to_date_{{ cart_item.id }}" oninput="updateCart('{{ cart_item.id }}')">
+                </div>
+                {% if cart_item.product.discounted_price %}
+                  <p class="h5 mb-2 mb-md-0">₹{{ cart_item.product.discounted_price|floatformat:2 }} per day</p>
+                {% else %}
+                  <p class="h5 mb-2 mb-md-0">₹{{ cart_item.product.price|floatformat:2 }} per day</p>
+                {% endif %}
+                <a href="{% url 'cart:removeItemCart' cart_item.id %}" class="btn btn-danger btn-sm mt-2 mt-md-0"><i class="fa fa-trash"></i> Remove</a>
+              </div>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="d-flex justify-content-end mt-3">
+      <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-sm">Proceed</a>
+    </div>
+    
+  </form>
 
   <script>
     function updateCart(id) {
-        // Automatically submit the form when input fields change
-        document.getElementById('cartForm').submit();
-    }
+      document.getElementById('cartForm').submit();
+  }
 
     function updateTotalPrice() {
       var total_price = 0;
       {% for cart_item in cart_items %}
-          var quantity = parseInt(document.getElementsByName("quantity_{{ cart_item.id }}")[0].value);
-          var days_required = parseInt(document.getElementsByName("days_required_{{ cart_item.id }}")[0].value);
-          total_price += quantity * days_required * {{ cart_item.product.price }};
+        var quantity = parseInt(document.getElementsByName("quantity_{{ cart_item.id }}")[0].value);
+        var days_required = parseInt(document.getElementsByName("days_needed_{{ cart_item.id }}")[0].value);
+        total_price += quantity * days_required * {{ cart_item.product.price }};
       {% endfor %}
       document.getElementById('totalPrice').innerHTML = "Total Rental Price ₹" + total_price.toFixed(2);
     }
 
     updateTotalPrice();
   </script>
+{% else %}
+  <div class="card-title mb-4 d-flex align-items-center justify-content-center" style="margin-top: 2rem; height: 100vh;">
+    <img src="{% static 'image/empty_cart.png' %}" alt="empty cart image" class="img-fluid">
+  </div>
+{% endif %}
 
-    
-  {% endif %}
 {% endblock %}

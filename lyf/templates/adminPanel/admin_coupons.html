@@ -9,75 +9,75 @@
     <title>lyf</title>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+      }
 
-        nav {
-            background-color: #fff;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
+      nav {
+        background-color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+      }
 
-        .nav-left {
-            margin-left: 20px;
-        }
+      .nav-left {
+        margin-left: 20px;
+      }
 
-        .nav-right {
-            margin-right: 20px;
-        }
+      .nav-right {
+        margin-right: 20px;
+      }
 
+      .list-group-item {
+        border: none;
+        cursor: pointer;
+      }
+
+      .list-group-item:hover {
+        background-color: #f8f9fa;
+      }
+
+      .active {
+        background-color: #9cc4f0;
+        color: #fff;
+      }
+
+      #content {
+        margin-left: 250px;
+        padding-top: 56px;
+      }
+
+      #sidebarMenu {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        overflow-y: auto;
+        background-color: #fff;
+        border-right: 1px solid #000000;
+        border-top: 4px solid #007bff; /* Add a top border with a blue color */
+        box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+        padding-top: 56px;
+        margin-top: 50px;
+      }
+      #productContent {
+        margin-left: 300px;
+      }
+
+      @media only screen and (max-width: 768px) {
+        /* Adjust the max-width as per your md breakpoint */
+        #productContent {
+          margin-left: 0; /* Change margin-left to 0 for md screens */
+        }
         #sidebarMenu {
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow-y: auto;
-            background-color: #fff;
-            border-right: 1px solid #000000;
-            padding-top: 56px;
-            margin-top: 50px;
+          display: none;
         }
-
-        .list-group-item {
-            border: none;
-            cursor: pointer;
-        }
-
-        .list-group-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .active {
-            background-color: #9cc4f0;
-            color: #fff;
-        }
-
-        #content {
-            margin-left: 250px;
-            padding-top: 56px;
-        }
-
-        #sidebarMenu {
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            overflow-y: auto;
-            background-color: #fff;
-            border-right: 1px solid #000000;
-            border-top: 4px solid #007bff; /* Add a top border with a blue color */
-            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
-            padding-top: 56px;
-            margin-top: 50px;
-        }
+      }
     </style>
 </head>
 <body>
@@ -93,84 +93,183 @@
         </div>
     </nav>
     {% block content %}
-    <div id="sidebarMenu" class="sidebar bg-white">
-        <div class="position-sticky">
-            <div class="list-group list-group-flush">
-                <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
-                </a>
-                <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple ">
-                    <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
-                </a>
-                <a href="{% url 'order:rental_management' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
-                </a>
-                <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
-                </a>
-                <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Product Offers</span>
-                </a>
-                <a href="{% url 'adminPanel:user_offers' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Category Offers</span>
-                </a>
-                <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple active">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
-                </a>
-                <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
-                </a>
-                <a href="{% url 'adminPanel:renterList' %}" class="list-group-item list-group-item-action py-2 ripple">
-                    <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
-                </a>
-            </div>
+    <div
+      id="TopMenu"
+      class="sidebar bg-white d-block d-md-none"
+      style="margin-top: 10rem"
+    >
+      <div class="position-sticky">
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'adminPanel:adminPanel' %}"
+            class="list-group-item list-group-item-action py-2 ripple "
+          >
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i
+            ><span>Dashboard</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminProducts' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+          </a>
+          <a
+            href="{% url 'order:rental_management' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminCategory' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:product_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Product Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:category_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Category Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:coupons_page' %}"
+            class="list-group-item list-group-item-action py-2 ripple active"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:providerList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:renterList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
+          </a>
         </div>
+      </div>
     </div>
-    <div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 110px; margin-left: 300px;">
-        {% if messages %}
-                <div class="alert alert-danger">
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                </div>
-        {% endif %}
-        <form class="form-inline ">
-            <a href="{% url 'adminPanel:add_coupons' %}" class="btn btn-success">Add Coupon</a>
-        </form>
-        {% csrf_token %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Discount</th>
-                    <th>Discount type</th>
-                    <th>Coupons Left</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for c in cop %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ c.name }}</td>
-                    <td>{{ c.discount }}%</td>
-                    <td>{{ c.coupon_type }}</td>
-                    <td>{{ c.num }}</td>
-                    <td>
-                        <form action="{% url 'adminPanel:coupons_activate_deactivate' c.id %}" method="post">
-                            {% csrf_token %}
-                            {% if c.is_active %}
-                                <button type="submit" class="btn btn-danger">Deactivate</button>
-                            {% else %}
-                                <button type="submit" class="btn btn-primary">Activate</button>
-                            {% endif %}
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div id="sidebarMenu" class="sidebar bg-white d-none d-md-block">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'adminPanel:adminPanel' %}"
+            class="list-group-item list-group-item-action py-2 ripple "
+          >
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i
+            ><span>Dashboard</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminProducts' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+          </a>
+          <a
+            href="{% url 'order:rental_management' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminCategory' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:product_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Product Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:category_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Category Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:coupons_page' %}"
+            class="list-group-item list-group-item-action py-2 ripple active"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:providerList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:renterList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
+          </a>
+        </div>
+      </div>
     </div>
+    <div id="productContent" class="container d-flex flex-column" style="max-width: 600px; height: 700px; margin-top: 120px">
+      {% if messages %}
+          <div class="alert alert-danger">
+              {% for message in messages %}
+                  {{ message }}
+              {% endfor %}
+          </div>
+      {% endif %}
+      <form class="form-inline">
+          <a href="{% url 'adminPanel:add_coupons' %}" class="btn btn-success">Add Coupon</a>
+      </form>
+      {% csrf_token %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Discount</th>
+                  <th>Discount type</th>
+                  <th>Coupons Left</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for c in cop %}
+                  <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ c.name }}</td>
+                      <td>{{ c.discount }}%</td>
+                      <td>{{ c.coupon_type }}</td>
+                      <td>{{ c.num }}</td>
+                      <td>
+                          <form action="{% url 'adminPanel:coupons_activate_deactivate' c.id %}" method="post">
+                              {% csrf_token %}
+                              {% if c.is_active %}
+                                  <button type="submit" class="btn btn-danger">Deactivate</button>
+                              {% else %}
+                                  <button type="submit" class="btn btn-primary">Activate</button>
+                              {% endif %}
+                          </form>
+                      </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+  
     {% endblock %}
 </body>
 </html>

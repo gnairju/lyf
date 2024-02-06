@@ -62,9 +62,7 @@ def user_registration(request):
                 raise forms.ValidationError("Passwords do not match.")
             elif len(password1)<8 or len(password2)<8:
                 raise forms.ValidationError('Password must contain atleast 8 characters')
-            elif password1 and not re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1) :
-                raise forms.ValidationError('Password must contain one special character and one digits')
-
+            
             request.session['password'] = password2 
             return password2
 
@@ -231,7 +229,10 @@ def user_payment(request):
 @login_required(login_url='user:performlogin')
 def user_cancel_rental(request,id):
     o=order.objects.get(id=id)
-    o.delete()
+    o.status='cancelled'
+    o.to_date=datetime.now()
+    o.save()
+    messages.error(request,'Rental cancelled')
     return redirect('user:user_payment')
 
 @login_required(login_url='user:performlogin')
@@ -287,11 +288,12 @@ def forgot_otp_verify(request):
     return render(request,'user_forgot.html')
 
 
+
 def password_change(request):
     if request.method=='POST':
         password1=request.POST.get('password1')
         password2=request.POST.get('password2')
-        if password1==password2:
+        if password1==password2 and len(password1)>=8 and re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1):
             current_user_mail=request.session['current_user']
             current_user=CustomUser.objects.get(email=current_user_mail)
             current_user.set_password(password1)
@@ -299,7 +301,7 @@ def password_change(request):
             del request.session['current_user']
             return redirect('user:performlogin')
         else:
-            messages.error(request,'password donot match')
+            messages.error(request,'password should contain atleast one digit, special character and should be minimum of 8 letters')
     return render(request,'user/password_again.html')
 
 
@@ -326,7 +328,7 @@ def user_edit(request):
             messages.error(request, 'Invalid Data')
         
         if password1 and password2:
-            if password1 == password2:
+            if password1==password2 and len(password1)>=8 and re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1):
                 
                 details.set_password(password1)
                 details.save()

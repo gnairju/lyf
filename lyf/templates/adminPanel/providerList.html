@@ -1,42 +1,140 @@
 {% extends "adminPanel/adminPanel.html" %}
 {% block content%}
 
-<div id="sidebarMenu" class="sidebar bg-white">
-    <div class="position-sticky">
+<div
+      id="TopMenu"
+      class="sidebar bg-white d-block d-md-none"
+      style="margin-top: 10rem"
+    >
+      <div class="position-sticky">
         <div class="list-group list-group-flush">
-            <a href="{% url 'adminPanel:adminPanel' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Dashboard</span>
-            </a>
-            <a href="{% url 'adminPanel:adminProducts' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
-            </a>
-            <a href="{% url 'order:rental_management' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
-            </a>
-            <a href="{% url 'adminPanel:adminCategory' %}" class="list-group-item list-group-item-action py-2 ripple ">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
-            </a>
-            <a href="{% url 'adminPanel:product_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Product Offers</span>
-            </a>
-            <a href="{% url 'adminPanel:category_offer_form' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Category Offers</span>
-            </a>
-            <a href="{% url 'adminPanel:coupons_page' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
-            </a>
-            <a href="{% url 'adminPanel:providerList' %}" class="list-group-item list-group-item-action py-2 ripple active">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
-            </a>
-            <a href="{% url 'adminPanel:renterList' %}" class="list-group-item list-group-item-action py-2 ripple">
-                <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
-            </a>
+          <a
+            href="{% url 'adminPanel:adminPanel' %}"
+            class="list-group-item list-group-item-action py-2 ripple "
+          >
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i
+            ><span>Dashboard</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminProducts' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+          </a>
+          <a
+            href="{% url 'order:rental_management' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminCategory' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:product_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Product Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:category_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Category Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:coupons_page' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:providerList' %}"
+            class="list-group-item list-group-item-action py-2 ripple active"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:renterList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
+          </a>
         </div>
+      </div>
     </div>
-</div>
+    <div id="sidebarMenu" class="sidebar bg-white d-none d-md-block">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'adminPanel:adminPanel' %}"
+            class="list-group-item list-group-item-action py-2 ripple "
+          >
+            <i class="fas fa-tachometer-alt fa-fw me-3"></i
+            ><span>Dashboard</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminProducts' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-area fa-fw me-3"></i><span>Products</span>
+          </a>
+          <a
+            href="{% url 'order:rental_management' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-lock fa-fw me-3"></i><span>Rental Details</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:adminCategory' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Category</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:product_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Product Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:category_offer_form' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i
+            ><span>Category Offers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:coupons_page' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Coupons</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:providerList' %}"
+            class="list-group-item list-group-item-action py-2 ripple active"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Providers</span>
+          </a>
+          <a
+            href="{% url 'adminPanel:renterList' %}"
+            class="list-group-item list-group-item-action py-2 ripple"
+          >
+            <i class="fas fa-chart-line fa-fw me-3"></i><span>Renters</span>
+          </a>
+        </div>
+      </div>
+    </div>
 
-
-<div id="productContent" class="container d-flex flex-column" style="max-width: 800px; height: 500px; margin-top: 110px; margin-left: 300px;">
+<div id="productContent"
+class="container d-flex flex-column"
+style="max-width: 600px; height: 700px; margin-top: 120px">
     <h1 class="text-2xl">Provider List</h1>
     {% if provider %}
         <ul class="list-unstyled" style="margin-top: 20px;">

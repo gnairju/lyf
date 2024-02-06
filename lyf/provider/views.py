@@ -13,12 +13,21 @@ from .models import provider_credentials
 from adminPanel.models import Product
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 
 
 @login_required(login_url='user:performlogin')
 def providerPanel(request):
-    product=Product.objects.all()
-    return render(request,'provider/providerPanel.html',{'product':product})
+    user=request.user
+    try:
+        pro_cred=provider_credentials.objects.get(provider=user)
+        if pro_cred:
+            product=Product.objects.all()
+            return render(request,'provider/providerPanel.html',{'product':product})
+    except:
+        messages.error(request,'Please add your details')
+        return redirect('provider:provider_details')
 
 
 def create_security(given_price):
@@ -129,7 +138,7 @@ def providerUpdateProducts(request, id):
 
 @login_required(login_url='user:performlogin')
 def providerApproval(request):
-    ord = order.objects.filter(product__user=request.user)
+    ord = order.objects.filter(product__user=request.user).order_by('-date')
     #total_price = ord.product.price * ord.quantity * ord.days_needed
     context={
         'ord':ord
@@ -219,3 +228,9 @@ def cancelOrder(request,id):
     ord.status='cancelled'
     ord.save()
     return redirect('provider:providerApproval')
+
+
+def provider_payments(request):
+    user = request.user
+    ord = order.objects.filter(product__user=user, payment_provider=True)
+    return render(request,'provider/provider_payments.html',{'ord':ord})
