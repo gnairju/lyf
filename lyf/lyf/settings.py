@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'lyf',
         'USER': 'postgres',
         'PASSWORD' : '2001',
-        'HOST' : '34.125.245.18',
+        'HOST' : 'localhost',
         'PORT' : '5432',
     }
 }
