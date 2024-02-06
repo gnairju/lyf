@@ -99,6 +99,7 @@ def providerAddProduct(request):
     categories = Categories.objects.all()
 
     return render(request, 'provider/providerAddproducts.html', {'categories': categories})
+    return render(request, 'provider/providerAddproducts.html', {'categories': categories})
 
 
 @login_required(login_url='user:performlogin')

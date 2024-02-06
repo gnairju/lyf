@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #ffff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+.nav-left {
+    margin-left: 20px;
+}
+
+.nav-right {
+    margin-right: 20px;
+}
+
+#sidebarMenu {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-right: 1px solid #000000;
+    padding-top: 56px;
+    margin-top: 50px;
+}
+
+.list-group-item {
+    border: none;
+    cursor: pointer;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.active {
+    background-color: #9cc4f0;
+    color: #fff;
+}
+
+#content {
+    margin-left: 250px;
+    padding-top: 56px;
+}
+
+#sidebarMenu {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-right: 1px solid #000000;
+    border-top: 4px solid #007bff; /* Add a top border with a blue color */
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+    padding-top: 56px;
+    margin-top: 50px;
+}

@@ -1,3 +1,5 @@
+
+
 """
 Django settings for lyf project.
 
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'whitenoise.runserver_nostatic',
+    'whitenoise.runserver_nostatic',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -53,6 +56,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -132,8 +136,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'staticfields'
+    '/home/ganga/lyf/lyf/staticfields'
 ]
+STATIC_ROOT =  '/home/ganga/lyf/lyf/staticfiles/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -156,3 +161,4 @@ PAYPAL_TEST = True
 PAYPAL_RECEIVER_EMAIL = 'sb-mztef29124808@business.example.com'
 
 #sb-fxbjf29208477@personal.example.com
+
