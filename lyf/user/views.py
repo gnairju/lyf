@@ -284,8 +284,8 @@ def forgot_otp_verify(request):
                     return redirect('user:password_change')
                 else:
                     messages.error(request,'Invalid OTP')
-                    return redirect('forgot_otp_verify')
-    return render(request,'user_forgot.html')
+                    return redirect('user:forgot_otp_verify')
+    return render(request,'user/user_forgot.html')
 
 
 
@@ -354,5 +354,6 @@ def user_referral(request):
         'user_refer': user,
     }
     return render(request, 'user/user_referrals.html', context)
+    
     
     

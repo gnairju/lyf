@@ -16,7 +16,7 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from datetime import datetime
 from django.urls import reverse
-
+from django.db.models import Q
 
 
 def admin_access_required(view_func):
@@ -393,3 +393,58 @@ def block_unblock_cat(request,id):
     cat_offer.save()
     print('he')
     return redirect('adminPanel:category_offer_form')
+
+
+def product_searchbar(request):
+    query = request.GET.get('q')
+    context = {'products': [], 'query': query}
+    if query:
+        products = Product.objects.filter(
+            Q(title__icontains=query) | Q(category__Name__icontains=query)
+        )
+        context['products'] = products
+
+    return render(request, 'adminPanel/adminProducts.html', context)
+
+
+def rental_searchbar(request):
+    query = request.GET.get('q')
+    context = {'ord': [], 'query': query}
+    if query:
+        ord = order.objects.filter(
+            Q(product__title__icontains=query) | Q(user__first_name__icontains=query)
+            |Q(user__last_name__icontains=query)
+            
+        )
+        context['ord'] = ord
+
+    return render(request, 'adminPanel/adminRentalDetails.html', context)
+
+
+
+def provider_searchbar(request):
+    query = request.GET.get('q')
+    context = {'provider': [], 'query': query}
+    if query:
+        provider = CustomUser.objects.filter(
+            Q(first_name__icontains=query) 
+            |Q(last_name__icontains=query)
+            
+        )
+        context['provider'] = provider
+
+    return render(request, 'adminPanel/providerList.html', context)
+
+
+def renter_searchbar(request):
+    query = request.GET.get('q')
+    context = {'renter': [], 'query': query}
+    if query:
+        renter = CustomUser.objects.filter(
+            Q(first_name__icontains=query) 
+            |Q(last_name__icontains=query)
+            
+        )
+        context['renter'] = renter
+
+    return render(request, 'adminPanel/renterList.html', context)

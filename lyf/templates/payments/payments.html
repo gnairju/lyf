@@ -39,7 +39,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="coupon_clear" value="true">
                                 <input type="text" name="coupons" for="coupons" placeholder="Enter Coupon code" value={{ ord.coupon }}>
-                                <button type="submit" class="btn btn-block">Clear</button>
+                                <button type="submit" class="btn btn-outline-dark">Clear</button>
                             </form>
                             <br><h4>Total Charges: ₹{{ ord.offer_total_charges }}/-</h4><br>
                         {% else %}

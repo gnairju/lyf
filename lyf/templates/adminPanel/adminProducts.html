@@ -136,7 +136,19 @@ style="margin-top: 10rem"
 class="container d-flex flex-column"
 style="max-width: 600px; height: 700px; margin-top: 120px">
     <h1 class="text-center mb-4">Product List</h1>
-
+    <form class="form-inline" method="get" action="{% url 'adminPanel:product_searchbar' %}">
+    
+    <div class="input-group rounded">
+      {% if query %}
+      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q" value="{{query}}"/>
+      {% else %}
+      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q"/>
+      {% endif %}
+      <button type="submit" class="btn btn-transparent"><span class="input-group-text border-0" id="search-addon">
+        <i class="bi bi-search"></i>
+      </span></button>
+    </div>
+    </form>
     {% if products %}
         <ul class="list-group">
             {% for product in products %}

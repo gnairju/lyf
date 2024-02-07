@@ -136,6 +136,19 @@
 class="container d-flex flex-column"
 style="max-width: 600px; height: 700px; margin-top: 120px">
     <h1 class="text-2xl">Provider List</h1>
+    <form class="form-inline" method="get" action="{% url 'adminPanel:provider_searchbar' %}">
+    
+      <div class="input-group rounded">
+        {% if query %}
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q" value="{{query}}"/>
+        {% else %}
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="q"/>
+        {% endif %}
+        <button type="submit" class="btn btn-transparent"><span class="input-group-text border-0" id="search-addon">
+          <i class="bi bi-search"></i>
+        </span></button>
+      </div>
+      </form>
     {% if provider %}
         <ul class="list-unstyled" style="margin-top: 20px;">
             {% for user in provider %}

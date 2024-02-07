@@ -48,8 +48,10 @@ def payment_selection(request,id):
 def final_pay(request,id):
     ord = order.objects.get(id=id)
     host = request.get_host()
-    offer_total_charges_decimal = Decimal(str(ord.offer_total_charges)).quantize(Decimal('0.01'))
-
+    if ord.coupon:
+        offer_total_charges_decimal = Decimal(str(ord.offer_total_charges)).quantize(Decimal('0.01'))
+    else:
+        offer_total_charges_decimal = Decimal(str(ord.total_charges)).quantize(Decimal('0.01'))
 
     paypal_dict={
         'business': settings.PAYPAL_RECEIVER_EMAIL,
@@ -77,7 +79,9 @@ def final_pay(request,id):
 def payment_done(request,id):
     ord=order.objects.get(id=id)
     ord.payment=True
+    ord.invoice_id=str(ord.id)
     ord.save()
+    print(ord.invoice_id)
     messages.success(request,"payment done sucessfuly")
     return redirect('user:user_profile')
 
@@ -93,8 +97,6 @@ def wallet_credit(request, id):
     current_balance = user_wallet.objects.get(user=request.user).balance_amount
     amount = ord.total_charges
     new_balance = int(amount) + int(current_balance)
-
-    # Assuming there is only one user_wallet object per user, otherwise, adjust accordingly
     user_wallet_obj, created = user_wallet.objects.get_or_create(user=request.user)
     user_wallet_obj.balance_amount = new_balance
     user_wallet_obj.save()
@@ -120,7 +122,10 @@ def wallet_debit(request,id):
         'wallet':wallet,
     }
     if request.method=='POST':
-        wallet.balance_amount=wallet.balance_amount-ord.offer_total_charges
+        if ord.coupon:
+            wallet.balance_amount=wallet.balance_amount-ord.offer_total_charges
+        else:
+            wallet.balance_amount=wallet.balance_amount-ord.total_charges
         wallet.save()
         return redirect('payments:payment_done',id=id)
 

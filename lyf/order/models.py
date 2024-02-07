@@ -28,6 +28,7 @@ class order(models.Model):
     offer_total_charges = models.PositiveBigIntegerField(default=0)
     cancelled_rental=models.BooleanField(default=False)
     distance  = models.FloatField(default=0)
+    invoice_id = models.CharField(max_length=35)
 
     STATUS_CHOICES = [
         ('confirmed','confirmed'),

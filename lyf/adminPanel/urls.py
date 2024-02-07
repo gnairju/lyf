@@ -31,6 +31,9 @@ urlpatterns = [
     path('add_category_offer/', views.add_category_offer, name='add_category_offer'),
     path('block_unblock_cat/<int:id>',views.block_unblock_cat,name='block_unblock_cat'),
     path('block_unblock_pro/<int:id>',views.block_unblock_pro,name='block_unblock_pro'),
-
+    path('product_searchbar',views.product_searchbar,name='product_searchbar'),
+    path('rental_searchbar',views.rental_searchbar,name='rental_searchbar'),
+    path('provider_searchbar',views.provider_searchbar,name='provider_searchbar'),
+    path('renter_searchbar',views.renter_searchbar,name='renter_searchbar'),
 
 ]

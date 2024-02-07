@@ -126,11 +126,6 @@ def statusChange(request,id):
     if request.method=='POST':
         status=request.POST.get('status')
         ord=order.objects.get(id=id)
-        days_req=ord.days_needed
-        if status=='delivered':
-            ord.del_date=datetime.now()
-            ord.save()
-        ord.ret_date=ord.del_date+timedelta(days=days_req)
         ord.status=status
         ord.save()
         messages.success(request,'Status changed')
