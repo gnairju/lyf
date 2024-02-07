@@ -139,10 +139,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT =  '/home/ganga/lyf/lyf/staticfiles/'
 
-# STATICFILES_DIRS = [
-#     'staticfields'
-# ]
-# STATIC_ROOT =  '/lyf/staticfiles/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
