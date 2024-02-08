@@ -141,7 +141,7 @@
                             <a href="{% url 'products:productPage' product.id %}">
                                 <h5 class="card-title">{{ product.title }}</h5>
                             </a>
-                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">{{ product.description | slice:":25" }}...</p>
                             <!-- Add to Cart Button -->
                             <form method="post" action="{% url 'cart:addToCart' product.id %}">
                                 {% csrf_token %}
