@@ -58,12 +58,10 @@ def user_registration(request):
         def clean_password2(self):
             password1 = self.cleaned_data.get("password1")
             password2 = self.cleaned_data.get("password2")
-            if password1 and password2 and password1 != password2:
-                raise forms.ValidationError("Passwords do not match.")
-            elif len(password1)<8 or len(password2)<8:
-                raise forms.ValidationError('Password must contain atleast 8 characters')
-            
-            request.session['password'] = password2 
+            if password1 == password2 and len(password1)>=8 and re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1):
+                request.session['password'] = password2 
+            else:
+                raise forms.ValidationError("Your password doesn't meet eligibility criteria.")
             return password2
 
     if request.method == 'POST':
@@ -311,37 +309,45 @@ def user_edit(request):
     details = CustomUser.objects.get(email=user_email)
 
     if request.method == 'POST':
-        first_name = request.POST.get('firstname')
-        last_name = request.POST.get('lastname')
-        phone_number = request.POST.get('mobile')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
+        first_name = request.POST.get('firstname').strip()
+        last_name = request.POST.get('lastname').strip()
+        phone_number = request.POST.get('mobile').strip()
+        password1 = request.POST.get('password1').strip()
+        password2 = request.POST.get('password2').strip()
 
         if first_name:
             details.first_name = first_name
+            details.save()
+
         if last_name:
             details.last_name = last_name
+            details.save()
+
         if phone_number:
             details.phone_number = phone_number
+            details.save()
+
 
         if not (first_name and last_name and phone_number):
             messages.error(request, 'Invalid Data')
-        
+
+
+
         if password1 and password2:
-            if password1==password2 and len(password1)>=8 and re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1):
-                
+            if password1 == password2 and len(password1) >= 8 and re.match(r'^(?=.*\d)(?=.*[@$!%*?&])', password1):
                 details.set_password(password1)
                 details.save()
                 messages.success(request, 'User details updated successfully')
-                messages.success(request, 'Please login')
+                messages.success(request, 'Please login again with your new password')
                 request.session.flush()
                 return redirect('user:perform_logout')
             else:
-                messages.error(request, 'Password does not match')
+                messages.error(request, 'Passwords do not match or do not meet the criteria')
+                return redirect('user:user_edit')
         messages.success(request,'User details updated successfully')
-        details.save()
 
     return render(request, 'user/user_edit.html', {'details': details})
+
 
 
 @login_required(login_url='user:performlogin')

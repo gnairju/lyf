@@ -136,25 +136,25 @@
           {% csrf_token %}
             <label class="field">
                 <span class="field__label" for="addressType">Type</span>
-                <input class="field__input" type="text" id="addressType" name="addressType" required/>
+                <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="addressType" name="addressType" maxlength="10" required/>
             </label><br>
             <div class="fields fields--2">
                 <label class="field">
                     <span class="field__label" for="firstname">First name</span>
-                    <input class="field__input" type="text" id="firstname" name="firstname" required/>
+                    <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="firstname" name="firstname" maxlength="30" required/>
                 </label>
                 <label class="field">
                     <span class="field__label" for="lastname">Last name</span>
-                    <input class="field__input" type="text" id="lastname" name="lastname" required/>
+                    <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="lastname" name="lastname" maxlength="30" required/>
                 </label>
             </div><br>
             <label class="field">
                 <span class="field__label" for="address">Address</span>
-                <input class="field__input" type="text" id="address" name="address" required/>
+                <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="address" name="address" maxlength="50" required/>
             </label><br>
             <label class="field">
                 <span class="field__label" for="street">Street</span>
-                <input class="field__input" type="text" id="street" name="street" required/>
+                <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="street" name="street" maxlength="50" required/>
             </label><br>
             <label class="field">
                 <span class="field__label" for="phone">Phone</span>
@@ -167,11 +167,11 @@
                 </label>
                 <label class="field">
                     <span class="field__label" for="city">City</span>
-                    <input class="field__input" type="text" id="city" name="city" required/>
+                    <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="city" name="city" maxlength="20" required/>
                 </label>
                 <label class="field">
                     <span class="field__label" for="state">State</span>
-                    <input class="field__input" type="text" id="state" name="state" required/>
+                    <input class="field__input" type="text" pattern="^[^\s].*[^\s]$" id="state" name="state" maxlength="50" required/>
                 </label>
             </div><br>
             <hr>

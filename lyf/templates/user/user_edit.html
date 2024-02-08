@@ -66,7 +66,7 @@
             {% endfor %}
         {% endif %}
 
-        <form class="form" action="{% url 'user:user_edit' %}" method="post">
+        <form  class="form" id="userEditForm" action="{% url 'user:user_edit' %}" method="post">
             {% csrf_token %}
             <div class="row">
                 <div class="col">
@@ -74,13 +74,13 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="firstname">First Name</label>
-                                <input class="form-control" type="text" name="firstname"  value="{{ details.first_name|striptags|linebreaksbr }}">
+                                <input class="form-control" type="text" name="firstname" maxlength="28"  value="{{ details.first_name|striptags|linebreaksbr }} ">
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="lastname">Last Name</label>
-                                <input class="form-control" type="text" name="lastname" value="{{ details.last_name }}">
+                                <input class="form-control" type="text" name="lastname" maxlength="28" value="{{ details.last_name }}">
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
             
             <div class="row">
                 <div class="col d-flex justify-content-end">
-                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                    <button class="btn btn-primary" onsubmit="userEditForm()">Save Changes</button>
                 </div>
             </div>
             
@@ -114,8 +114,39 @@
     </div>
 
     <!-- Include Bootstrap JS (optional, if needed) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js" integrity="sha384-eMN5TJ4RZnZlfNlYKkHZcWSX9wOs4/sj7MK0WoFi9drQG5i1n94uKmpw/OiGKl2f" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyZqVNC8A4MZEtXGUoIfBZhddAp0EAAwEFE" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" ></script>
+{% comment %} <script>
+    
+ function userEditForm() {
+    console.log("hello")
+    var form = document.getElementById('userEditForm');
+    var firstNameInput = document.getElementById('firstname');
+    var lastNameInput = document.getElementById('lastname');
+    var mobileInput = document.getElementById('mobile');
+    
+    if (firstNameInput.value.length > 30) {
+        console.log('entered')
+        alert('First name must be 30 characters or less.');
+        event.preventDefault(); // Prevent form submission
+        return;
+    }
+    
+    if (lastNameInput.value.length > 30) {
+        alert('Last name must be 30 characters or less.');
+        event.preventDefault(); // Prevent form submission
+        return;
+    }
+    
+    if (mobileInput.value.length > 30) {
+        alert('Phone number must be 30 characters or less.');
+        event.preventDefault(); // Prevent form submission
+        return;
+    }
+    form.submit();
+});
+</script> {% endcomment %}
+    
 </body>
 {% endblock %}

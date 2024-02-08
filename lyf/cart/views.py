@@ -206,6 +206,7 @@ def checkout(request):
             if cart_item.from_date >= cart_item.to_date:
                 messages.error(request, 'Invalid date range for product')
                 return redirect(reverse('cart:cartPage'))
+            
 
     return render(request, 'cart/checkout.html', {'address': address})
 

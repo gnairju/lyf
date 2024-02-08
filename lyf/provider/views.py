@@ -116,11 +116,11 @@ def providerUpdateProducts(request, id):
 
     if request.method == 'POST':
         # Process the form submission
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        price = request.POST.get('price')
+        title = request.POST.get('title').strip()
+        description = request.POST.get('description').strip()
+        price = request.POST.get('price').strip()
         image = request.FILES.get('image') if 'image' in request.FILES else None
-        pincodePro = request.POST.get('pincodePro')
+        pincodePro = request.POST.get('pincodePro').strip()
         # Update the product fields
         product.title = title
         product.description = description
@@ -196,7 +196,7 @@ def provider_details(request):
         provider_instance_set=None
 
     if request.method == 'POST':
-        pan_number = request.POST.get('pan_number')
+        pan_number = request.POST.get('pan_number').strip()
         pan_image = request.FILES.get('pan_image') if 'pan_image' in request.FILES else None
         paypal_mail = request.POST.get('paypal_mail')
         print(pan_image)
@@ -210,6 +210,8 @@ def provider_details(request):
             if pan_image:
                 provider_instance_set.pan_photo=pan_image
             provider_instance_set.save()
+            messages.success(request,'Provider details updated')
+
             return redirect('provider:provider_details')
         else:
             provider_credentials.objects.create(
@@ -218,6 +220,7 @@ def provider_details(request):
                 pan_photo=pan_image,
                 paypal_id=paypal_mail,
             )
+            messages.success(request,'Provider details added')
             return redirect('provider:provider_details')
 
 

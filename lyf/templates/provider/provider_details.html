@@ -168,7 +168,7 @@
         {% if provider_instance_set %}
                 <div class="form-group">
                     <label for="pan_number">PAN Number:</label>
-                    <input type="text" class="form-control" name="pan_number" required value="{{ provider_instance_set.pan_card }}"><br>
+                    <input type="text" class="form-control" name="pan_number" pattern="^[^\s].*[^\s]$" title="Enter in correct format" maxlength="30"  required value="{{ provider_instance_set.pan_card }}" ><br>
                 </div>
                 <div class="form-group">
                     <label for="pan_image">PAN Image:</label>
@@ -180,12 +180,12 @@
                 </div>
                 <div class="form-group">
                     <label for="paypal_mail">Paypal email:</label>
-                    <input type="email" class="form-control" name="paypal_mail" required value="{{ provider_instance_set.paypal_id }}"><br>
+                    <input type="email" class="form-control" name="paypal_mail" maxlength="30" required value="{{ provider_instance_set.paypal_id }}"><br>
                 </div>
         {% else %}
             <div class="form-group">
                 <label for="pan_number">PAN Number:</label>
-                <input type="text" class="form-control" name="pan_number" required><br>
+                <input type="text" class="form-control" name="pan_number" pattern="^[^\s].*[^\s]$" title="Enter in correct format" maxlength="30" required><br>
             </div>
             <div class="form-group">
                 <label for="pan_image">PAN Image:</label>
@@ -193,7 +193,7 @@
             </div>
             <div class="form-group">
                 <label for="paypal_mail">Paypal email:</label>
-                <input type="email" class="form-control" name="paypal_mail" required><br>
+                <input type="email" class="form-control" maxlength="30" name="paypal_mail" required><br>
             </div>
         {% endif %}
         <button class="btn btn-secondary">Submit</button>
